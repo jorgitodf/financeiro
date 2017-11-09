@@ -14,9 +14,9 @@ class Usuario extends CI_Controller {
 
   	public function index()
   	{
-    		$dados["title"] = "Novo Usuário";
-    		$dados["view"] = "usuario/v_usuario_novo";
-    		$this->load->view("v_template", $dados);
+        $dados["title"] = "Novo Usuário";
+        $dados["view"] = "usuario/v_usuario_novo";
+        $this->load->view("v_template", $dados);
 
         if ($this->input->post()) {
             $nome = $this->input->post('nome');

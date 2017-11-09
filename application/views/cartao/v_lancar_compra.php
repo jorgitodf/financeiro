@@ -12,7 +12,7 @@
                         <div class="row-fluid">
                             <div class="form-group form-group-sm col-md-12 col-sm-12 col-lg-12" id="">
                                 <label for="cartao" class="control-label">Cartão de Crédito:</label>
-                                <select class="form-control input-sm" name="cartao" id="cartao" >
+                                <select class="form-control input-sm" name="cartao" id="cartao" disabled="disabled">
                                     <option></option>
                                     <?php foreach ($cartoes as $value): ?> 
                                         <option value="<?php echo $value['id_cartao']; ?>"><?php echo wordwrap($value['numero'], 4, '.', true); ?> - <?php echo $value['bandeira']; ?> - <?php echo $value['nome_banco']; ?></option>
@@ -23,21 +23,21 @@
                         <div class="row-fluid">
                             <div class="form-group form-group-sm col-sm-5 col-md-5 col-lg-5" id="">
                                 <label for="data_compra" class="control-label">Data da Compra:</label>
-                                <input type="date" name="data_compra" id="data_compra" class="form-control input-sm" />
+                                <input type="date" name="data_compra" id="data_compra" class="form-control input-sm" disabled/>
                             </div>
                             <div class="form-group form-group-sm col-sm-7 col-md-7 col-lg-7" id="">
                                 <label for="descricao" class="control-label">Descrição:</label>
-                                <input type="text" name="descricao" id="descricao" class="form-control input-sm" />
+                                <input type="text" name="descricao" id="descricao" class="form-control input-sm" disabled/>
                             </div>
                         </div> 
                         <div class="row-fluid">
                             <div class="form-group form-group-sm col-sm-5 col-md-5 col-lg-5" id="">
                                 <label for="valor_compra" class="control-label">Valor da Compra:</label>
-                                <input type="text" name="valor_compra" id="valor_compra" class="form-control input-sm" />
+                                <input type="text" name="valor_compra" id="valor_compra" class="form-control input-sm" disabled/>
                             </div>
                             <div class="form-group form-group-sm col-sm-7 col-md-7 col-lg-7" id="">
                                 <label for="parcela" class="control-label">Parcela:</label>
-                                <select class="form-control input-sm" name="parcela" id="parcela" >
+                                <select class="form-control input-sm" name="parcela" id="parcela" disabled="disabled">
                                     <option></option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
@@ -58,10 +58,10 @@
                         <div class="row-fluid">
                             <div class="form-group form-group-sm col-sm-5 col-md-5 col-lg-5" id="">
                                 <button type="button" id="btn_nova_lanc_fatura" class="btn btn-primary">Novo</button>
-                                <button type="submit" id="btn_salvar_novo_lanc_fatura" class="btn btn-primary" >Salvar</button>
+                                <button type="submit" id="btn_salvar_novo_lanc_fatura" class="btn btn-primary" disabled>Salvar</button>
                                 <a class="btn btn-primary" href="/conta/acessar/<?php echo $idConta; ?>">Início</a>
                             </div>
-                            <div class="form-group form-group-sm retorno col-sm-6 col-md-6 col-md-6" id="retorno_cartao_credito_lancar_compra">
+                            <div class="form-group form-group-sm retorno col-sm-6 col-md-6 col-lg-6" id="retorno_lancar_compra_cartao_credito">
                             </div>
                         </div>
                     </div>

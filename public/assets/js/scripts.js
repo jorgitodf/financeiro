@@ -160,7 +160,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (retorno) {
                 if (retorno[0]['status'] == 'error') {
-                    $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_credito">' + retorno[0]['message'] + '</div>');
+                    $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_debito">' + retorno[0]['message'] + '</div>');
                 } else if (retorno[0]['status'] == 'success'){
                     $('.retorno').html('<div class="alert alert-success text-center msgSuccess" role="alert" id="msg_success_credito">' + retorno[0]['message'] + '</div>');
                     $("#btn_salvar_credito").attr('disabled', 'disabled');
@@ -207,8 +207,8 @@ $(document).ready(function () {
 				data: $(this).serialize(),
 				dataType: 'json',
 				success: function (retorno) {
-					if (retorno[0]['status'] == 'error'){
-						$('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_cartao_credito_cadastro">' + retorno[0]['message'] + '</div>');
+                    if (retorno[0]['status'] == 'error') {
+                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_debito">' + retorno[0]['message'] + '</div>');
 					} else if (retorno[0]['status'] == 'success'){
 						$('.retorno').html('<div class="alert alert-success text-center msgSuccess" role="alert" id="msg_success_cartao_credito_cadastro">' + retorno[0]['message'] + '</div>');
 						$("#btn_salvar_cartao_credito").attr('disabled', 'disabled');
@@ -231,7 +231,57 @@ $(document).ready(function () {
 
 
 		});
-	});
+    });
+    
+    //LANÇAR DÉBITO (COMPRA) CARTÃO DE CRÉDITO
+    $('#btn_nova_lanc_fatura').click(function () {
+        $("#btn_salvar_novo_lanc_fatura").removeAttr('disabled');
+        $("#btn_nova_lanc_fatura").attr('disabled', 'disabled');
+        $("#cartao").removeAttr('disabled');
+        $("#data_compra").removeAttr('disabled');
+        $("#descricao").removeAttr('disabled');
+        $("#valor_compra").removeAttr('disabled');
+        $("#parcela").removeAttr('disabled');
+        $('#msg_success_lancar_compra_cartao_credito').remove();
+        $("#cartao").val("");
+        $("#data_compra").val("");
+        $("#descricao").val("");
+        $("#valor_compra").val("");
+        $("#parcela").val("");
+    });
+    $(function () {
+        $("#form_deb_fatura_cartao_credito").submit(function (e) {
+            $(".msgError").html("");
+            $(".msgError").css("display", "none");
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("action"),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (retorno) {
+                    if (retorno[0]['status'] == 'error' ){
+                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_lancar_compra_cartao_credito">' + retorno[0]['message'] + '</div>');
+					} else if (retorno[0]['status'] == 'success'){
+						$('.retorno').html('<div class="alert alert-success text-center msgSuccess" role="alert" id="msg_success_lancar_compra_cartao_credito">' + retorno[0]['message'] + '</div>');
+                        $("#btn_salvar_novo_lanc_fatura").attr('disabled', 'disabled');
+                        $("#btn_nova_lanc_fatura").removeAttr('disabled');
+                        $("#cartao").attr('disabled', 'disabled');
+                        $("#data_compra").attr('disabled', 'disabled');
+                        $("#descricao").attr('disabled', 'disabled');
+                        $("#valor_compra").attr('disabled', 'disabled');
+                        $("#parcela").attr('disabled', 'disabled');
+                    }
+                    else {
+                        alert(retorno);
+                    }
+                },
+                fail: function(){
+                    alert('ERRO: Falha ao carregar o script.');
+                }
+            });
+        });
+    });
 
 });
 

@@ -70,10 +70,15 @@ class CartaoCredito extends CI_Controller
 			$parcela = $this->input->post('parcela');
 
 			$dados = ['data_compra'=>$data_compra, 'valor_parcela'=>$valor_compra, 'parcela'=>$parcela, 
-				'despesa'=>$despesa, 'id_cartao'=>$cartao];  
+			'despesa'=>$despesa, 'id_cartao'=>$cartao];  
 
-			echo $this->despesacartao_model->salvarDespesaCartaoCredito($dados)['message'];	
-
+			$return = $this->despesacartao_model->salvarDespesaCartaoCredito($dados);
+			if ($return['status'] == 'success') {
+				$json = array('status'=>'success', 'message'=>$return['message']);
+			}  else {
+				$json = array('status'=>'error', 'message'=>$return['message']);
+			}
+			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
 		} else {
 			$dados["title"] = "Page Not Found: 404";
 			$dados["message"] = "Erro 404: A página requisita não existe...";

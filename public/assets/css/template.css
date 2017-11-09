@@ -1,259 +1,268 @@
 @charset "utf-8";
 
-html, body {
-    margin: 0;
-    height: 100%;
-    background-color: #DCDCDC;
+@media (max-width: 1366px) {
 
-}
-.borda {
-    border: 1px solid black;
-}
-.color_fonte_white {
-    color: white !important;
-}
-.msgError {
-    color: red;
-    font-weight: bold;
-    padding: 9px;
-}
-.msgSuccess {
-    color: green;
-    font-weight: bold;
-    padding: 9px;
-}
+    html, body {
+        margin: 0;
+        height: 100%;
+        background-color: #DCDCDC;
 
-/* NAVBAR */
-#barra_nav {
-    background-color: #0000FF;
-}
+    }
+    .borda {
+        border: 1px solid black;
+    }
+    .color_fonte_white {
+        color: white !important;
+    }
+    .msgError {
+        color: red;
+        font-weight: bold;
+        padding: 9px;
+    }
+    .msgSuccess {
+        color: green;
+        font-weight: bold;
+        padding: 9px;
+    }
 
-
-/* PÁGINA HOME */
-.div_page_principal {
-    margin-top: 4%;
-}
+    /* NAVBAR */
+    #barra_nav {
+        background-color: #0000FF;
+    }
 
 
-/* PÁGINA LOGIN */
-#sec_login {
-    margin-top: 13%;
-    background-color: white;
-    height: 300px;
-}
+    /* PÁGINA HOME */
+    .div_page_principal {
+        margin-top: 4%;
+    }
 
 
-/* PÁGINA CADASTRO USUÁRIO */
-#sec_cadastro_usuario {
-    margin-top: 10%;
-    background-color: white;
-    height: 450px;
-}
+    /* PÁGINA LOGIN */
+    #sec_login {
+        margin-top: 13%;
+        background-color: white;
+        height: 300px;
+    }
 
 
-/* PÁGINA CADASTRO CONTA */
-#sec_cadastro_conta {
-    margin-top: 8%;
-    margin-left: 20%;
-}
-#panel_cadastro {
-    width: 100%;
-    border: solid 0 white;
-}
-#panel_heading_cadastro {
-    background-color: #6C7B8B;
-    color: white;
-}
-#panel_body_cadastro_conta {
-    height: 240px;
-}
-#msg_error_cad_conta {
-    font-size: 12px;
-}
-#msg_success_cad_conta {
-    font-size: 12px;
-}
-
-/* PÁGINA HOME */
-#sec_sem_conta {
-    margin-top: 6%;
-    background-color: white;
-}
-#sec_sem_conta > p {
-    font-size: 16px;
-}
-#sec_com_conta {
-    margin-top: 6%;
-    background-color: white;
-    padding: 5px 20px 25px 30px;
-}
-.tipo_conta_home, .ag_conta_home {
-    font-weight: bold;
-}
-.num_conta_home, .nome_banco_home {
-    font-weight: bold;
-    color: #0531fe;
-}
+    /* PÁGINA CADASTRO USUÁRIO */
+    #sec_cadastro_usuario {
+        margin-top: 10%;
+        background-color: white;
+        height: 450px;
+    }
 
 
-/* PÁGINA CONTA HOME */
-#sec_conta_home {
-    margin-top: 7%;
-}
-.btn_extrato {
-    height: 80px;
-    border-radius: 10px 0 0 10px;
-    width: 115px;
-}
-.btn_extrato_1 {
-    height: 80px;
-    border-radius: 0 10px 10px 0;
-}
-.href_btn_home {
-    color: white;
-}
-#btn_agendamento {
-    height: 80px;
-    border-radius: 10px 0 0 10px;
-    width: 115px;
-}
-#btn_agendamento_1 {
-    height: 80px;
-    border-radius: 0 10px 10px 0;
-}
+    /* PÁGINA CADASTRO CONTA */
+    #sec_cadastro_conta {
+        margin-top: 8%;
+        margin-left: 20%;
+    }
+    #panel_cadastro {
+        width: 100%;
+        border: solid 0 white;
+    }
+    #panel_heading_cadastro {
+        background-color: #6C7B8B;
+        color: white;
+    }
+    #panel_body_cadastro_conta {
+        height: 240px;
+    }
+    #msg_error_cad_conta {
+        font-size: 12px;
+    }
+    #msg_success_cad_conta {
+        font-size: 12px;
+    }
+
+    /* PÁGINA HOME */
+    #sec_sem_conta {
+        margin-top: 6%;
+        background-color: white;
+    }
+    #sec_sem_conta > p {
+        font-size: 16px;
+    }
+    #sec_com_conta {
+        margin-top: 6%;
+        background-color: white;
+        padding: 5px 20px 25px 30px;
+    }
+    .tipo_conta_home, .ag_conta_home {
+        font-weight: bold;
+    }
+    .num_conta_home, .nome_banco_home {
+        font-weight: bold;
+        color: #0531fe;
+    }
 
 
-/* PÁGINA EXTRATO */
-#sec_extrato {
-    margin-top: 8%;
-    padding: 19px 15px 0px 15px;
-    background-color: white;
-}
-#sec_com_extrato {
-    margin-top: 6%;
-    padding: 19px 15px 0px 15px;
-    background-color: white;
-}
-#div_sem_extrato {
-    padding: 5px 15px 13px 19px;
-}
-#btn_sair_sem_extrato {
-    margin-left: 40%;
-    width: 100px;
-}
-#table_extrato_atual > tbody > tr > td {
-    padding: 3px;
-}
-#panel_body_extrato {
-    padding: 5px 15px 15px 15px;
-}
-.td_extrato_deb_saldo {
-    color: #837d7c;
-    font-weight: bold;
-}
-.td_extrato_cre {
-    color: #0902fd;
-    font-weight: bold;
-}
-.td_extrato_deb_data {
-    color: #837d7c;
-    font-weight: bold;
-    text-align: center;
-}
-.td_extrato_deb_fixa {
-    color: red;
-}
-.data_mov_cab, .valor_mov_cab, .saldo_mov_cab {
-    text-align: center;
-}
-#btn_sair_extrato {
-    float: right;
-}
+    /* PÁGINA CONTA HOME */
+    #sec_conta_home {
+        margin-top: 7%;
+    }
+    .btn_extrato {
+        height: 80px;
+        border-radius: 10px 0 0 10px;
+        width: 115px;
+    }
+    .btn_extrato_1 {
+        height: 80px;
+        border-radius: 0 10px 10px 0;
+    }
+    .href_btn_home {
+        color: white;
+    }
+    #btn_agendamento {
+        height: 80px;
+        border-radius: 10px 0 0 10px;
+        width: 115px;
+    }
+    #btn_agendamento_1 {
+        height: 80px;
+        border-radius: 0 10px 10px 0;
+    }
 
 
-/* PÁGINA DEBITAR */
-#sec_debito {
-    margin-top: 7%;
-    background-color: white;
-    padding: 19px 15px 0 15px;
-}
-#div_panel_form_debitar {
-
-}
-#msg_error_debito {
-    font-size: 12px;
-    padding: 7px;
-}
-#msg_success_debito {
-    font-size: 12px;
-}
-#retorno_debito {
-    padding: 0 !important;
-    height: 35px;
-}
-
-
-/* PÁGINA CREDITAR */
-#sec_credito {
-    margin-top: 8%;
-    background-color: white;
-    padding: 19px 15px 0 15px;
-}
-#msg_error_credito {
-    font-size: 12px;
-    padding: 7px;
-}
-#msg_success_credito {
-    font-size: 12px;
-}
-#retorno_credito {
-    padding: 0 !important;
-    height: 35px;
-}
-
-/* PÁGINA CARTÃO DE CRÉDITO CADASTRAR */
-#sec_cartao_cadastrar {
-	margin-top: 8%;
-	background-color: white;
-	padding: 19px 15px 0 15px;
-}
-#msg_error_cartao_credito_cadastro {
-	font-size: 12px;
-	padding: 7px;
-}
-#msg_success_cartao_credito_cadastro {
-	font-size: 12px;
-}
-#retorno_cartao_credito_cadastro {
-	padding: 0 !important;
-	height: 35px;
-}
+    /* PÁGINA EXTRATO */
+    #sec_extrato {
+        margin-top: 8%;
+        padding: 19px 15px 0px 15px;
+        background-color: white;
+    }
+    #sec_com_extrato {
+        margin-top: 6%;
+        padding: 19px 15px 0px 15px;
+        background-color: white;
+    }
+    #div_sem_extrato {
+        padding: 5px 15px 13px 19px;
+    }
+    #btn_sair_sem_extrato {
+        margin-left: 40%;
+        width: 100px;
+    }
+    #table_extrato_atual > tbody > tr > td {
+        padding: 3px;
+    }
+    #panel_body_extrato {
+        padding: 5px 15px 15px 15px;
+    }
+    .td_extrato_deb_saldo {
+        color: #837d7c;
+        font-weight: bold;
+    }
+    .td_extrato_cre {
+        color: #0902fd;
+        font-weight: bold;
+    }
+    .td_extrato_deb_data {
+        color: #837d7c;
+        font-weight: bold;
+        text-align: center;
+    }
+    .td_extrato_deb_fixa {
+        color: red;
+    }
+    .data_mov_cab, .valor_mov_cab, .saldo_mov_cab {
+        text-align: center;
+    }
+    #btn_sair_extrato {
+        float: right;
+    }
 
 
-/* PÁGINA LANÇAR COMPRA CARTÃO DE CRÉDITO */
-#sec_cartao_lancar_compra {
-	margin-top: 7%;
-	background-color: white;
-	padding: 19px 15px 0 15px;
-}
-#msg_error_cartao_credito_cadastro {
-	font-size: 12px;
-	padding: 7px;
-}
-#msg_success_cartao_credito_cadastro {
-	font-size: 12px;
-}
-#retorno_cartao_credito_cadastro {
-	padding: 0 !important;
-	height: 35px;
-}
+    /* PÁGINA DEBITAR */
+    #sec_debito {
+        margin-top: 7%;
+        background-color: white;
+        padding: 19px 15px 0 15px;
+    }
+    #div_panel_form_debitar {
+
+    }
+    #msg_error_debito {
+        font-size: 12px;
+        padding: 7px;
+    }
+    #msg_success_debito {
+        font-size: 12px;
+    }
+    #retorno_debito {
+        padding: 0 !important;
+        height: 35px;
+    }
+
+
+    /* PÁGINA CREDITAR */
+    #sec_credito {
+        margin-top: 8%;
+        background-color: white;
+        padding: 19px 15px 0 15px;
+    }
+    #msg_error_credito {
+        font-size: 12px;
+        padding: 7px;
+    }
+    #msg_success_credito {
+        font-size: 12px;
+    }
+    #retorno_credito {
+        padding: 0 !important;
+        height: 35px;
+    }
+
+    /* PÁGINA CARTÃO DE CRÉDITO CADASTRAR */
+    #sec_cartao_cadastrar {
+        margin-top: 8%;
+        background-color: white;
+        padding: 19px 15px 0 15px;
+    }
+    #msg_error_cartao_credito_cadastro {
+        font-size: 12px;
+        padding: 7px;
+    }
+    #msg_success_cartao_credito_cadastro {
+        font-size: 12px;
+    }
+    #retorno_cartao_credito_cadastro {
+        padding: 0 !important;
+        height: 35px;
+    }
+
+
+    /* PÁGINA LANÇAR COMPRA CARTÃO DE CRÉDITO */
+    #sec_cartao_lancar_compra {
+        margin-top: 7%;
+        background-color: white;
+        padding: 19px 15px 0 15px;
+    }
+    #msg_error_lancar_compra_cartao_credito {
+        font-size: 12px;
+        padding: 7px;
+    }
+    #msg_success_lancar_compra_cartao_credito {
+        font-size: 12px;
+    }
+    #retorno_lancar_compra_cartao_credito {
+        padding: 0 !important;
+        height: 35px;
+        margin-left: 2.5%;
+    }
 
 
 
 
-/* PÁGINA ERROR 404 */
-#sec_erro_404 {
-    margin-top: 6%;
-    background-color: white;
-    padding: 5px 20px 15px 30px;
+    /* PÁGINA ERROR 404 */
+    #sec_erro_404 {
+        margin-top: 6%;
+        background-color: white;
+        padding: 5px 20px 15px 30px;
+    }
+
 }
+
+@media (min-width: 1440px) {
+
+}    

@@ -29,16 +29,16 @@ class Conta_model extends CI_Model
 
     public function verificaConta(int $id):array
     {
-        try {
-            $sql = "SELECT c.id_conta AS id_conta, c.codigo_agencia AS cod_agencia, b.nome_banco AS nome_banco,
-                c.digito_verificador_agencia AS dig_ver_agencia, tc.tipo_conta AS tipo_conta, c.numero_conta AS numero_conta,
-                c.digito_verificador_conta AS dig_ver_conta, c.codigo_operacao AS cod_operacao, DATE_FORMAT(c.data_cadastro, '%d/%m/%Y') AS data_cadastro
-                FROM $this->table AS c LEFT JOIN {$this->banco_model->getTable()} AS b ON (c.fk_cod_banco = b.cod_banco)
-                LEFT JOIN {$this->tipoconta_model->getTable()} AS tc ON (c.fk_tipo_conta = tc.id_tipo_conta) WHERE c.fk_id_usuario = ? ORDER BY c.id_conta DESC";
-            return $this->db->query($sql, [$id])->result_array();
-        } catch (Exception $e) {
-            return array('status'=>'error', 'message' => $e->getMessage());
-        }
+            try {
+                $sql = "SELECT c.id_conta AS id_conta, c.codigo_agencia AS cod_agencia, b.nome_banco AS nome_banco,
+                    c.digito_verificador_agencia AS dig_ver_agencia, tc.tipo_conta AS tipo_conta, c.numero_conta AS numero_conta,
+                    c.digito_verificador_conta AS dig_ver_conta, c.codigo_operacao AS cod_operacao, DATE_FORMAT(c.data_cadastro, '%d/%m/%Y') AS data_cadastro
+                    FROM $this->table AS c LEFT JOIN {$this->banco_model->getTable()} AS b ON (c.fk_cod_banco = b.cod_banco)
+                    LEFT JOIN {$this->tipoconta_model->getTable()} AS tc ON (c.fk_tipo_conta = tc.id_tipo_conta) WHERE c.fk_id_usuario = ? ORDER BY c.id_conta DESC";
+                return $this->db->query($sql, [$id])->result_array();
+            } catch (Exception $e) {
+                return array('status'=>'error', 'message' => $e->getMessage());
+            }
     }
 
     public function createConta(array $dados)
