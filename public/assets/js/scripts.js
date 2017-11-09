@@ -232,6 +232,7 @@ $(document).ready(function () {
 
 		});
     });
+
     
     //LANÇAR DÉBITO (COMPRA) CARTÃO DE CRÉDITO
     $('#btn_nova_lanc_fatura').click(function () {
@@ -271,6 +272,54 @@ $(document).ready(function () {
                         $("#descricao").attr('disabled', 'disabled');
                         $("#valor_compra").attr('disabled', 'disabled');
                         $("#parcela").attr('disabled', 'disabled');
+                    }
+                    else {
+                        alert(retorno);
+                    }
+                },
+                fail: function(){
+                    alert('ERRO: Falha ao carregar o script.');
+                }
+            });
+        });
+    });
+
+
+    //AGENDAMENTO DE PAGAMENTOS
+    $('#btn_novo_agendamento').click(function () {
+        $("#btn_salvar_agendamento").removeAttr('disabled');
+        $("#btn_novo_agendamento").attr('disabled', 'disabled');
+        $("#data_pgto").removeAttr('disabled');
+        $("#movimentacao").removeAttr('disabled');
+        $("#nome_categoria").removeAttr('disabled');
+        $("#valor").removeAttr('disabled');
+        $('#msg_success_agendar_pagamento').remove();
+        $("#data_pgto").val("");
+        $("#movimentacao").val("");
+        $("#nome_categoria").val("");
+        $("#valor").val("");
+    });
+    $(function () {
+        $("#form_cad_agendamento_debito").submit(function (e) {
+            $(".msgError").html("");
+            $(".msgError").css("display", "none");
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("action"),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (retorno) {
+                    if (retorno[0]['status'] == 'error' ){
+                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_agendar_pagamento">' + retorno[0]['message'] + '</div>');
+					} else if (retorno[0]['status'] == 'success'){
+						$('.retorno').html('<div class="alert alert-success text-center msgSuccess" role="alert" id="msg_success_agendar_pagamento">' + retorno[0]['message'] + '</div>');
+                        $("#btn_salvar_agendamento").attr('disabled', 'disabled');
+                        $("#btn_novo_agendamento").removeAttr('disabled');
+                        $("#data_pgto").attr('disabled', 'disabled');
+                        $("#movimentacao").attr('disabled', 'disabled');
+                        $("#nome_categoria").attr('disabled', 'disabled');
+                        $("#valor").attr('disabled', 'disabled');
                     }
                     else {
                         alert(retorno);

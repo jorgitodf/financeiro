@@ -39,7 +39,7 @@
 
     /* PÁGINA LOGIN */
     #sec_login {
-        margin-top: 13%;
+        margin-top: 9%;
         background-color: white;
         height: 300px;
     }
@@ -47,7 +47,7 @@
 
     /* PÁGINA CADASTRO USUÁRIO */
     #sec_cadastro_usuario {
-        margin-top: 10%;
+        margin-top: 7%;
         background-color: white;
         height: 450px;
     }
@@ -190,6 +190,26 @@
         font-size: 12px;
     }
     #retorno_debito {
+        padding: 0 !important;
+        height: 35px;
+    }
+
+
+    /* PÁGINA AGENDAR PAGAMENTO */
+    #sec_agendar_pagamento {
+        margin-top: 7%;
+        background-color: white;
+        padding: 19px 15px 0 15px;
+    }
+    #msg_error_agendar_pagamento {
+        font-size: 12px;
+        padding: 7px;
+        width: 335px;
+    }
+    #msg_success_agendar_pagamento {
+        font-size: 12px;
+    }
+    #retorno_agendamento_pgto {
         padding: 0 !important;
         height: 35px;
     }

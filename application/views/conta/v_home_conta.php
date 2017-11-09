@@ -40,6 +40,17 @@
                         <li><a href="#">Consultar Fatura</a></li>
                     </ul>
                 </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-success" id="btn_agendamento"><a class="href_btn_home" href="/conta/acessar/<?php echo !empty($idConta) ? $idConta : "" ?>">Agendamentos</a></button>
+                    <button type="button" class="btn btn-success dropdown-toggle" id="btn_agendamento_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="/agendamento/agendar/<?php echo !empty($idConta) ? $idConta : "" ?>">Agendar Pagamento</a></li>
+                        <li><a href="/agendamento/listar/<?php echo !empty($idConta) ? $idConta : "" ?>">Listagem Pagamentos</a></li>
+                    </ul>
+                </div>
             </div>
         </section>
     </div>
