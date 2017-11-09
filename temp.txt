@@ -1,0 +1,111 @@
+composer
+composer create-project bcit-ci/codeigniter nome_projeto --prefer-dist
+na pasta config/ config.php linha 139 = FCPATH.'vendor/autoload.php';
+criar pasta public na raiz da pasta do projeto
+copiar o index.php da raiz para a pasta public
+chdir(dirname(__DIR__));
+php -S localhost:8000 -t public
+
+remover o index.php da url - url amigável
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+
+alterar a base_url na pasta config/ config.php linha 26
+
+template view
+no controller
+$dados["view"] = "v_nome_da_view";
+$this->load->view("v_template", $dados);
+
+na view
+<?php $this->load->view($view); ?>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Conta</title>
+    <link rel="stylesheet" href="/assets/css/template.css" />
+
+    <link rel="stylesheet" href="/assets/fonts/glyphicons-halflings-regular.ttf" media="all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+
+    <script src="/assets/js/jquery-3.1.0.min.js"></script>
+    <script src="/assets/js/jquery.maskMoney.js"></script>
+    <script src="/assets/js/scripts.js"></script>
+    <script src="/assets/js/jquery.maskedinput.js"></script>
+
+
+
+    $this->load->library('form_validation');
+
+    $this->form_validation->set_rules('email', 'Email', 'required');
+    $this->form_validation->set_rules('password', 'Senha', 'required');
+
+    if ($this->form_validation->run() === FALSE) {
+        $dados["title"] = "Login";
+        $dados["view"] = "auth/v_login";
+        $this->load->view("v_template", $dados);
+    } else {
+        $user = $this->users_model->getByEmailAndPassword();
+        if ($user) {
+            $this->session->set_userdata(['user'=>$user]);
+            redirect('pages', 'location', 302);
+            die();
+        }
+        echo 'Usuário ou senha não encontrado';
+    }
+
+
+
+    <script>
+    $('#buscar').click(function () {
+        if ($('#texto').val() == '') {
+            return;
+        }
+
+        $.ajax({
+            url: '/clientes/search/' + $('#texto').val(),
+            type: 'GET',
+            success: function (data) {
+                $('#table_ajax').empty();
+                $('#table_ajax').html(data);
+            }
+        });
+    });
+    </script>
+
+
+    //$usuarios = $query->result_array();
+    //$usuarios = $query->result(); $usuarios[0]->nome
+
+    // if (/* inserir o metodo para salvar no banco passando as variáveis */)) {
+    //     $json = array('status'=>'success', 'message'=>'Usuário Cadastrado com Sucesso!');
+    // } else {
+    //     $json = array('status'=>'error', 'message'=>'Falha ao cadastrar o Usuário.', 'error'=>'erroCadModel');
+    // }
+
+
+
+        try {
+            if ($this->usuario_model->getEmail($email) == true) {
+                $json = array('status'=>'error', 'message'=>'Esse E-mail já existe cadastrado!');
+            } else {
+                $sql = 'insert into tb_usuario (nome, email, senha, data_cadastro) values (?,?,?,?)';
+                $this->db->query($sql, [$nome, $email, cryptySenha($password), date('Y-m-d H:m:s')]);
+                $json = array('status'=>'success', 'message' => 'Cadastrado');
+            }
+
+            //$usuarios = $query->result_array();
+            //$usuarios = $query->result(); $usuarios[0]->nome
+
+            // if (/* inserir o metodo para salvar no banco passando as variáveis */)) {
+            //     $json = array('status'=>'success', 'message'=>'Usuário Cadastrado com Sucesso!');
+            // } else {
+            //     $json = array('status'=>'error', 'message'=>'Falha ao cadastrar o Usuário.', 'error'=>'erroCadModel');
+            // }
+        } catch (Exception $e) {
+            $json = array('status'=>'error', 'message' => $e->getMessage());
+        }

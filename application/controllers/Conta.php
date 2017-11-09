@@ -1,0 +1,190 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Conta extends CI_Controller
+{
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('banco_model');
+		$this->load->model('tipoconta_model');
+		$this->load->model('conta_model');
+		$this->load->model('categoria_model');
+		$this->load->model('extrato_model');
+		date_default_timezone_set('America/Sao_Paulo');
+	}
+
+	public function index()
+	{
+		$dados["title"] = "Cadastro de Conta";
+		$dados["view"] = "conta/v_index";
+		$dados["bancos"] = $this->banco_model->getBancos();
+		$dados["tipoConta"] = $this->tipoconta_model->getTiposContas();
+		$this->load->view("v_template", $dados);
+	}
+
+	public function cadastrar()
+	{
+		if ($this->input->post()) {
+			$nome_banco = $this->input->post('nome_banco');
+			$cod_agencia = $this->input->post('cod_agencia');
+			$dig_agencia = $this->input->post('dig_agencia');
+			$num_conta = $this->input->post('num_conta');
+			$dig_conta = $this->input->post('dig_conta');
+			$cod_operacao = $this->input->post('cod_operacao');
+			$tipo_conta = $this->input->post('tipo_conta');
+
+			if (empty($nome_banco)) {
+				$json = array('status'=>'error', 'message'=>'Selecione o Banco');
+			} elseif (empty($cod_agencia)) {
+				$json = array('status'=>'error', 'message'=>'Informe o Código da Agência');
+			} elseif (empty($num_conta)) {
+				$json = array('status'=>'error', 'message'=>'Informe o Número da Conta');
+			} elseif (empty($dig_conta)) {
+				$json = array('status'=>'error', 'message'=>'Informe o Dígito da Conta');
+			} elseif (empty($tipo_conta)) {
+				$json = array('status'=>'error', 'message'=>'Informe o Tipo de Conta');
+			} else {
+				$dados = ['codigo_agencia'=>$cod_agencia, 'digito_verificador_agencia'=>$dig_agencia, 'numero_conta'=>$num_conta,
+					'digito_verificador_conta'=>$dig_conta, 'codigo_operacao'=>$cod_operacao, 'data_cadastro'=>date('Y-m-d H:m:s'),
+					'fk_id_usuario'=>$this->session->userdata('id'), 'fk_cod_banco'=>$nome_banco, 'fk_tipo_conta'=>$tipo_conta];
+				$return = $this->conta_model->createConta($dados);
+				if ($return['status'] == 'success') {
+					$json = array('status'=>'success', 'message'=>$return['message']);
+				}  else {
+					$json = array('status'=>'error', 'message'=>$return['message']);
+				}
+			}
+			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
+		}
+	}
+
+	public function acessar($id)
+	{
+		if (is_numeric($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+			$dados["title"] = "Página Principal";
+			$dados["view"] = "conta/v_home_conta";
+			$dados["idConta"] = $id;
+			$this->load->view("v_template", $dados);
+		} else {
+			$dados["title"] = "Page Not Found: 404";
+			$dados["message"] = "Erro 404: A página requisita não existe...";
+			$dados["view"] = "errors/error_404";
+			$this->load->view("v_template", $dados);
+		}
+	}
+
+	public function extrato($id)
+	{
+		if (is_numeric($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+			if ($this->extrato_model->getExtratoAtual($id) == false) {
+				$dados['message'] = "Ainda não existe movimentação neste mês!";
+			} else {
+				$dados['extrato'] = $this->extrato_model->getExtratoAtual($id);
+				foreach ($dados['extrato'] as $item) {
+					$data_final = $item['data_movimentacao'];
+				}
+				$dataAtual = date("m");
+				$data_inicial = "2016-{$dataAtual}-01";
+				$dados['data_inicial'] = $data_inicial;
+				$dados['data_final'] = $data_final;
+			}
+			$dados["title"] = "Extrato";
+			$dados["idConta"] = $id;
+			$dados["view"] = "extrato/v_extrato";
+			$this->load->view("v_template", $dados);
+		} else {
+			$dados["title"] = "Page Not Found: 404";
+			$dados["message"] = "Erro 404: A página requisita não existe...";
+			$dados["view"] = "errors/error_404";
+			$this->load->view("v_template", $dados);
+		}
+	}
+
+	public function debitar($id = null)
+	{
+		if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+			$dados["title"] = "Débito";
+			$dados["idConta"] = $id;
+			$dados['categorias'] = $this->categoria_model->getCategoriasDespesas();
+			$dados["view"] = "conta/v_debito";
+			$this->load->view("v_template", $dados);
+		} else if ($this->input->post()) {
+			$idConta = $this->input->post('idConta');
+			$dtDebito = $this->input->post('data_debito');
+			$movimentacao = $this->input->post('movimentacao');
+			$nome_categoria = $this->input->post('nome_categoria');
+			$valor = $this->input->post('valor');
+			$newValor = str_replace('R$ ', '', str_replace(',', '.', str_replace('.', '', $valor)));
+
+			if (empty($dtDebito)) {
+				$json = array('status'=>'error', 'message'=>'Preencha a Data do Débito!');
+			} elseif (empty($movimentacao)) {
+				$json = array('status'=>'error', 'message'=>'Preencha a Movimentação!');
+			} elseif (empty($nome_categoria)) {
+				$json = array('status'=>'error', 'message'=>'Preencha a Categoria!');
+			} elseif (empty($valor)) {
+				$json = array('status'=>'error', 'message'=>'Preencha o Valor!');
+			} else {
+				$dados = ['data_movimentacao'=>$dtDebito, 'movimentacao'=>$movimentacao, 'fk_id_categoria'=>$nome_categoria, 'valor'=>$newValor,
+					'idConta'=>$idConta];
+				$return = $this->conta_model->debitarValor($dados);
+				if ($return['status'] == 'success') {
+					$json = array('status'=>'success', 'message'=>$return['message']);
+				}  else {
+					$json = array('status'=>'error', 'message'=>$return['message']);
+				}
+			}
+			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
+		} else {
+			$dados["title"] = "Page Not Found: 404";
+			$dados["message"] = "Erro 404: A página requisita não existe...";
+			$dados["view"] = "errors/error_404";
+			$this->load->view("v_template", $dados);
+		}
+	}
+
+	public function creditar($id = null)
+	{
+		if (is_numeric($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+			$dados["title"] = "Crédito";
+			$dados["idConta"] = $id;
+			$dados['categorias'] = $this->categoria_model->getCategoriasReceitas();
+			$dados["view"] = "conta/v_credito";
+			$this->load->view("v_template", $dados);
+		} else if ($this->input->post()) {
+			$idConta = $this->input->post('idConta');
+			$dtCredito = $this->input->post('data_credito');
+			$movimentacao = $this->input->post('movimentacao');
+			$nome_categoria = $this->input->post('nome_categoria');
+			$valor = $this->input->post('valor');
+			$newValor = str_replace('R$ ', '', str_replace(',', '.', str_replace('.', '', $valor)));
+
+			if (empty($dtCredito)) {
+				$json = array('status'=>'error', 'message'=>'Preencha a Data do Crédito!');
+			} elseif (empty($movimentacao)) {
+				$json = array('status'=>'error', 'message'=>'Preencha a Movimentação!');
+			} elseif (empty($nome_categoria)) {
+				$json = array('status'=>'error', 'message'=>'Preencha a Categoria!');
+			} elseif (empty($valor)) {
+				$json = array('status'=>'error', 'message'=>'Preencha o Valor!');
+			} else {
+				$dados = ['data_movimentacao'=>$dtCredito, 'movimentacao'=>$movimentacao, 'fk_id_categoria'=>$nome_categoria, 'valor'=>$newValor,
+					'idConta'=>$idConta];
+				$return = $this->conta_model->creditarValor($dados);
+				if ($return['status'] == 'success') {
+					$json = array('status'=>'success', 'message'=>$return['message']);
+				}  else {
+					$json = array('status'=>'error', 'message'=>$return['message']);
+				}
+			}
+			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
+
+		} else {
+			$dados["title"] = "Page Not Found: 404";
+			$dados["message"] = "Erro 404: A página requisita não existe...";
+			$dados["view"] = "errors/error_404";
+			$this->load->view("v_template", $dados);
+		}
+	}
+}
