@@ -6,6 +6,7 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="<?php echo base_url('assets/css/bootstrap.min.css') ?>" media="all" />
         <link rel="stylesheet" href="<?php echo base_url('assets/css/template.css') ?>" media="all" />
+        <link rel="stylesheet" href="<?php echo base_url('assets/fonts/glyphicons-halflings-regular.ttf') ?>" media="all" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>

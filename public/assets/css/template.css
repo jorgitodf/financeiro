@@ -215,6 +215,67 @@
     }
 
 
+    /* PÁGINA LISTAR PAGAMENTO AGENDADO*/
+    #sec_listar_pagamento_agendado {
+        margin-top: 4%;
+        background-color: white;
+        padding: 3px 5px 0 5px;
+        height: 575px;
+    }
+    #panel_head_agendamento_pagamento {
+        background-color: #6767fe;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+    }
+    .centralizar_td {
+        text-align: center;
+    }
+    #tabela_index_agendamento_pagamento > thead > tr > th {
+        text-align: center;
+        background-color: darkkhaki;
+    }
+    #tabela_index_agendamento_pagamento > tbody > tr > td {
+        padding: 3px;
+        font-size: 13px;
+    }
+    #div_nav_pagination {
+        margin-top: -3%;
+        margin-left: 40%;
+    }
+    .cor_verde {
+        color: lime;
+    }
+    .cor_vermelho {
+        color: red;
+    }
+    .disabled {
+        pointer-events: none;
+        cursor: default;
+        opacity: 0.6;
+    }
+    .pag_item {
+        width:20px;
+        height:20px;
+        float:left;
+        border:1px solid #000;
+        margin-right: 3px;
+        text-align: center;
+        line-height: 20px;
+    }
+    .pag_item a {
+        color:#000;
+        text-decoration: none;
+    }
+    .pag_ativo {
+        background-color:#224074;
+    }
+    .pag_ativo a {
+        color:#FFF;
+    }
+
+    
+
     /* PÁGINA CREDITAR */
     #sec_credito {
         margin-top: 8%;

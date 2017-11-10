@@ -17,9 +17,27 @@ class Agendamento extends CI_Controller
 	public function listar()
 	{
 		$dados["title"] = "Listagem de Pagamentos Agendados";
+		$dados['pgtos_count']  = $this->agendamento_model->getCount();
+		$dados['p_count'] = ceil($dados['pgtos_count'] / 15);
+		$offset = 0;
+		$data['p'] = 1;
+		
+		if ($this->input->get()) {
+            $p = $this->input->get('p');
+            if (!empty($p) && $p !== false && $p <= $dados['p_count'] || $p == 0) {
+                $data['p'] = $p;
+                if($data['p'] == 0) {
+                    $data['p'] = 1;
+                } 
+            } else {
+                $this->loadTemplate('naoexisteView');
+                die();
+            }
+		}
+		
+        $offset = (15 * ($data['p'] - 1));
+        $dados['pgto_agendados'] = $this->agendamento_model->getAllPgamentosAgendados($offset);
 		$dados["view"] = "agendamento/v_listagem_agendamentos";
-		//$dados["bancos"] = $this->banco_model->getBancos();
-		//$dados["tipoConta"] = $this->tipoconta_model->getTiposContas();
 		$this->load->view("v_template", $dados);
     }
     
