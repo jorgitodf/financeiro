@@ -13,6 +13,7 @@ class Conta_model extends CI_Model
         $this->load->model('tipoconta_model');
         $this->load->model('extrato_model');
         $this->load->model('categoria_model');
+        $this->load->model('agendamento_model');
         $this->load->helper("funcoes");
         date_default_timezone_set('America/Sao_Paulo');
     }
@@ -29,16 +30,29 @@ class Conta_model extends CI_Model
 
     public function verificaConta(int $id):array
     {
-            try {
-                $sql = "SELECT c.id_conta AS id_conta, c.codigo_agencia AS cod_agencia, b.nome_banco AS nome_banco,
-                    c.digito_verificador_agencia AS dig_ver_agencia, tc.tipo_conta AS tipo_conta, c.numero_conta AS numero_conta,
-                    c.digito_verificador_conta AS dig_ver_conta, c.codigo_operacao AS cod_operacao, DATE_FORMAT(c.data_cadastro, '%d/%m/%Y') AS data_cadastro
-                    FROM $this->table AS c LEFT JOIN {$this->banco_model->getTable()} AS b ON (c.fk_cod_banco = b.cod_banco)
-                    LEFT JOIN {$this->tipoconta_model->getTable()} AS tc ON (c.fk_tipo_conta = tc.id_tipo_conta) WHERE c.fk_id_usuario = ? ORDER BY c.id_conta DESC";
-                return $this->db->query($sql, [$id])->result_array();
-            } catch (Exception $e) {
-                return array('status'=>'error', 'message' => $e->getMessage());
-            }
+        try {
+            $sql = "SELECT c.id_conta AS id_conta, c.codigo_agencia AS cod_agencia, b.nome_banco AS nome_banco,
+                c.digito_verificador_agencia AS dig_ver_agencia, tc.tipo_conta AS tipo_conta, c.numero_conta AS numero_conta,
+                c.digito_verificador_conta AS dig_ver_conta, c.codigo_operacao AS cod_operacao, DATE_FORMAT(c.data_cadastro, '%d/%m/%Y') AS data_cadastro
+                FROM $this->table AS c LEFT JOIN {$this->banco_model->getTable()} AS b ON (c.fk_cod_banco = b.cod_banco)
+                LEFT JOIN {$this->tipoconta_model->getTable()} AS tc ON (c.fk_tipo_conta = tc.id_tipo_conta) WHERE c.fk_id_usuario = ? ORDER BY c.id_conta DESC";
+            return $this->db->query($sql, [$id])->result_array();
+        } catch (Exception $e) {
+            return array('status'=>'error', 'message' => $e->getMessage());
+        }
+    }
+
+    public function getAtualSaldo(int $idUsuario, int $idConta)
+    {
+        try {
+            $sql = "SELECT e.saldo AS saldo, c.numero_conta AS numero_conta, b.nome_banco AS nome_banco 
+            FROM {$this->extrato_model->getTable()} e JOIN $this->table c ON (c.id_conta = e.fk_id_conta)
+            JOIN {$this->banco_model->getTable()} b ON (b.cod_banco = c.fk_cod_banco)
+            WHERE c.fk_id_usuario = ? AND e.fk_id_conta = ? ORDER BY e.id_extrato DESC LIMIT 1";
+            return $this->db->query($sql, [$idUsuario, $idConta])->row();
+        } catch (Exception $e) {
+            return array('status'=>'error', 'message' => $e->getMessage());
+        }
     }
 
     public function createConta(array $dados)
@@ -133,6 +147,40 @@ class Conta_model extends CI_Model
             }
         } else {
             return array('status'=>'error', 'message' => 'ERRO: Possui dados vazios.');
+        }
+    }
+
+
+    public function verificaPagamentoAgendado($idConta) {
+        $dados = array();
+        $dataPagamento = date("Y-m-d");
+        $sql = "SELECT * FROM {$this->agendamento_model->getTable()} WHERE data_pagamento = ?  AND pago = 'Não' ORDER BY data_pagamento";
+        $dados = $this->db->query($sql, [$dataPagamento])->result_array();
+        if (!empty($dados)) {
+            foreach ($dados as $value) {
+                $saldo = $this->getSaldoAtual($idConta);
+                if ($saldo[0]['saldo'] < $value['valor']) {
+                    return array('status'=>'error', 'message' => 'Saldo Insuficiente para realizar o Pagamento!');
+                } elseif ($saldo[0]['saldo'] >= $value['valor'] && $value['pago'] == 'Não') {
+                    $novoSaldo = $saldo[0]['saldo'] - $value['valor'];
+                    $mes = verificaMes();
+                    
+                    $sql1 = "INSERT INTO {$this->extrato_model->getTable()} (data_movimentacao, mes, tipo_operacao, 
+                        movimentacao, quantidade, valor, saldo, fk_id_categoria, fk_id_conta, despesa_fixa) VALUES 
+                        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                    $this->db->query($sql1, [$value['data_pagamento'], $mes, 'Débito', $value['movimentacao'], 1, 
+                    $value['valor'], $novoSaldo, $value['fk_id_categoria'], $value['fk_id_conta'], 'S']);
+
+                    $sql2 = "UPDATE {$this->agendamento_model->getTable()} SET pago = 'Sim' WHERE id_pgto_agendado = ?";
+                    $this->db->query($sql2, [$value['id_pgto_agendado']]);
+                } else {
+                    return array('status'=>'error', 'message' => 'Não há nenhum pagamento agendado para hoje!');
+                }
+            }
+            return array('status'=>'success', 'message' => 'Pagamento(s) realizado(s) com Sucesso!!');
+        } else {
+            return array('status'=>'error', 'message' => 'Não há nenhum pagamento agendado para hoje!');
         }
     }
 

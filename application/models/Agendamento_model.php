@@ -61,6 +61,47 @@ class Agendamento_model extends CI_Model
 			JOIN {$this->categoria_model->getTable()} as cat ON (pgto.fk_id_categoria = 
             cat.id_categoria) ORDER BY pgto.data_pagamento ASC LIMIT $offset, 15";
         return $this->db->query($sql, [$offset])->result_array();
+	}
+	
+	public function getPagamentoAgendado($id) {
+		$sql = "SELECT * FROM $this->table WHERE id_pgto_agendado = ?";
+		return $this->db->query($sql, [$id])->result_array();
+	}
+	
+	public function alterarPgtoAgendado($dados) {
+		if (empty($dados['dt_pgto'])) {
+			return array('status' => 'error', 'message' => 'Informe e Data do Pagamento!');
+		} elseif (empty($dados['mov_pgto'])) {
+			return array('status'=>'error', 'message'=>'Informe a Movimentação!');
+		} elseif (empty($dados['valor_pgto'])) {
+			return array('status'=>'error', 'message'=>'Informe o Valor da Movimentação!');
+		} elseif (empty($dados['categoria_pgto'])) {
+			return array('status'=>'error', 'message'=>'Informe a Categoria!');
+		} else {
+			$sql = "UPDATE $this->table SET data_pagamento = ?, movimentacao = ?, valor = ?, pago = ?, fk_id_categoria = ?, 
+			fk_id_conta = ? WHERE id_pgto_agendado = ?";
+
+			$result = $this->db->query($sql, ['data_pagamento'=>$dados['dt_pgto'] , 'movimentacao'=>$dados['mov_pgto'] , 
+			'valor'=>formatarMoeda($dados['valor_pgto']) , 'pago'=> "Não", 'fk_id_categoria'=>$dados['categoria_pgto'] , 
+			'fk_id_conta'=>$dados['idConta'] , 'id_pgto_agendado'=>$dados['idPgtoAgendado']]);
+
+			if ($result === FALSE) {
+				return array('status' => 'error', 'message' => 'Ocorreu algum erro na Alteração do Pagamento Agendado!');
+			} else {
+				return array('status' => 'success', 'message' => 'Pagamento Agendado Alterado com Sucesso!');
+			}
+		}
+	}
+	
+
+	public function getContasAgendadas(int $idConta): array {
+		$ano = date("Y");
+		$mes = verificaMesNumerico();
+        $sql = "SELECT pgag.id_pgto_agendado AS idpgag, pgag.data_pagamento AS data, pgag.movimentacao AS mov, 
+			pgag.valor AS valor, pgag.pago AS pago FROM $this->table AS pgag WHERE pgag.fk_id_conta = ? 
+			AND pgag.data_pagamento BETWEEN '{$ano}-{$mes}-01' AND '{$ano}-{$mes}-31' 
+			ORDER BY data_pagamento ASC";
+		return $this->db->query($sql, [$idConta])->result_array();
     }
 
 }

@@ -112,7 +112,6 @@ class CartaoCredito_model extends CI_Model
 				}	
 			}
 
-
 			$this->db->trans_begin();
 			$sql = "INSERT INTO $this->table (numero_cartao, data_validade, fk_id_bandeira_cartao, fk_id_usuario, fk_cod_banco) 
 					VALUES (?, ?, ?, ?, ?)";

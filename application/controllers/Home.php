@@ -22,9 +22,7 @@ class Home extends CI_Controller
 				$dados["contas"] = $this->conta_model->verificaConta($this->session->userdata('id'));
 			}
 		}
-
 		$this->load->view("v_template", $dados);
-
 	}
 
 }

@@ -12,6 +12,7 @@ class CartaoCredito extends CI_Controller
 		$this->load->model('cartaocredito_model');
 		$this->load->model('bandeiracartao_model');
 		$this->load->model('extrato_model');
+		$this->load->model('faturacartao_model');
 		$this->load->model('despesacartao_model');
 		$this->load->helper('funcoes');
 		date_default_timezone_set('America/Sao_Paulo');
@@ -23,6 +24,7 @@ class CartaoCredito extends CI_Controller
 			$dados["title"] = "Cadastro de Cartão de Crédito";
 			$dados["view"] = "cartao/v_index";
 			$dados["idConta"] = $id;
+			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
 			$dados["bancos"] = $this->banco_model->getBancos();
 			$dados["bandeiras"] = $this->bandeiracartao_model->getBandeirasCartoes();
 			$this->load->view("v_template", $dados);
@@ -44,10 +46,7 @@ class CartaoCredito extends CI_Controller
 			}
 			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
 		} else {
-			$dados["title"] = "Page Not Found: 404";
-			$dados["message"] = "Erro 404: A página requisita não existe...";
-			$dados["view"] = "errors/error_404";
-			$this->load->view("v_template", $dados);
+			$this->load->view("v_template", pageNotFound());
 		}
 	}
 
@@ -57,6 +56,7 @@ class CartaoCredito extends CI_Controller
 			$dados["title"] = "Lançar Compra Cartão de Crédito";
 			$dados["view"] = "cartao/v_lancar_compra";
 			$dados["idConta"] = $id;
+			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
 			$dados["idUser"] = $this->session->userdata('id');
 			$dados["cartoes"] = $this->cartaocredito_model->getCartoesCreditosByUser($this->session->userdata('id'));
 			//$dados["bandeiras"] = $this->bandeiracartao_model->getBandeirasCartoes();
@@ -80,10 +80,73 @@ class CartaoCredito extends CI_Controller
 			}
 			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
 		} else {
-			$dados["title"] = "Page Not Found: 404";
-			$dados["message"] = "Erro 404: A página requisita não existe...";
-			$dados["view"] = "errors/error_404";
+			$this->load->view("v_template", pageNotFound());
+		}
+	}
+
+	public function faturar($id = null) 
+	{
+        if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+			$dados["title"] = "Criar Fatura Cartão de Crédito";
+			$dados["view"] = "cartao/v_criar_fatura";
+			$dados["idConta"] = $id;
+			$dados['cartoes'] = $this->cartaocredito_model->getCartoesCreditosByUser($this->session->userdata('id'));
 			$this->load->view("v_template", $dados);
+		} else if ($this->input->post()) {
+			$cartao = $this->input->post('cartao');
+			$data_vencimento = $this->input->post('data_vencimento');
+			$dados = ['data_vencimento'=>$data_vencimento, 'cartao'=>$cartao];  
+			$return = $this->faturacartao_model->cadastrarFaturaCartao($dados);
+			if ($return['status'] == 'success') {
+				$json = array('status'=>'success', 'message'=>$return['message']);
+			}  else {
+				$json = array('status'=>'error', 'message'=>$return['message']);
+			}
+			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
+        } else {
+            $this->load->view("v_template", pageNotFound());
+        }
+	}
+	
+	function fecharFatura($id = null) 
+	{
+		if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+			$dados["title"] = "Fechar Fatura Cartão de Crédito";
+			$dados["view"] = "cartao/v_fechar_fatura";
+			$dados["idConta"] = $id;
+			$dados['faturas'] = $this->faturacartao_model->getCartoesFaturaAberta();
+			$this->load->view("v_template", $dados);
+		} else {
+			$this->load->view("v_template", pageNotFound());
+		}
+	}
+
+	function pagarFatura() 
+	{
+		if ($this->input->post()) {
+			$id_fatura_cartao = $this->input->post('id_fatura_cartao');
+			if (empty($id_fatura_cartao)) {
+				$json = array('status' => 'error', 'message' => 'Selecione um Cartão de Crédito!');
+			} else {
+				$json = array('status' => 'success', 'id_fatura_cartao'=> $id_fatura_cartao);
+			}
+			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
+		} else {
+			$this->load->view("v_template", pageNotFound());
+		}
+	}
+
+	function faturaPagar($id_fatura_cartao = null)
+	{
+		if (is_numeric($id_fatura_cartao) && !empty($id_fatura_cartao) && $id_fatura_cartao > 0 && $this->faturacartao_model->verificaFaturaById($id_fatura_cartao) == true) {
+			$dados['fatura'] = $this->faturacartao_model->getFaturaCartaoAbertaById($id_fatura_cartao, $this->session->userdata('id'));
+			$dados['itensfatura'] = $this->despesacartao_model->getItensDespesaFaturaByIdFaturaCartao($dados['fatura']->idCartao, formataData($dados['fatura']->data));
+			$dados["title"] = "Pagar Fatura Cartão de Crédito";
+			$dados["view"] = "cartao/v_pagar_fatura";
+			$dados["idConta"] = $this->session->userdata('idConta');
+			$this->load->view("v_template", $dados);
+		} else {
+			$this->load->view("v_template", pageNotFound());
 		}
 	}
 

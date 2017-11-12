@@ -11,6 +11,7 @@ class Agendamento extends CI_Controller
 		$this->load->model('conta_model');
 		$this->load->model('categoria_model');
 		$this->load->model('agendamento_model');
+		$this->load->helper('funcoes');
 		date_default_timezone_set('America/Sao_Paulo');
 	}
 
@@ -23,20 +24,21 @@ class Agendamento extends CI_Controller
 		$data['p'] = 1;
 		
 		if ($this->input->get()) {
-            $p = $this->input->get('p');
-            if (!empty($p) && $p !== false && $p <= $dados['p_count'] || $p == 0) {
-                $data['p'] = $p;
-                if($data['p'] == 0) {
-                    $data['p'] = 1;
-                } 
-            } else {
-                $this->loadTemplate('naoexisteView');
-                die();
-            }
+			$p = $this->input->get('p');
+			if (is_numeric($p) && !empty($p) && $p !== false && $p <= $dados['p_count'] || $p == 0) {
+				$data['p'] = $p;
+				if($data['p'] == 0) {
+					$data['p'] = 1;
+				} 
+			} else {
+				$this->load->view("v_template", pageNotFound());
+				die();
+			}
 		}
 		
-        $offset = (15 * ($data['p'] - 1));
-        $dados['pgto_agendados'] = $this->agendamento_model->getAllPgamentosAgendados($offset);
+		$offset = (15 * ($data['p'] - 1));
+		$dados['pgto_agendados'] = $this->agendamento_model->getAllPgamentosAgendados($offset);
+		$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
 		$dados["view"] = "agendamento/v_listagem_agendamentos";
 		$this->load->view("v_template", $dados);
     }
@@ -46,6 +48,7 @@ class Agendamento extends CI_Controller
 		if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Agendar Pagamento";
 			$dados["idConta"] = $id;
+			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
 			$dados['categorias'] = $this->categoria_model->getCategoriasDespesas();
 			$dados["view"] = "agendamento/v_agendamento";
             $this->load->view("v_template", $dados);
@@ -69,11 +72,42 @@ class Agendamento extends CI_Controller
 
 			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
 		} else {
-			$dados["title"] = "Page Not Found: 404";
-			$dados["message"] = "Erro 404: A página requisita não existe...";
-			$dados["view"] = "errors/error_404";
-			$this->load->view("v_template", $dados);
+			$this->load->view("v_template", pageNotFound());
 		}
 	}
+
+	public function alterar($id = null) {
+        if (is_numeric($id) && !empty($id) && $id > 0) {
+			$dados["title"] = "Alterar Pagamento Agendado";
+			$dados["idUser"] = $this->session->userdata('id');
+			$dados["idConta"] = $this->session->userdata('idConta');
+			$dados['categorias'] = $this->categoria_model->getCategoriasDespesas();
+			$dados['pagamento'] = $this->agendamento_model->getPagamentoAgendado($id);
+			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
+			$dados["view"] = "agendamento/v_alterar_pgto_agendado";
+			$this->load->view("v_template", $dados);
+		} elseif ($this->input->post()) {
+            $idConta = $this->input->post('idConta');
+            $idPgtoAgendado = $this->input->post('idPgtoAgendado');
+            $dtPgto = $this->input->post('data_pgto');
+            $movPgto = $this->input->post('mov_pgto');
+            $categoriaPgto = $this->input->post('categoria_pgto');
+            $valorPgto = $this->input->post('valor_pgto');
+			$newValorPgto = str_replace('R$ ', '', str_replace(',', '.', str_replace('.', '', $valorPgto)));
+			
+			$dados = ['idConta'=>$idConta, 'idPgtoAgendado'=>$idPgtoAgendado, 'dt_pgto'=>$dtPgto, 'mov_pgto'=>$movPgto,
+			'categoria_pgto'=>$categoriaPgto, 'valor_pgto'=>$newValorPgto];
+
+			$return = $this->agendamento_model->alterarPgtoAgendado($dados);
+            if ($return['status'] == 'success') {
+                $json = array('status'=>'success', 'message'=>$return['message']);
+            }  else {
+                $json = array('status'=>'error', 'message'=>$return['message']);
+            }
+			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
+        } else {
+			$this->load->view("v_template", pageNotFound());
+        }
+    }
 
 }

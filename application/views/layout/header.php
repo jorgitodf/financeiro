@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="<?php echo base_url('assets/css/bootstrap.min.css') ?>" media="all" />
         <link rel="stylesheet" href="<?php echo base_url('assets/css/template.css') ?>" media="all" />
         <link rel="stylesheet" href="<?php echo base_url('assets/fonts/glyphicons-halflings-regular.ttf') ?>" media="all" />
+        <script src="<?php echo base_url('assets/js/jquery-3.2.1.min.js') ?>"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
@@ -34,7 +35,11 @@
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-form" id="navbar_saldo">
-
+                            <?php if (!empty($conta)): ?>
+                            <li>Conta: <span class="info_saldo"><?php echo !empty($conta->numero_conta) ? $conta->numero_conta : ""; ?></span></li><br/>
+                            <li>Banco: <span class="info_saldo"><?php echo !empty($conta->nome_banco) ? $conta->nome_banco : ""; ?></span></li><br/>
+                            <li>Saldo: <span class="info_saldo" id="saldo_nav"><?php echo !empty($conta->saldo) ? number_format($conta->saldo, 2, ',', '.') : ""; ?></span></li><br/>
+                            <?php endif; ?>
                         </ul>
                         <ul class="nav navbar-nav navbar-right" id="navbar_deslogar">
                             <li class="dropdown">

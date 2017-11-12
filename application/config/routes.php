@@ -52,3 +52,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+$route['cartaocredito/fechar-fatura/(:num)'] = 'cartaocredito/fecharFatura/$1';
+$route['cartaocredito/pagar-fatura'] = 'cartaocredito/pagarFatura';
+$route['cartaocredito/fatura-pagar/(:any)'] = 'cartaocredito/faturaPagar/$1';

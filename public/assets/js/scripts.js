@@ -122,6 +122,7 @@ $(document).ready(function () {
                     $("#movimentacao").attr('disabled', 'disabled');
                     $("#nome_categoria").attr('disabled', 'disabled');
                     $("#valor").attr('disabled', 'disabled');
+                    getSaldo();
                 }
                 else {
                     alert(retorno);
@@ -169,6 +170,7 @@ $(document).ready(function () {
                     $("#movimentacao").attr('disabled', 'disabled');
                     $("#nome_categoria").attr('disabled', 'disabled');
                     $("#valor").attr('disabled', 'disabled');
+                    getSaldo();
                 }
                 else {
                     alert(retorno);
@@ -332,9 +334,154 @@ $(document).ready(function () {
         });
     });
 
+
+    //ALTERAR PAGAMENTO AGENDADO
+    $('#btn_editar_pgto_agendado').click(function () {
+        $("#btn_salvar_pgto_agendado").removeAttr('disabled');
+        $("#btn_editar_pgto_agendado").attr('disabled', 'disabled');
+        $("#data_pgto").removeAttr('disabled');
+        $("#mov_pgto").removeAttr('disabled');
+        $("#categoria_pgto").removeAttr('disabled');
+        $("#valor_pgto").removeAttr('disabled');
+        $('#msg_success_alterar_pgto_agendado').remove();
+    });
+    $(function () {
+        $("#form_editar_agendamento_debito").submit(function (e) {
+            $(".msgError").html("");
+            $(".msgError").css("display", "none");
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("action"),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (retorno) {
+                    if (retorno[0]['status'] == 'error' ){
+                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_alterar_pgto_agendado">' + retorno[0]['message'] + '</div>');
+					} else if (retorno[0]['status'] == 'success'){
+						$('.retorno').html('<div class="alert alert-success text-center msgSuccess" role="alert" id="msg_success_alterar_pgto_agendado">' + retorno[0]['message'] + '</div>');
+                        $("#btn_salvar_pgto_agendado").attr('disabled', 'disabled');
+                        $("#btn_editar_pgto_agendado").removeAttr('disabled');
+                        $("#data_pgto").attr('disabled', 'disabled');
+                        $("#mov_pgto").attr('disabled', 'disabled');
+                        $("#categoria_pgto").attr('disabled', 'disabled');
+                        $("#valor_pgto").attr('disabled', 'disabled');
+                    }
+                    else {
+                        alert(retorno);
+                    }
+                },
+                fail: function(){
+                    alert('ERRO: Falha ao carregar o script.');
+                }
+            });
+        });
+    });
+
+
+    //CRIAR FATURA DE CARTÃO DE CRÉDITO
+    $('#btn_nova_fatura').click(function () {
+        $("#btn_salvar_nova_fatura").removeAttr('disabled');
+        $("#btn_nova_fatura").attr('disabled', 'disabled');
+        $("#cartao").removeAttr('disabled');
+        $("#data_vencimento").removeAttr('disabled');
+        $('#msg_success_criar_fatura_cartao_credito').remove();
+        $("#cartao").val("");
+        $("#data_vencimento").val("");
+    });
+    $(function () {
+        $("#form_cadastro_fatura_cartao_credito").submit(function (e) {
+            $(".msgError").html("");
+            $(".msgError").css("display", "none");
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("action"),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (retorno) {
+                    if (retorno[0]['status'] == 'error' ) {
+                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_criar_fatura_cartao_credito">' + retorno[0]['message'] + '</div>');
+					} else if (retorno[0]['status'] == 'success'){
+						$('.retorno').html('<div class="alert alert-success text-center msgSuccess" role="alert" id="msg_success_criar_fatura_cartao_credito">' + retorno[0]['message'] + '</div>');
+                        $("#btn_salvar_nova_fatura").attr('disabled', 'disabled');
+                        $("#btn_nova_fatura").removeAttr('disabled');
+                        $("#btn_debitar_fatura").removeAttr('disabled');
+                        $("#cartao").attr('disabled', 'disabled');
+                        $("#data_vencimento").attr('disabled', 'disabled');
+                    }
+                    else {
+                        alert(retorno);
+                    }
+                },
+                fail: function(){
+                    alert('ERRO: Falha ao carregar o script.');
+                }
+            });
+        });
+    });
+
+
+    //CRIAR FECHAR DE CARTÃO DE CRÉDITO
+    $(function () {
+        $("#form_buscar_fatura_fechar").submit(function (e) {
+            $(".msgError").html("");
+            $(".msgError").css("display", "none");
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("action"),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function (retorno) {
+                    if (retorno[0]['status'] == 'error' ) {
+                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_fechar_fatura_cartao_credito">' + retorno[0]['message'] + '</div>');
+					} else if (retorno[0]['status'] == 'success'){
+                        //$('.retorno').html('<div class="alert alert-success text-center msgSuccess" role="alert" id="msg_success_fechar_fatura_cartao_credito">' + retorno[0]['message'] + '</div>');
+                        window.setTimeout(redirectPagarFatura(retorno[0]['id_fatura_cartao']), 1);
+                    }
+                    else {
+                        alert(retorno);
+                    }
+                },
+                fail: function(){
+                    alert('ERRO: Falha ao carregar o script.');
+                }
+            });
+        });
+    });
+
+
 });
 
 
 function redirectToHome() {
     return document.location.href = "/";
+}
+
+function getSaldo() {
+    var saldo_nav = "Olá";
+    $.ajax({
+        type: "POST",
+        url: '/conta/getSaldo',
+        data: {saldo_nav: saldo_nav},
+        dataType: 'json',
+        success: function (retorno) {
+            if (retorno[0]['status'] == 'error' ){
+                alert(retorno[0]['message']);
+            } else if (retorno[0]['status'] == 'success'){
+                $('#saldo_nav').html(retorno[0]['message']);
+            }
+            else {
+                alert(retorno);
+            }
+        },
+        fail: function(){
+            alert('ERRO: Falha ao carregar o script.');
+        }
+    });
+}   
+
+function redirectPagarFatura(id) {
+    return window.location.replace("http://localhost:8000/cartaocredito/fatura-pagar/"+id);
 }

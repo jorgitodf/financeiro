@@ -11,6 +11,9 @@ class Conta extends CI_Controller
 		$this->load->model('conta_model');
 		$this->load->model('categoria_model');
 		$this->load->model('extrato_model');
+		$this->load->model('agendamento_model');
+		$this->load->helper('funcoes');
+		$this->load->helper('construct');
 		date_default_timezone_set('America/Sao_Paulo');
 	}
 
@@ -65,12 +68,11 @@ class Conta extends CI_Controller
 			$dados["title"] = "Página Principal";
 			$dados["view"] = "conta/v_home_conta";
 			$dados["idConta"] = $id;
+			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $id);
+			$this->session->set_userdata(['idConta' => $id]);
 			$this->load->view("v_template", $dados);
 		} else {
-			$dados["title"] = "Page Not Found: 404";
-			$dados["message"] = "Erro 404: A página requisita não existe...";
-			$dados["view"] = "errors/error_404";
-			$this->load->view("v_template", $dados);
+			$this->load->view("v_template", pageNotFound());
 		}
 	}
 
@@ -91,13 +93,11 @@ class Conta extends CI_Controller
 			}
 			$dados["title"] = "Extrato";
 			$dados["idConta"] = $id;
+			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $id);
 			$dados["view"] = "extrato/v_extrato";
 			$this->load->view("v_template", $dados);
 		} else {
-			$dados["title"] = "Page Not Found: 404";
-			$dados["message"] = "Erro 404: A página requisita não existe...";
-			$dados["view"] = "errors/error_404";
-			$this->load->view("v_template", $dados);
+			$this->load->view("v_template", pageNotFound());
 		}
 	}
 
@@ -107,6 +107,7 @@ class Conta extends CI_Controller
 			$dados["title"] = "Débito";
 			$dados["idConta"] = $id;
 			$dados['categorias'] = $this->categoria_model->getCategoriasDespesas();
+			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $id);
 			$dados["view"] = "conta/v_debito";
 			$this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
@@ -137,10 +138,7 @@ class Conta extends CI_Controller
 			}
 			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
 		} else {
-			$dados["title"] = "Page Not Found: 404";
-			$dados["message"] = "Erro 404: A página requisita não existe...";
-			$dados["view"] = "errors/error_404";
-			$this->load->view("v_template", $dados);
+			$this->load->view("v_template", pageNotFound());
 		}
 	}
 
@@ -149,6 +147,7 @@ class Conta extends CI_Controller
 		if (is_numeric($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Crédito";
 			$dados["idConta"] = $id;
+			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $id);
 			$dados['categorias'] = $this->categoria_model->getCategoriasReceitas();
 			$dados["view"] = "conta/v_credito";
 			$this->load->view("v_template", $dados);
@@ -181,10 +180,50 @@ class Conta extends CI_Controller
 			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
 
 		} else {
-			$dados["title"] = "Page Not Found: 404";
-			$dados["message"] = "Erro 404: A página requisita não existe...";
-			$dados["view"] = "errors/error_404";
-			$this->load->view("v_template", $dados);
+			$this->load->view("v_template", pageNotFound());
+		}
+	}
+
+	public function getSaldo()
+	{
+		$saldo_post = $this->input->post('saldo_nav');
+		$saldo = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
+		if (empty($saldo)) {
+			$json = array('status'=>'error', 'message'=>'Ops... Sem Saldo');
+		}  else {
+			$json = array('status'=>'success', 'message'=>number_format($saldo->saldo, 2, ',', '.'));
+		}
+		return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
+	}
+
+	public function montarTabela()
+	{
+		$idConta = $this->input->post('idConta');
+		$ano = date("Y");
+		$mes = verificaMes();
+		$contas_agendadas = $this->agendamento_model->getContasAgendadas($idConta);
+		$tabela = monta_tabela_pagto_agendado($mes, $ano, $contas_agendadas);
+		$json = array('status'=>'success', 'message'=>'Não há nenhum pagamento agendado pagamento hoje!', 'tabela'=>$tabela);
+		return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
+	}
+	
+	public function pagar()
+	{
+		if ($this->input->post()) {
+			$idConta = $this->input->post('idConta');
+			$ano = date("Y");
+			$mes = verificaMes();
+			$return = $this->conta_model->verificaPagamentoAgendado($idConta);
+			if ($return['status'] == 'success') {
+				$contas_agendadas = $this->agendamento_model->getContasAgendadas($idConta);
+				$tabela = monta_tabela_pagto_agendado($mes, $ano, $contas_agendadas);
+				$json = array('status'=>'success', 'message'=>$return['message'], 'tabela'=>$tabela);
+			} else {
+				$contas_agendadas = $this->agendamento_model->getContasAgendadas($idConta);
+				$tabela = monta_tabela_pagto_agendado($mes, $ano, $contas_agendadas);
+				$json = array('status'=>'error', 'message'=>$return['message'], 'tabela'=>$tabela);
+			}
+			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
 		}
 	}
 }
