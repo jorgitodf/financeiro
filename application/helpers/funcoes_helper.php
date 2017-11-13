@@ -29,7 +29,7 @@ function consultaSenhaCrypty($senha, $hash) {
 function formatarMoeda($valor) {
     $valor1 = trim(str_replace('R$ ', '', $valor));
     $number = str_replace(',','.',preg_replace('#[^\d\,]#is','',$valor1)); 
-    return number_format($number, 2, "." ,"");
+    return number_format((float) $number, 2, "." ,"");
 }
 
 function removePontos($numero) {
@@ -141,8 +141,7 @@ function pageNotFound() {
 }
 
 function transformaAnoMes($data) {
-    $ano = substr($data, 0, 5);
-    $mes = substr($data, 6, 1);
-    $anoMes = $ano.$mes;
+	$datahora = strtotime($data);
+	$anoMes = date("Y-m", $datahora);
     return $anoMes;
 }

@@ -145,9 +145,49 @@ class CartaoCredito extends CI_Controller
 			$dados["view"] = "cartao/v_pagar_fatura";
 			$dados["idConta"] = $this->session->userdata('idConta');
 			$this->load->view("v_template", $dados);
+		} else if ($this->input->post()) {
+			$id_cartao_fat = $this->input->post('id_cartao_fat');
+			$encargos = $this->input->post('encargos');
+			$protecao_prem = $this->input->post('protecao_prem');
+			$iof = $this->input->post('iof');
+			$anuidade = $this->input->post('anuidade');
+			$restante = $this->input->post('restante');
+			$juros = $this->input->post('juros_fat');
+			$valor_total = $this->input->post('valor_total');
+			$valor_pago = $this->input->post('valor_pagar');
+
+			$dados = ['encargos'=>$encargos,'iof'=>$iof,'anuidade'=>$anuidade,'protecao'=>$protecao_prem,
+			'juros'=>$juros,'restante'=>$restante,'totalgeral'=>$valor_total,'valor_pagar'=>$valor_pago];
+
+			$return = $this->faturacartao_model->pagarFatura($dados, $id_cartao_fat);
+
+			if ($return['status'] == 'success') {
+				$json = array('status'=>'success', 'message'=>$return['message']);
+			}  else {
+				$json = array('status'=>'error', 'message'=>$return['message']);
+			}
+			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
 		} else {
 			$this->load->view("v_template", pageNotFound());
 		}
 	}
+
+	
+	public function getRestanteFaturaAnterior() {
+		if ($this->input->post()) {
+			$id_cartao_cre = (int) $this->input->post('id_cartao_cre');
+			$resFatAnt = $this->faturacartao_model->getValorFaturaMesAnterior($id_cartao_cre);
+			if (!empty($resFatAnt)) {
+				$valorTotal = (float) $resFatAnt->valtotal;
+				$valorPago = (float) $resFatAnt->valpgo;
+				$res = $valorTotal - $valorPago;
+				$json = array('status'=>'success', 'message'=>number_format($res, 2, '.', '.' ));
+			} else {
+				$json = array('status'=>'error', 'message'=>'Valor da Fatura Anterior Indisponível!');
+			}
+			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
+		}
+	}
+
 
 }

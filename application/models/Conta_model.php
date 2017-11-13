@@ -45,8 +45,8 @@ class Conta_model extends CI_Model
     public function getAtualSaldo(int $idUsuario, int $idConta)
     {
         try {
-            $sql = "SELECT e.saldo AS saldo, c.numero_conta AS numero_conta, b.nome_banco AS nome_banco 
-            FROM {$this->extrato_model->getTable()} e JOIN $this->table c ON (c.id_conta = e.fk_id_conta)
+            $sql = "SELECT e.saldo AS saldo, c.numero_conta AS numero_conta, c.digito_verificador_conta AS digito,
+            b.nome_banco AS nome_banco FROM {$this->extrato_model->getTable()} e JOIN $this->table c ON (c.id_conta = e.fk_id_conta)
             JOIN {$this->banco_model->getTable()} b ON (b.cod_banco = c.fk_cod_banco)
             WHERE c.fk_id_usuario = ? AND e.fk_id_conta = ? ORDER BY e.id_extrato DESC LIMIT 1";
             return $this->db->query($sql, [$idUsuario, $idConta])->row();

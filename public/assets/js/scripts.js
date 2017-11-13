@@ -437,7 +437,6 @@ $(document).ready(function () {
                     if (retorno[0]['status'] == 'error' ) {
                         $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_fechar_fatura_cartao_credito">' + retorno[0]['message'] + '</div>');
 					} else if (retorno[0]['status'] == 'success'){
-                        //$('.retorno').html('<div class="alert alert-success text-center msgSuccess" role="alert" id="msg_success_fechar_fatura_cartao_credito">' + retorno[0]['message'] + '</div>');
                         window.setTimeout(redirectPagarFatura(retorno[0]['id_fatura_cartao']), 1);
                     }
                     else {
@@ -450,6 +449,152 @@ $(document).ready(function () {
             });
         });
     });
+
+
+    //PAGAMENTO DE FATURA DE CARTÃO DE CRÉDITO PARA PAGAMENTO
+    $('#btn_limpar_pgto_fatura').click(function () {
+        $("#encargos").val("");
+        $("#iof").val("");
+        $("#anuidade").val("");
+        $("#protecao_prem").val("");
+        $("#juros_fat").val("");
+        $("#restante").val("");
+        $("#valor_total").val("");
+        $("#valor_pagar").val("");
+        $('#msg_error_pgto_fatura_cartao').remove();
+    });
+
+    $('#btn_novo_pgto_fatura').click(function () {
+        $("#btn_novo_pgto_fatura").attr('disabled', 'disabled');
+        $("#btn_calcular_fatura").removeAttr('disabled');
+        $("#btn_pagar_fatura").removeAttr('disabled');
+        $("#btn_limpar_pgto_fatura").removeAttr('disabled');
+    });
+    $(function () {
+        $("#form_pagar_fatura").submit(function (e) {
+            var id_cartao_fat = $('#id_cartao_fat').val();
+            var encargos = $('#encargos').val();
+            var iof = $('#iof').val();
+            var anuidade = $('#anuidade').val();
+            var protecao_prem = $('#protecao_prem').val();
+            var juros_fat = $('#juros_fat').val();
+            var restante = $('#restante').val();
+            var valor_pagar = $('#valor_pagar').val();
+            var valor_total = $('#valor_total').val();
+            $(".msgError").html("");
+            $(".msgError").css("display", "none");
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("action"),
+                data: {id_cartao_fat: id_cartao_fat, encargos: encargos, iof: iof, anuidade: anuidade, protecao_prem: protecao_prem,
+                        juros_fat: juros_fat, restante: restante, valor_pagar: valor_pagar, valor_total: valor_total},
+                dataType: 'json',
+                success: function (retorno) {
+                    if (retorno[0]['status'] === 'error' ){
+                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_pgto_fatura_cartao">' + retorno[0]['message'] + '</div>');
+                    } else if (retorno[0]['status'] === 'success'){
+                        $('.retorno').html('<div class="alert alert-success text-center msgSuccess" id="msg_success_pgto_fatura_cartao">' + retorno[0]['message'] + '</div>');
+                        $("#btn_novo_pgto_fatura").attr('disabled', 'disabled');
+                        $("#btn_calcular_fatura").attr('disabled', 'disabled');
+                        $("#btn_pagar_fatura").attr('disabled', 'disabled');
+                        $("#btn_limpar_pgto_fatura").attr('disabled', 'disabled');
+                        $("#encargos").attr('disabled', 'disabled');
+                        $("#iof").attr('disabled', 'disabled');
+                        $("#anuidade").attr('disabled', 'disabled');
+                        $("#protecao_prem").attr('disabled', 'disabled');
+                        $("#juros_fat").attr('disabled', 'disabled');
+                        $("#restante").attr('disabled', 'disabled');
+                        $("#valor_pagar").attr('disabled', 'disabled');
+                        $("#valor_total").attr('disabled', 'disabled');
+                    } else {
+                        alert(retorno);
+                    }
+                },
+                fail: function(){
+                    alert('ERRO: Falha ao carregar o script.');
+                }
+            });
+        });
+    });
+
+    $('#btn_calcular_fatura').click(function () {
+        var id_cartao_cre = $('#id_cartao_cre').val();
+        var str = $('#subtotal').val();
+        var subtotal = replace(str);
+
+        var str = $('#encargos').val();
+        var encargos = replace(str);
+        if (encargos === "") {
+            encargos = 0;
+        }
+        var str = $('#iof').val();
+        var iof = replace(str);
+        if (iof === "") {
+            iof = 0;
+        }
+        var str = $('#anuidade').val();
+        var anuidade = replace(str);
+        if (anuidade === "") {
+            anuidade = 0;
+        }
+        var str = $('#protecao_prem').val();
+        var protecao_prem = replace(str);
+        if (protecao_prem === "") {
+            protecao_prem = 0;
+        }
+        var str = $('#juros_fat').val();
+        var juros_fat = replace(str);
+        if (juros_fat === "") {
+            juros_fat = 0;
+        }
+        var str = $('#restante').val();
+        var restante = replace(str);
+        if (restante === "") {
+            restante = 0;
+        }
+        var total = 0;
+        if (subtotal > 0) {
+            total = (parseFloat(subtotal) + parseFloat(encargos) + parseFloat(iof) + parseFloat(anuidade) + parseFloat(protecao_prem)
+                + parseFloat(juros_fat) + parseFloat(restante));
+            var num = total.toString();   
+            var tot = num.replace('.',',');
+        }
+        $(".msgError").html("");
+        $(".msgError").css("display", "none");
+        $.ajax({
+            type: "POST",
+            url: $('#action').val(),
+            data: {id_cartao_cre: id_cartao_cre},
+            dataType: 'json',
+            success: function (retorno) {
+                if (retorno[0]['status'] === 'error' ){
+                    $('.retorno').html('<span class="msgError" id="">' + retorno[0]['message'] + '</span>');
+                } else if (retorno[0]['status'] === 'success'){
+                    var val = retorno[0]['message'].toString();
+                    var res = val.replace('.',',');
+                    $('#restante').val('R$ ' + res);
+                } else {
+                    alert(retorno);
+                }
+            },
+            fail: function(){
+                alert('ERRO: Falha ao carregar o script.');
+            }
+        });
+        $('#valor_total').val('R$ ' + tot);
+    });
+    
+    function replace(str) {
+        var encargos = str.replace('R$', '');
+        encargos = encargos.replace(',', '.'); 
+        return encargos;
+    }
+    
+    function arred(val,casas) { 
+        var aux = Math.pow(2,casas);
+        return Math.floor(val * aux) / aux;
+    }
 
 
 });

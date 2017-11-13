@@ -30,17 +30,49 @@
         height: 60px;
         background-color: #337ab7;
     }
+    .navbar .navbar-nav {
+        display: inline-block;
+        float: none;
+        margin: 0.4%;
+    }
+    .navbar .navbar-collapse {
+        text-align: center;
+    }
+    #navbar-nav {
+        margin-left: 20px;
+    }
+    #navbar-nav > li > a {
+        color: white;
+    }
+    #navbar-nav > li > a:hover {
+        background-color: #ccc;
+        color: red;
+        padding: 15px;
+        margin-top: -2px;;
+    } 
+    #dropdown-menu > li > a:hover {
+        background-color: #ccc;
+        color: red;
+    }
+    #navbar-nav > li > a {
+        padding: 15px;
+        margin-top: -2px;
+    }
+    #navbar-nav > li > a, #navbar_deslogar  > li > a {
+        color: white;
+        padding: 15px;
+        margin-top: -2px;
+    }
     #navbar_saldo {
         color: white; 
         margin-top: 4px;
         font-size: 12px;
         width: 250px;
-        margin-left: 180px;
+        margin-left: 185px;
     }
     .info_saldo {
         color: yellow;
     }
-
 
     /* PÁGINA HOME */
     .div_page_principal {
@@ -113,6 +145,11 @@
     #sec_conta_home {
         margin-top: 7%;
     }
+    #sec_conta_home_tab_pgtos_agendados {
+        margin-top: 7%;
+        color: white; 
+        font-size: 12px;
+    }
     .btn_extrato {
         height: 80px;
         border-radius: 10px 0 0 10px;
@@ -134,6 +171,56 @@
         height: 80px;
         border-radius: 0 10px 10px 0;
     }
+    .bordasimples {
+        border-style: solid;
+        border-color: white;
+        border-width: 1px;
+        border-collapse: collapse;
+    }
+    #table_desp_agendada > tbody > tr > td {
+        background-color: rgb(204,255,255);
+    }
+    #cab_table {
+        color: white;
+        text-align: center;
+        background-color: red;
+        font-weight: bold;
+        letter-spacing: 2px;
+        font-size: 14px;
+    }
+    #tr_cab_table {
+        background-color: #0000FF;
+        font-weight: bold;
+        color: white;
+    }
+    .td_color_pgto {
+        color: red;
+    }
+    .td_color_pgto_sim {
+        color: blue;
+    }
+    #td_sem_contas_agendadas {
+        text-align: center;
+        font-weight: bold;
+        color: black;
+    }
+    .cor_preta {
+        font-weight: bold;
+        color: black;
+    }
+    tfoot {
+        background-color: rgb(255,204,0);
+        font-weight: bold;
+    }
+    #msg_ret_com_pgto {
+        font-weight: bold;
+        background-color: #98FB98;
+    }
+    #msg_ret_sem_pgto {
+        font-weight: bold;
+        background-color: #FFDEAD;
+    }
+
 
 
     /* PÁGINA EXTRATO */
@@ -228,10 +315,10 @@
 
     /* PÁGINA LISTAR PAGAMENTO AGENDADO*/
     #sec_listar_pagamento_agendado {
-        margin-top: 4%;
+        margin-top: 5%;
         background-color: white;
-        padding: 3px 5px 0 5px;
-        height: 575px;
+        padding: 0 1px 0 1px;
+        height: 565px;
     }
     #panel_head_agendamento_pagamento {
         background-color: #6767fe;
@@ -252,7 +339,7 @@
     }
     #div_nav_pagination {
         margin-top: -3%;
-        margin-left: 40%;
+        margin-left: 38%;
     }
     .cor_verde {
         color: lime;
@@ -285,7 +372,26 @@
         color:#FFF;
     }
 
-    
+
+    /* PÁGINA ALTERAR PAGAMENTO AGENDADO*/
+    #sec_alterar_pagamento_agendado {
+        margin-top: 7%;
+        background-color: white;
+        padding: 20px 15px 0 15px;
+    }
+    #msg_error_alterar_pgto_agendado {
+        font-size: 12px;
+        padding: 7px;
+    }
+    #msg_success_alterar_pgto_agendado {
+        font-size: 12px;
+    }
+    #retorno_alterar_pgto_agendado {
+        padding: 0 !important;
+        height: 35px;
+    }
+
+
 
     /* PÁGINA CREDITAR */
     #sec_credito {
@@ -344,6 +450,104 @@
     }
 
 
+    /* PÁGINA CRIAR FATURA CARTÃO DE CRÉDITO */
+    #sec_criar_fatura_cartao {
+        margin-top: 7%;
+        background-color: white;
+        padding: 19px 15px 0 15px;
+        margin-left: 25%;
+    }
+    #msg_error_criar_fatura_cartao_credito {
+        font-size: 12px;
+        padding: 10px;
+        height: 35px;
+    }
+    #msg_success_criar_fatura_cartao_credito {
+        font-size: 12px;
+    }
+    #retorno_criar_fatura_cartao_credito {
+        padding: 0 !important;
+        height: 30px;
+        margin-left: 2.5%;
+        margin-top: 2%;
+    }
+    #div_botoes_criar_fatura {
+        clear: both;
+        margin-top: 2%;
+    }
+
+
+    /* PÁGINA FECHAR FATURA CARTÃO DE CRÉDITO */
+    #sec_fechar_fatura_cartao {
+        margin-top: 7%;
+        background-color: white;
+        padding: 19px 15px 0 15px;
+        margin-left: 25%;
+    }
+    #msg_error_fechar_fatura_cartao_credito {
+        font-size: 12px;
+        padding: 10px;
+        height: 35px;
+    }
+    #msg_success_fechar_fatura_cartao_credito {
+        font-size: 12px;
+    }
+    #retorno_fechar_fatura_cartao_credito {
+        padding: 0 !important;
+        height: 30px;
+        margin-left: 2.5%;
+    }
+
+    
+    /* PÁGINA PAGAR FATURA CARTÃO DE CRÉDITO */
+    #sec_pagar_fatura_cartao {
+        margin-top: 5%;
+        background-color: white;
+        padding: 10px 10px 0 10px;
+        margin-left: 16%;
+    }
+    #div_row_table_fecha_fatura {
+        width: 96.2%;
+    }
+    #table_lista_itens_fatura > tbody > tr > td {
+        font-size: 12px;
+        padding: 2px;
+    }
+    #table_lista_itens_fatura > tfoot > tr > td{
+        font-size: 12px;
+        padding: 2px;
+    }
+    #table_lista_itens_fatura {
+        margin-left: 1.9%;
+    }
+    .muda_label {
+        font-size: 12px;
+    }
+    .alinha_td_centro, .alinha_th_centro {
+        text-align: center;
+    }
+    .alinha_td_direita {
+        text-align: right;
+    }
+    #msg_alerta_sem_despesa_fatura {
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        width: 104%;
+    }
+    #retorno_pagar_fatura_cartao_credito {
+        padding: 0 !important;
+        height: 33px;
+        width: 48%;
+    }
+    #msg_error_pgto_fatura_cartao {
+        font-size: 12px;
+        padding: 7px;
+    }
+    #msg_success_pgto_fatura_cartao {
+        font-size: 12px;
+        padding: 7px;
+    }
 
 
     /* PÁGINA ERROR 404 */

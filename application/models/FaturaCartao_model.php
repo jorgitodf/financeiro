@@ -75,4 +75,46 @@ class FaturaCartao_model extends CI_Model
         return $this->db->query($sql, [$idFatura])->row();
     }
 
+    public function getValorFaturaMesAnterior($idCart) {
+        $mes = verificaMesNumerico();
+
+        $ano = date("Y");
+        $anoMes = "$ano-$mes";
+
+        $sql = "SELECT valor_total_fatura as valtotal, valor_pago as valpgo FROM tb_fatura_cartao
+                WHERE fk_id_cartao_credito = ? AND ano_mes_ref = ?";
+        return $this->db->query($sql, [$idCart, $anoMes])->row();
+    }
+
+    
+    public function pagarFatura(array $dados, int $id_cartao_fat = null) {
+        $data_vencimento_fatura = date('Y-m-08', strtotime("+1 month"));
+        $data_fechamento_fatura = date("Y-m-d", strtotime("-11 days", strtotime($data_vencimento_fatura)));
+        $data_pagamento_fatura = date("Y-m-d");
+        if ($data_pagamento_fatura < $data_fechamento_fatura) {
+            return array('status' => 'error', 'message' => 'Nâo é possível realizar o Pagamento da Fatura!');
+        } elseif (empty($dados['totalgeral']) || $dados['totalgeral'] == "" || $dados['totalgeral'] == null) {
+			return array('status' => 'error', 'message' => 'Informe o Valor do Total da Fatura!');
+		} elseif (empty($dados['valor_pagar']) || $dados['valor_pagar'] == "" || $dados['valor_pagar'] == null) {
+			return array('status' => 'error', 'message' => 'Informe o Valor a Pagar!');
+		} elseif ($dados['valor_pagar'] > $dados['totalgeral']) {
+			return array('status'=>'error', 'message'=>'Valor do Pagamento superior ao Valor do Pagamento!');
+		} else {
+            $sql = "UPDATE $this->table SET encargos = ?, protecao_premiada = ?, iof = ?, 
+            anuidade = ?, restante_fatura_anterior = ?, pago = ?, juros = ?, valor_total_fatura = ?,
+            valor_pago = ? WHERE id_fatura_cartao = ?";
+            $result = $this->db->query($sql, ['encargos'=>formatarMoeda($dados['encargos']),
+            'protecao_premiada'=>formatarMoeda($dados['protecao']), 'iof'=>formatarMoeda($dados['iof']),
+            'anuidade'=>formatarMoeda($dados['anuidade']), 
+            'restante_fatura_anterior'=>formatarMoeda($dados['totalgeral'])-formatarMoeda($dados['valor_pagar']),
+            'pago'=>'S', 'juros'=>formatarMoeda($dados['juros']), 'valor_total_fatura'=>formatarMoeda($dados['totalgeral']),
+            'valor_pago'=>formatarMoeda($dados['valor_pagar']), $id_cartao_fat]);
+            if ($this->db->affected_rows() === 1) {
+                return array('status' => 'success', 'message' => 'Pagamento realizado com Sucesso!');
+            } else {
+                return array('status' => 'error', 'message' => 'Houve um Erro no Pagamento!');
+            } 
+        }
+    }
+
 }

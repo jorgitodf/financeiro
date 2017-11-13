@@ -55,3 +55,4 @@ $route['translate_uri_dashes'] = FALSE;
 $route['cartaocredito/fechar-fatura/(:num)'] = 'cartaocredito/fecharFatura/$1';
 $route['cartaocredito/pagar-fatura'] = 'cartaocredito/pagarFatura';
 $route['cartaocredito/fatura-pagar/(:any)'] = 'cartaocredito/faturaPagar/$1';
+$route['cartaocredito/fatura-pagar'] = 'cartaocredito/faturaPagar';

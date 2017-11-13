@@ -30,13 +30,14 @@
                             <li class="dropdown">
                                 <a class="color_fonte_white" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Minha Conta<span class="caret"></span></a>
                                 <ul class="dropdown-menu" id="dropdown-menu">
-                                    <li><a href="/home">Página Inicial</a></li>
+                                    <li><a href="/conta/acessar/<?php echo $this->session->userdata('idConta')?>">Página Inicial</a></li>
+                                    <li><a href="/home">Sair Conta</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-form" id="navbar_saldo">
                             <?php if (!empty($conta)): ?>
-                            <li>Conta: <span class="info_saldo"><?php echo !empty($conta->numero_conta) ? $conta->numero_conta : ""; ?></span></li><br/>
+                            <li>Conta: <span class="info_saldo"><?php echo !empty($conta->numero_conta) ? $conta->numero_conta."-".$conta->digito : ""; ?></span></li><br/>
                             <li>Banco: <span class="info_saldo"><?php echo !empty($conta->nome_banco) ? $conta->nome_banco : ""; ?></span></li><br/>
                             <li>Saldo: <span class="info_saldo" id="saldo_nav"><?php echo !empty($conta->saldo) ? number_format($conta->saldo, 2, ',', '.') : ""; ?></span></li><br/>
                             <?php endif; ?>
