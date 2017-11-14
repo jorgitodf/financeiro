@@ -24,6 +24,10 @@
         font-weight: bold;
         padding: 9px;
     }
+    .cor_fundo {
+        background-color: #000080 !important;
+        height: 100%;
+    }
 
     /* NAVBAR */
     #barra_nav {
@@ -83,8 +87,27 @@
     /* PÁGINA LOGIN */
     #sec_login {
         margin-top: 9%;
-        background-color: white;
-        height: 300px;
+    }
+    #div_login {
+        border-radius: 20px;
+        -moz-border-radius: 20px;
+        height: 340px;
+    }
+    #msg_error_login {
+        padding: 7px !important;
+        font-size: 11px;
+    }
+    .box-login{ 
+        position: absolute;
+        box-shadow: 8px 8px 0 black;
+        -webkit-box-shadow: 8px 8px 0 black;
+        -moz-box-shadow: 8px 8px 0 black;
+        background-color: #D3D3D3;
+        padding: 20px
+    }
+    .ls-login-logo{ 
+        text-indent: 35px;
+        margin-bottom: 25px
     }
 
 
@@ -564,7 +587,6 @@
         margin: 0;
         height: 100%;
         background-color: #DCDCDC;
-
     }
     .borda {
         border: 1px solid black;
@@ -581,6 +603,10 @@
         color: green;
         font-weight: bold;
         padding: 9px;
+    }
+    .cor_fundo {
+        background-color: #000080 !important;
+        height: 100%;
     }
 
     /* NAVBAR */
@@ -640,10 +666,30 @@
 
     /* PÁGINA LOGIN */
     #sec_login {
-        margin-top: 9%;
-        background-color: white;
+        margin-top: 10%;
+    }
+    #div_login {
+        border-radius: 20px;
+        -moz-border-radius: 20px;
         height: 300px;
     }
+    #msg_error_login {
+        padding: 7px !important;
+        font-size: 11px;
+    }
+    .box-login{ 
+        position: absolute;
+        box-shadow: 6px 6px 0 black;
+        -webkit-box-shadow: 6px 6px 0 black;
+        -moz-box-shadow: 6px 6px 0 black;
+        background-color: #D3D3D3;
+        padding: 20px
+    }
+    .ls-login-logo{ 
+        text-indent: 35px;
+        margin-bottom: 25px
+    }
+
 
 
     /* PÁGINA CADASTRO USUÁRIO */
@@ -1058,11 +1104,33 @@
 
     
     /* PÁGINA PAGAR FATURA CARTÃO DE CRÉDITO */
-    #sec_pagar_fatura_cartao {
-        margin-top: 6%;
+    #sec_fechar_fatura_cartao {
+        margin-top: 7%;
         background-color: white;
         padding: 19px 15px 0 15px;
-        margin-left: 20%;
+        margin-left: 25%;
+    }
+    #msg_error_fechar_fatura_cartao_credito {
+        font-size: 12px;
+        padding: 10px;
+        height: 35px;
+    }
+    #msg_success_fechar_fatura_cartao_credito {
+        font-size: 12px;
+    }
+    #retorno_fechar_fatura_cartao_credito {
+        padding: 0 !important;
+        height: 30px;
+        margin-left: 2.5%;
+    }
+
+    
+    /* PÁGINA PAGAR FATURA CARTÃO DE CRÉDITO */
+    #sec_pagar_fatura_cartao {
+        margin-top: 5%;
+        background-color: white;
+        padding: 10px 10px 0 10px;
+        margin-left: 16%;
     }
     #div_row_table_fecha_fatura {
         width: 96.2%;
@@ -1092,6 +1160,19 @@
         text-align: center;
         font-weight: bold;
         width: 104%;
+    }
+    #retorno_pagar_fatura_cartao_credito {
+        padding: 0 !important;
+        height: 33px;
+        width: 48%;
+    }
+    #msg_error_pgto_fatura_cartao {
+        font-size: 12px;
+        padding: 7px;
+    }
+    #msg_success_pgto_fatura_cartao {
+        font-size: 12px;
+        padding: 7px;
     }
 
 

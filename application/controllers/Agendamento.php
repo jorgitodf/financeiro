@@ -107,7 +107,7 @@ class Agendamento extends CI_Controller
 			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
         } else {
 			$this->load->view("v_template", pageNotFound());
-        }
+		}
     }
 
 }

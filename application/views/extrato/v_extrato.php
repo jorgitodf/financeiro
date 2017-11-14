@@ -22,10 +22,10 @@
 							<thead>
 							<tr>
 								<th class="data_mov_cab" width="22%">Data de Movimentação</th>
-								<th width="35%">Movimentação</th>
-								<th width="25%">Categoria</th>
-								<th class="valor_mov_cab" width="15%">Valor</th>
-								<th class="saldo_mov_cab">Saldo</th>
+								<th width="">Movimentação</th>
+								<th width="">Categoria</th>
+								<th class="valor_mov_cab" width="">Valor</th>
+								<th class="saldo_mov_cab" width="">Saldo</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -35,8 +35,8 @@
 									<?php if ($linha['op'] == 'Crédito'): ?>
 										<td class="td_extrato_cre"><?php echo ucwords($linha['mov']); ?></td>
 										<td class="td_extrato_cre"><?php echo ucwords(strtolower(mb_convert_case($linha['cat'], MB_CASE_TITLE))); ?></td>
-										<td align="center" class="td_extrato_cre"><?php echo number_format($linha['val'], 2, ',', '.'); ?></td>
-										<td align="center" class="td_extrato_cre"><?php echo number_format($linha['sal'], 2, ',', '.'); ?></td>
+										<td align="center" class="td_extrato_cre">R$ <?php echo number_format($linha['val'], 2, ',', '.'); ?></td>
+										<td align="center" class="td_extrato_cre">R$ <?php echo number_format($linha['sal'], 2, ',', '.'); ?></td>
 									<?php else: ?>
 										<?php if ($linha['dp'] == 'S'): ?>
 											<td class="td_extrato_deb_fixa"><?php echo mb_convert_case($linha['mov'], MB_CASE_TITLE); ?></td>
@@ -44,8 +44,8 @@
 											<td><?php echo ucwords($linha['mov']); ?></td>
 										<?php endif; ?>
 										<td><?php echo $linha['cat']; ?></td>
-										<td align="center" class="td_extrato_deb"><?php echo number_format($linha['val'], 2, ',', '.'); ?></td>
-										<td align="center" class="td_extrato_deb_saldo"><?php echo number_format($linha['sal'], 2, ',', '.'); ?></td>
+										<td align="center" class="td_extrato_deb">R$ <?php echo number_format($linha['val'], 2, ',', '.'); ?></td>
+										<td align="center" class="td_extrato_deb_saldo">R$ <?php echo number_format($linha['sal'], 2, ',', '.'); ?></td>
 									<?php endif; ?>
 								</tr>
 							<?php endforeach; ?>

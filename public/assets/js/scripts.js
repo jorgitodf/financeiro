@@ -15,7 +15,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (retorno) {
                     if (retorno[0]['status'] == 'error' ) {
-                        $('.retorno').html('<span class="msgError" id="">' + retorno[0]['message'] + '</span>');
+                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_login">' + retorno[0]['message'] + '</div>');
                     } else if (retorno[0]['status'] == 'success'){
                         window.setTimeout(document.location.href = retorno[0]['message'], 1);
                     }

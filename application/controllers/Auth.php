@@ -33,14 +33,17 @@ class Auth extends CI_Controller
 
     public function login()
     {
-        $dados["title"] = "Login";
-        $dados["view"] = "auth/v_login";
-        $this->load->view("v_template", $dados);
-
+        if (empty($this->session->userdata('user'))) {
+            $dados["title"] = "Login";
+            $dados["view"] = "auth/v_login";
+            $this->load->view("v_template", $dados);
+        } else {
+            redirect('/', 'refresh');
+        }
+        
         if ($this->input->post()) {
             $email = $this->input->post('email');
             $password = $this->input->post('password');
-
             if (empty($email)) {
                 $json = array('status'=>'error', 'message'=>'Preencha o E-mail');
             } elseif (empty($password)) {
@@ -49,14 +52,13 @@ class Auth extends CI_Controller
                 $return = $this->usuario_model->getEmailSenha($email, $password);
                 if ($return['status'] == 'error') {
                     $json = array('status'=>'error', 'message'=>$return['message']);
-                }  else {
+                } else {
                     $this->session->set_userdata(['id' => $return['id_usuario'], 'user' => $return['nome_usuario']]);
                     $json = array('status'=>'success', 'message'=>'/');
                 }
             }
-            return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
+            return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));    
         }
-
     }
 
     public function logout()
