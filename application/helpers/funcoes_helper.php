@@ -8,7 +8,7 @@ function cryptySenha($senha) {
     return $hash;
 }
 
-function randString(){
+function randString() {
     $basic = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnPpQqRrSsTtUuVvYyXxWwZz0123456789';
     $return = "";
     for($count = 0; 22 > $count; $count++){
@@ -16,6 +16,12 @@ function randString(){
     }
     $return1 = substr($return, 0, 22);
     return $return1;
+}
+
+function stripHTMLtags($str) {
+    $t = preg_replace('/<[^<|>]+?>/', '', htmlspecialchars_decode($str));
+    $t = htmlentities($t, ENT_QUOTES, "UTF-8");
+    return $t;
 }
 
 function consultaSenhaCrypty($senha, $hash) {

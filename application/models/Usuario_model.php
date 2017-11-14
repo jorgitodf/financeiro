@@ -1,9 +1,15 @@
 <?php
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+require_once __DIR__ . '/../../system/core/Model.php';
+
 class Usuario_model extends CI_Model
 {
     protected $table = 'tb_usuario';
+    private $nome;
+    private $email;
+    private $senha;
+    private $repeat_senha;
 
     public function __construct()
     {
@@ -16,10 +22,81 @@ class Usuario_model extends CI_Model
         return $this->table;
     }
 
-    public function getEmail($email)
+    public function getNome()
     {
-        $usuario = $this->db->get_where($this->table, ['email' => $email]);
-        return $usuario->custom_row_object(0, 'Usuario_model');
+        return $this->nome;
+    }
+    public function setNome($nome)
+    {
+        if (empty($nome)) {
+            return array('status'=>'error', 'message'=>'Preencha o seu Nome!');
+        } else {
+            $this->nome = $nome;
+        }
+    }
+
+    public function getEmaiil()
+    {
+        return $this->email;
+    }
+    public function setEmaiil($email)
+    {
+        if (empty($email)) {
+            return array('status'=>'error', 'message'=>'Preencha o seu E-mail!');
+        } else {
+            $this->email = $email;
+        }
+    }
+
+    public function getSenha()
+    {
+        return $this->senha;
+    }
+    public function setSenha($senha)
+    {
+        if (empty($senha)) {
+            return array('status'=>'error', 'message'=>'Preencha a sua Senha!');
+        } else {
+            $this->senha = $senha;
+        }
+    }
+
+    public function getRepeatSenha()
+    {
+        return $this->repeat_senha;
+    }
+    public function setRepeatSenha($repeat_senha)
+    {
+        if (empty($repeat_senha)) {
+            return array('status'=>'error', 'message'=>'Redigite a sua Senha!');
+        } elseif ($repeat_senha != $this->senha) {
+            return array('status'=>'error', 'message'=>'As senhas não são iguais!');
+        } else {
+            $this->repeat_senha = $repeat_senha;
+        }
+    }
+
+    public function insertTokenUsuario(int $idUsuario)
+    {   
+        $sql = "UPDATE $this->table SET token = ? WHERE id_usuario = ?";
+        $this->db->query($sql, [cryptySenha(randString()), $idUsuario]);
+        if ($this->db->affected_rows() > 0) {
+            $sql = "SELECT token FROM {$this->table} WHERE id_usuario = ?";
+            return $this->db->query($sql, [$idUsuario])->row();
+        } else {
+            return false;
+        }
+    }
+
+    public function getTokenByUserById(string $token, int $idUsuario) 
+    {
+        $sql = "SELECT token FROM {$this->table} WHERE token = ? AND id_usuario = ?";
+        $this->db->query($sql, [$token, $idUsuario])->row();
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function getAllUsuarios()
@@ -40,25 +117,10 @@ class Usuario_model extends CI_Model
         return $usuarios->result_array();
     }
 
-    public function createUsuario(array $data)
-    {
-        try {
-            if ($this->getEmail($data['email']) == true) {
-                return array('status'=>'error', 'message'=>'Esse E-mail já existe cadastrado!');
-            } else {
-                $sql = "INSERT INTO $this->table (nome, email, senha, data_cadastro) VALUES (?,?,?,?)";
-                $this->db->query($sql, [$data['nome'], $data['email'], $data['senha'], $data['data_cadastro']]);
-                return array('status'=>'success', 'message' => 'Cadastrado');
-            }
-        } catch (Exception $e) {
-            return array('status'=>'error', 'message' => $e->getMessage());
-        }
-    }
-
     public function getEmailSenha($email, $password)
     {
         try {
-            $sql = "SELECT id_usuario, nome, email, senha FROM $this->table WHERE email = ?";
+            $sql = "SELECT id_usuario, nome, email, senha FROM {$this->table} WHERE email = ?";
             $dados = $this->db->query($sql, [$email]);
             if ($dados->result_array()[0]['email'] && (consultaSenhaCrypty($password, $dados->result_array()[0]['senha']) != true)) {
                 return array('status'=>'error', 'message' => 'A senha digitada não confere com a senha Cadastrada!');

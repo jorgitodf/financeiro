@@ -18,6 +18,33 @@ USE `financeiro`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `ci_sessions`
+--
+
+DROP TABLE IF EXISTS `ci_sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ci_sessions` (
+  `id` varchar(40) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
+  `data` blob NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ci_sessions_timestamp` (`timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ci_sessions`
+--
+
+LOCK TABLES `ci_sessions` WRITE;
+/*!40000 ALTER TABLE `ci_sessions` DISABLE KEYS */;
+INSERT INTO `ci_sessions` VALUES ('52345htsioke7drnv53h69vtj9052hl1','::1',1510682476,'__ci_last_regenerate|i:1510682476;id|s:1:\"1\";user|s:22:\"Jorgito da Silva Paiva\";idConta|s:1:\"1\";'),('61jrdj77ip4nmsq74419quh71i00anma','::1',1510683858,'__ci_last_regenerate|i:1510683858;id|s:1:\"1\";user|s:22:\"Jorgito da Silva Paiva\";idConta|s:1:\"1\";'),('kmo5l1k5iq9ig1un23cs0tjnl349o2vt','::1',1510683132,'__ci_last_regenerate|i:1510683132;id|s:1:\"1\";user|s:22:\"Jorgito da Silva Paiva\";idConta|s:1:\"1\";'),('rohvsv7ab365ldb7gh8fgou6instj3m5','::1',1510685333,'__ci_last_regenerate|i:1510684709;id|s:1:\"1\";user|s:22:\"Jorgito da Silva Paiva\";idConta|s:1:\"1\";'),('scot226dv4hua78v4saf5bdb84plgisq','::1',1510684709,'__ci_last_regenerate|i:1510684709;id|s:1:\"1\";user|s:22:\"Jorgito da Silva Paiva\";idConta|s:1:\"1\";');
+/*!40000 ALTER TABLE `ci_sessions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tb_banco`
 --
 
@@ -160,7 +187,7 @@ CREATE TABLE `tb_conta` (
 
 LOCK TABLES `tb_conta` WRITE;
 /*!40000 ALTER TABLE `tb_conta` DISABLE KEYS */;
-INSERT INTO `tb_conta` VALUES (1,0972,NULL,0020268,6,013,'2016-09-22 13:58:29',1,104,2),(7,0522,NULL,0018042,1,NULL,'2017-11-02 14:11:43',20,479,3);
+INSERT INTO `tb_conta` VALUES (1,0972,NULL,0020268,6,013,'2016-09-22 13:58:29',1,104,2);
 /*!40000 ALTER TABLE `tb_conta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +209,7 @@ CREATE TABLE `tb_despesa_cartao` (
   PRIMARY KEY (`id_item_despesa_fatura`),
   KEY `indx_cartao_credito` (`fk_id_cartao_credito`) USING BTREE,
   CONSTRAINT `fk_cartao_credito_tb_despesas_cartao` FOREIGN KEY (`fk_id_cartao_credito`) REFERENCES `tb_cartao_credito` (`id_cartao_credito`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=328 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=347 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,7 +218,7 @@ CREATE TABLE `tb_despesa_cartao` (
 
 LOCK TABLES `tb_despesa_cartao` WRITE;
 /*!40000 ALTER TABLE `tb_despesa_cartao` DISABLE KEYS */;
-INSERT INTO `tb_despesa_cartao` VALUES (267,'Curso Laravel 5.5 com Vue.js - Udemy','2017-11-08',20.00,'01/01','2017-12-08',2),(268,'Assnitet Log','2017-11-02',9.90,'01/01','2017-12-08',2),(269,'Ubber São Paulo','2017-10-28',26.53,'01/01','2017-12-08',2),(270,'Ubber São Paulo','2017-10-29',31.27,'01/01','2017-12-08',2),(271,'Ubber São Paulo','2017-10-29',11.59,'01/01','2017-12-08',2),(272,'Ubber São Paulo','2017-10-30',7.88,'01/01','2017-12-08',2),(283,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'01/10','2017-12-08',2),(284,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'02/10','2018-01-08',2),(285,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'03/10','2018-02-08',2),(286,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'04/10','2018-03-08',2),(287,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'05/10','2018-04-08',2),(288,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'06/10','2018-05-08',2),(289,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'07/10','2018-06-08',2),(290,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'08/10','2018-07-08',2),(291,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'09/10','2018-08-08',2),(292,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'10/10','2018-09-08',2),(293,'Multy Forças Academia','2017-08-17',69.90,'04/12','2017-12-08',2),(294,'Multy Forças Academia','2017-08-17',69.90,'05/12','2018-01-08',2),(295,'Multy Forças Academia','2017-08-17',69.90,'06/12','2018-02-08',2),(296,'Multy Forças Academia','2017-08-17',69.90,'07/12','2018-03-08',2),(297,'Multy Forças Academia','2017-08-17',69.90,'08/12','2018-04-08',2),(298,'Multy Forças Academia','2017-08-17',69.90,'09/12','2018-05-08',2),(299,'Multy Forças Academia','2017-08-17',69.90,'10/12','2018-06-08',2),(300,'Multy Forças Academia','2017-08-17',69.90,'11/12','2018-07-08',2),(301,'Multy Forças Academia','2017-08-17',69.90,'12/12','2018-08-08',2),(302,'Centauro','2017-08-26',63.34,'03/03','2017-12-08',2),(303,'Perfume Empire Hinode VIP','2017-09-06',45.00,'03/03','2017-12-08',2),(304,'PHP Prime','2017-09-11',49.70,'03/10','2017-12-08',2),(305,'PHP Prime','2017-09-11',49.70,'04/10','2018-01-08',2),(306,'PHP Prime','2017-09-11',49.70,'05/10','2018-02-08',2),(307,'PHP Prime','2017-09-11',49.70,'06/10','2018-03-08',2),(308,'PHP Prime','2017-09-11',49.70,'07/10','2018-04-08',2),(309,'PHP Prime','2017-09-11',49.70,'08/10','2018-05-08',2),(310,'PHP Prime','2017-09-11',49.70,'09/10','2018-06-08',2),(311,'PHP Prime','2017-09-11',49.70,'10/10','2018-07-08',2),(312,'Mensalidade School Of Net','2017-10-05',29.00,'02/12','2017-12-08',2),(313,'Mensalidade School Of Net','2017-10-05',29.00,'03/12','2018-01-08',2),(314,'Mensalidade School Of Net','2017-10-05',29.00,'04/12','2018-02-08',2),(315,'Mensalidade School Of Net','2017-10-05',29.00,'05/12','2018-03-08',2),(316,'Mensalidade School Of Net','2017-10-05',29.00,'06/12','2018-04-08',2),(317,'Mensalidade School Of Net','2017-10-05',29.00,'07/12','2018-05-08',2),(318,'Mensalidade School Of Net','2017-10-05',29.00,'08/12','2018-06-08',2),(319,'Mensalidade School Of Net','2017-10-05',29.00,'09/12','2018-07-08',2),(320,'Mensalidade School Of Net','2017-10-05',29.00,'10/12','2018-08-08',2),(321,'Mensalidade School Of Net','2017-10-05',29.00,'11/12','2018-09-08',2),(322,'Mensalidade School Of Net','2017-10-05',29.00,'12/12','2018-10-08',2),(323,'Nova Fórmula','2017-10-06',25.45,'02/06','2017-12-08',2),(324,'Nova Fórmula','2017-10-06',25.45,'03/06','2018-01-08',2),(325,'Nova Fórmula','2017-10-06',25.45,'04/06','2018-02-08',2),(326,'Nova Fórmula','2017-10-06',25.45,'05/06','2018-03-08',2),(327,'Nova Fórmula','2017-10-06',25.45,'06/06','2018-04-08',2);
+INSERT INTO `tb_despesa_cartao` VALUES (267,'Curso Laravel 5.5 com Vue.js - Udemy','2017-11-08',20.00,'01/01','2017-12-08',2),(268,'Assnitet Log','2017-11-02',9.90,'01/01','2017-12-08',2),(269,'Ubber São Paulo','2017-10-28',26.53,'01/01','2017-12-08',2),(270,'Ubber São Paulo','2017-10-29',31.27,'01/01','2017-12-08',2),(271,'Ubber São Paulo','2017-10-29',11.59,'01/01','2017-12-08',2),(272,'Ubber São Paulo','2017-10-30',7.88,'01/01','2017-12-08',2),(283,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'01/10','2017-12-08',2),(284,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'02/10','2018-01-08',2),(285,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'03/10','2018-02-08',2),(286,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'04/10','2018-03-08',2),(287,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'05/10','2018-04-08',2),(288,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'06/10','2018-05-08',2),(289,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'07/10','2018-06-08',2),(290,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'08/10','2018-07-08',2),(291,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'09/10','2018-08-08',2),(292,'Resolução Apoio Adm Andrologia','2017-10-28',109.30,'10/10','2018-09-08',2),(293,'Multy Forças Academia','2017-08-17',69.90,'04/12','2017-12-08',2),(294,'Multy Forças Academia','2017-08-17',69.90,'05/12','2018-01-08',2),(295,'Multy Forças Academia','2017-08-17',69.90,'06/12','2018-02-08',2),(296,'Multy Forças Academia','2017-08-17',69.90,'07/12','2018-03-08',2),(297,'Multy Forças Academia','2017-08-17',69.90,'08/12','2018-04-08',2),(298,'Multy Forças Academia','2017-08-17',69.90,'09/12','2018-05-08',2),(299,'Multy Forças Academia','2017-08-17',69.90,'10/12','2018-06-08',2),(300,'Multy Forças Academia','2017-08-17',69.90,'11/12','2018-07-08',2),(301,'Multy Forças Academia','2017-08-17',69.90,'12/12','2018-08-08',2),(302,'Centauro','2017-08-26',63.34,'03/03','2017-12-08',2),(303,'Perfume Empire Hinode VIP','2017-09-06',45.00,'03/03','2017-12-08',2),(304,'PHP Prime','2017-09-11',49.70,'03/10','2017-12-08',2),(305,'PHP Prime','2017-09-11',49.70,'04/10','2018-01-08',2),(306,'PHP Prime','2017-09-11',49.70,'05/10','2018-02-08',2),(307,'PHP Prime','2017-09-11',49.70,'06/10','2018-03-08',2),(308,'PHP Prime','2017-09-11',49.70,'07/10','2018-04-08',2),(309,'PHP Prime','2017-09-11',49.70,'08/10','2018-05-08',2),(310,'PHP Prime','2017-09-11',49.70,'09/10','2018-06-08',2),(311,'PHP Prime','2017-09-11',49.70,'10/10','2018-07-08',2),(312,'Mensalidade School Of Net','2017-10-05',29.00,'02/12','2017-12-08',2),(313,'Mensalidade School Of Net','2017-10-05',29.00,'03/12','2018-01-08',2),(314,'Mensalidade School Of Net','2017-10-05',29.00,'04/12','2018-02-08',2),(315,'Mensalidade School Of Net','2017-10-05',29.00,'05/12','2018-03-08',2),(316,'Mensalidade School Of Net','2017-10-05',29.00,'06/12','2018-04-08',2),(317,'Mensalidade School Of Net','2017-10-05',29.00,'07/12','2018-05-08',2),(318,'Mensalidade School Of Net','2017-10-05',29.00,'08/12','2018-06-08',2),(319,'Mensalidade School Of Net','2017-10-05',29.00,'09/12','2018-07-08',2),(320,'Mensalidade School Of Net','2017-10-05',29.00,'10/12','2018-08-08',2),(321,'Mensalidade School Of Net','2017-10-05',29.00,'11/12','2018-09-08',2),(322,'Mensalidade School Of Net','2017-10-05',29.00,'12/12','2018-10-08',2),(323,'Nova Fórmula','2017-10-06',25.45,'02/06','2017-12-08',2),(324,'Nova Fórmula','2017-10-06',25.45,'03/06','2018-01-08',2),(325,'Nova Fórmula','2017-10-06',25.45,'04/06','2018-02-08',2),(326,'Nova Fórmula','2017-10-06',25.45,'05/06','2018-03-08',2),(327,'Nova Fórmula','2017-10-06',25.45,'06/06','2018-04-08',2),(328,'Curso Cake PHP WebDevBr','2017-06-28',81.86,'05/05','2017-12-08',1),(329,'Curso Programação com API do Zabbix','2017-08-04',40.00,'04/05','2017-12-08',1),(330,'Curso Programação com API do Zabbix','2017-08-04',40.00,'05/05','2018-01-08',1),(331,'Celular Motorola Moto G5s Plus','2017-08-04',165.60,'03/10','2017-12-08',1),(332,'Celular Motorola Moto G5s Plus','2017-08-04',165.60,'04/10','2018-01-08',1),(333,'Celular Motorola Moto G5s Plus','2017-08-04',165.60,'05/10','2018-02-08',1),(334,'Celular Motorola Moto G5s Plus','2017-08-04',165.60,'06/10','2018-03-08',1),(335,'Celular Motorola Moto G5s Plus','2017-08-04',165.60,'07/10','2018-04-08',1),(336,'Celular Motorola Moto G5s Plus','2017-08-04',165.60,'08/10','2018-05-08',1),(337,'Celular Motorola Moto G5s Plus','2017-08-04',165.60,'09/10','2018-06-08',1),(338,'Celular Motorola Moto G5s Plus','2017-08-04',165.60,'10/10','2018-07-08',1),(339,'Recarga Claro','2017-10-13',13.00,'01/01','2017-12-08',1),(340,'Mensalidade Treinaweb','2017-02-09',69.00,'10/12','2017-12-08',1),(341,'Mensalidade Treinaweb','2017-02-09',69.00,'11/12','2018-01-08',1),(342,'Mensalidade Treinaweb','2017-02-09',69.00,'12/12','2018-02-08',1),(343,'Camisetas Consulado do Rock','2017-10-30',80.00,'01/01','2017-12-08',1),(344,'Calça Jeans C&A','2017-10-26',50.00,'01/02','2017-12-08',1),(345,'Calça Jeans C&A','2017-10-26',50.00,'02/02','2018-01-08',1),(346,'Hotel Lugus São Paulo','2017-10-28',161.00,'01/01','2017-12-08',1);
 /*!40000 ALTER TABLE `tb_despesa_cartao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,7 +283,7 @@ CREATE TABLE `tb_fatura_cartao` (
   PRIMARY KEY (`id_fatura_cartao`),
   KEY `indx_fatura_cartao_tb_cartao_credito` (`fk_id_cartao_credito`) USING BTREE,
   CONSTRAINT `fk_tb_fatura_cartao_tb_cartao_credito` FOREIGN KEY (`fk_id_cartao_credito`) REFERENCES `tb_cartao_credito` (`id_cartao_credito`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -265,7 +292,7 @@ CREATE TABLE `tb_fatura_cartao` (
 
 LOCK TABLES `tb_fatura_cartao` WRITE;
 /*!40000 ALTER TABLE `tb_fatura_cartao` DISABLE KEYS */;
-INSERT INTO `tb_fatura_cartao` VALUES (1,'2017-01-09',3.12,5.90,0.04,0.00,16.80,'S',NULL,308.08,308.00,1,'2017-1'),(2,'2017-01-09',0.00,0.00,0.00,0.00,38.12,'S',6.75,459.45,400.00,2,'2017-1'),(4,'2017-02-08',0.00,0.00,0.21,0.00,59.45,'S',10.53,521.96,500.00,2,'2017-2'),(5,'2017-02-08',4.04,5.90,1.16,0.00,0.08,'S',6.24,432.42,410.00,1,'2017-2'),(6,'2017-03-08',3.76,5.90,0.05,0.00,22.42,'S',0.00,492.21,460.00,1,'2017-3'),(7,'2017-03-08',0.00,0.00,0.20,0.00,21.96,'S',3.89,540.83,500.00,2,'2017-3'),(8,'2017-04-07',5.99,5.90,0.12,0.00,32.21,'S',NULL,453.22,423.22,1,'2017-4'),(9,'2017-04-07',0.00,0.00,0.07,0.00,40.83,'S',7.23,598.29,550.00,2,'2017-4'),(10,'2017-05-08',3.87,5.90,0.07,0.00,30.00,'S',NULL,355.90,355.90,1,'2017-5'),(11,'2017-05-08',0.00,0.00,0.16,0.00,48.29,'S',8.29,556.42,500.00,2,'2017-5'),(12,'2017-06-08',0.12,5.90,0.00,0.00,0.00,'S',0.00,495.31,490.00,1,'2017-6'),(13,'2017-06-08',0.00,0.00,0.13,0.00,56.42,'S',5.64,447.90,440.00,2,'2017-6'),(14,'2017-07-11',0.00,0.00,0.16,0.00,7.90,'S',0.79,583.01,510.00,2,'2017-7'),(15,'2017-08-08',0.00,5.90,0.00,0.00,NULL,'S',0.00,412.79,400.00,1,'2017-8'),(16,'2017-08-09',0.00,0.00,0.04,0.00,73.01,'S',7.30,518.60,500.00,2,'2017-8'),(17,'2017-09-08',1.53,0.00,0.08,0.00,12.79,'S',0.00,504.81,490.00,1,'2017-9'),(18,'2017-09-08',0.00,0.00,0.38,0.00,18.60,'S',0.00,584.18,530.00,2,'2017-9'),(19,'2017-10-09',1.65,5.90,4.51,46.97,14.81,'S',0.00,766.20,700.00,1,'2017-10'),(20,'2017-10-10',1.87,0.00,0.07,0.00,54.18,'S',6.05,476.96,450.00,2,'2017-10'),(21,'2017-11-08',6.98,5.90,0.37,61.79,66.20,'S',0.00,662.95,600.00,1,'2017-11'),(22,'2017-11-08',0.00,0.00,0.25,0.00,26.96,'S',3.00,669.35,610.00,2,'2017-11'),(24,'2017-12-08',0.00,0.00,0.00,0.00,0.00,'N',0.00,0.00,0.00,2,'2017-12');
+INSERT INTO `tb_fatura_cartao` VALUES (1,'2017-01-09',3.12,5.90,0.04,0.00,16.80,'S',NULL,308.08,308.00,1,'2017-1'),(2,'2017-01-09',0.00,0.00,0.00,0.00,38.12,'S',6.75,459.45,400.00,2,'2017-1'),(4,'2017-02-08',0.00,0.00,0.21,0.00,59.45,'S',10.53,521.96,500.00,2,'2017-2'),(5,'2017-02-08',4.04,5.90,1.16,0.00,0.08,'S',6.24,432.42,410.00,1,'2017-2'),(6,'2017-03-08',3.76,5.90,0.05,0.00,22.42,'S',0.00,492.21,460.00,1,'2017-3'),(7,'2017-03-08',0.00,0.00,0.20,0.00,21.96,'S',3.89,540.83,500.00,2,'2017-3'),(8,'2017-04-07',5.99,5.90,0.12,0.00,32.21,'S',NULL,453.22,423.22,1,'2017-4'),(9,'2017-04-07',0.00,0.00,0.07,0.00,40.83,'S',7.23,598.29,550.00,2,'2017-4'),(10,'2017-05-08',3.87,5.90,0.07,0.00,30.00,'S',NULL,355.90,355.90,1,'2017-5'),(11,'2017-05-08',0.00,0.00,0.16,0.00,48.29,'S',8.29,556.42,500.00,2,'2017-5'),(12,'2017-06-08',0.12,5.90,0.00,0.00,0.00,'S',0.00,495.31,490.00,1,'2017-6'),(13,'2017-06-08',0.00,0.00,0.13,0.00,56.42,'S',5.64,447.90,440.00,2,'2017-6'),(14,'2017-07-11',0.00,0.00,0.16,0.00,7.90,'S',0.79,583.01,510.00,2,'2017-7'),(15,'2017-08-08',0.00,5.90,0.00,0.00,NULL,'S',0.00,412.79,400.00,1,'2017-8'),(16,'2017-08-09',0.00,0.00,0.04,0.00,73.01,'S',7.30,518.60,500.00,2,'2017-8'),(17,'2017-09-08',1.53,0.00,0.08,0.00,12.79,'S',0.00,504.81,490.00,1,'2017-9'),(18,'2017-09-08',0.00,0.00,0.38,0.00,18.60,'S',0.00,584.18,530.00,2,'2017-9'),(19,'2017-10-09',1.65,5.90,4.51,46.97,14.81,'S',0.00,766.20,700.00,1,'2017-10'),(20,'2017-10-10',1.87,0.00,0.07,0.00,54.18,'S',6.05,476.96,450.00,2,'2017-10'),(21,'2017-11-08',6.98,5.90,0.37,61.79,66.20,'S',0.00,662.95,600.00,1,'2017-11'),(22,'2017-11-08',0.00,0.00,0.25,0.00,26.96,'S',3.00,669.35,610.00,2,'2017-11'),(24,'2017-12-08',0.00,0.00,0.00,0.00,0.00,'N',0.00,0.00,0.00,2,'2017-12'),(25,'2017-12-08',NULL,NULL,NULL,NULL,NULL,'N',NULL,NULL,NULL,1,'2017-12');
 /*!40000 ALTER TABLE `tb_fatura_cartao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +330,7 @@ CREATE TABLE `tb_financeiro` (
 
 LOCK TABLES `tb_financeiro` WRITE;
 /*!40000 ALTER TABLE `tb_financeiro` DISABLE KEYS */;
-INSERT INTO `tb_financeiro` VALUES (1,0972,NULL,0020268,6,013,'2016-09-22 13:58:29',1,104,2),(7,0522,NULL,0018042,1,NULL,'2017-11-02 14:11:43',20,479,3);
+INSERT INTO `tb_financeiro` VALUES (1,0972,NULL,0020268,6,013,'2016-09-22 13:58:29',1,104,2);
 /*!40000 ALTER TABLE `tb_financeiro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -454,8 +481,9 @@ CREATE TABLE `tb_usuario` (
   `email` varchar(90) NOT NULL,
   `senha` varchar(190) NOT NULL,
   `data_cadastro` datetime NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -464,7 +492,7 @@ CREATE TABLE `tb_usuario` (
 
 LOCK TABLES `tb_usuario` WRITE;
 /*!40000 ALTER TABLE `tb_usuario` DISABLE KEYS */;
-INSERT INTO `tb_usuario` VALUES (1,'Jorgito da Silva Paiva','jspaiva.1977@gmail.com','$2a$09$pBDbhAUiRvHKg8TB9lLsUOWwjG6628MuFvhgtdZLR3p1weYcENdqS','2016-09-15 16:40:14'),(20,'Fabiana','delicia@gmail.com','$2a$09$GfJL3vuBHzHn45lSxg6wsOlGYNsbEYAMe0PfgEvLg2yor./ugzdiG','2017-10-31 22:10:43');
+INSERT INTO `tb_usuario` VALUES (1,'Jorgito da Silva Paiva','jspaiva.1977@gmail.com','$2a$09$pBDbhAUiRvHKg8TB9lLsUOWwjG6628MuFvhgtdZLR3p1weYcENdqS','2016-09-15 16:40:14','$2a$09$cGbxKG2PRMisJ6i37NHEteatGWVAlRLDI68XqtCqRappn36QJDst.');
 /*!40000 ALTER TABLE `tb_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -575,4 +603,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-13 16:43:33
+-- Dump completed on 2017-11-14 16:50:24

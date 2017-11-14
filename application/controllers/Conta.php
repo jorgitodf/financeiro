@@ -108,17 +108,21 @@ class Conta extends CI_Controller
 			$dados["idConta"] = $id;
 			$dados['categorias'] = $this->categoria_model->getCategoriasDespesas();
 			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $id);
+			$dados["token"] = $this->conta_model->getTokenUsuario($this->session->userdata('id'), $id);
 			$dados["view"] = "conta/v_debito";
 			$this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
 			$idConta = $this->input->post('idConta');
 			$dtDebito = $this->input->post('data_debito');
 			$movimentacao = $this->input->post('movimentacao');
+			$token = $this->input->post('token');
 			$nome_categoria = $this->input->post('nome_categoria');
 			$valor = $this->input->post('valor');
 			$newValor = str_replace('R$ ', '', str_replace(',', '.', str_replace('.', '', $valor)));
-
-			if (empty($dtDebito)) {
+			
+			if ($this->usuario_model->getTokenByUserById($token, $this->session->userdata('id')) == false) {
+				$json = array('status'=>'error', 'message'=>'Essa operação não pode ser realizada!');
+			} elseif (empty($dtDebito)) {
 				$json = array('status'=>'error', 'message'=>'Preencha a Data do Débito!');
 			} elseif (empty($movimentacao)) {
 				$json = array('status'=>'error', 'message'=>'Preencha a Movimentação!');

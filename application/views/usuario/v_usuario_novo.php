@@ -1,35 +1,49 @@
 
-<div class="container col-md-sm col-md-12 col-lg-12">
-  <div class="row">
-    <section class="col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4" id="sec_cadastro_usuario">
-      <h2>Cadastro de Novo Usuário</h2>
-
-      <form method="POST" action="/usuario" id="form_cadastro_usuario">
-
-        <div class="form-group">
-          <label for="nome">Nome:</label>
-          <input type="nome" name="nome" id="nome" class="form-control" placeholder="Insira seu Nome Completo aqui..."/>
-        </div>
-
-        <div class="form-group">
-          <label for="email">E-mail:</label>
-          <input type="email" name="email" id="email" class="form-control" placeholder="Insira seu E-mail aqui..."/>
-        </div>
-
-        <div class="form-group">
-          <label for="password">Senha:</label>
-          <input type="password" name="password" id="password" class="form-control" placeholder="Insira sua Senha aqui..."/>
-        </div>
-
-        <div class="form-group">
-          <label for="repeat_password">Redigite a Senha:</label>
-          <input type="password" name="repeat_password" id="repeat_password" class="form-control" placeholder="Digite novamente sua Senha aqui..."/>
-        </div>
-
-        <input type="submit" value="Cadastrar" class="btn btn-primary" />
-
-        <div class="retorno"></div>
-      </form>
-    </section>
-  </div>
+<div class="container cor_fundo col-md-sm col-md-12 col-lg-12">
+    <div class="row">
+        <section class="col-md-5 col-sm-5 col-lg-5" id="sec_cadastro_usuario">
+            <div class="well box-login" id="div_cad_usuario">
+                <div>
+                    <h2 id="header_cad_usuario">Cadastro de Novo Usuário</h2>
+                </div>
+                <form method="POST" action="/usuario" id="form_cadastro_usuario">
+                    <fieldset>
+                        <div class="form-group col-md-12 col-sm-12 col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-pencil"></span></span>
+                                <input type="text" name="nome" id="nome" class="form-control" aria-describedby="sizing-addon2" placeholder="Insira seu Nome"/>
+                            </div>    
+                        </div>
+                        <div class="form-group col-md-12 col-sm-12 col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-envelope"></span></span>
+                                <input type="email" name="email" id="email" class="form-control" aria-describedby="sizing-addon2" placeholder="Insira seu E-mail"/>
+                            </div>    
+                        </div>
+                        <div class="form-group col-md-12 col-sm-12 col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-lock"></span></span>
+                                <input type="password" name="password" id="password" class="form-control" aria-describedby="sizing-addon2" placeholder="Insira sua Senha"/>
+                            </div>
+                        </div>  
+                        <div class="form-group col-md-12 col-sm-12 col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-lock"></span></span>
+                                <input type="password" name="repeat_password" id="repeat_password" class="form-control" aria-describedby="sizing-addon2" placeholder="Digite novamente sua sua Senha"/>
+                            </div>
+                        </div> 
+                        <div class="form-group col-md-12 col-sm-12 col-lg-12">
+                            <div class="form-group" id="retorno_cad_usuario">
+                                <input type="submit" value="Cadastrar" class="btn btn-primary" />
+                                <a class="btn btn-primary" id="" href="/home" title="Início">Início</a>
+                            </div> 
+                            <div class="form-group col-md-8 col-sm-8 col-lg-8 retorno" id=""> 
+                            </div>  
+                        </div>
+                        
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
 </div>

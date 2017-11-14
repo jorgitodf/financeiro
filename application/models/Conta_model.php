@@ -11,6 +11,7 @@ class Conta_model extends CI_Model
         $this->load->database();
         $this->load->model('banco_model');
         $this->load->model('tipoconta_model');
+        $this->load->model('usuario_model');
         $this->load->model('extrato_model');
         $this->load->model('categoria_model');
         $this->load->model('agendamento_model');
@@ -80,6 +81,17 @@ class Conta_model extends CI_Model
                   ON (ext.fk_id_conta = con.id_conta) JOIN {$this->banco_model->getTable()} as ban ON (con.fk_cod_banco = ban.cod_banco)
                   WHERE ext.data_movimentacao BETWEEN ? AND ? AND ext.fk_id_conta = ? ORDER BY ext.id_extrato DESC LIMIT 1";
             return $this->db->query($sql, [$dataMenor, $dataAtual, $idConta])->result_array();
+        }
+    }
+
+    public function getTokenUsuario(int $idUsuario)
+    {
+        $sql = "SELECT token FROM {$this->usuario_model->getTable()} WHERE id_usuario = ?";
+        $result = $this->db->query($sql, [$idUsuario])->row();
+        if ($result->token == NULL || empty($result->token)) {
+            return $this->usuario_model->insertTokenUsuario($idUsuario);
+        } else {
+            return $this->db->query($sql, [$idUsuario])->row();
         }
     }
 

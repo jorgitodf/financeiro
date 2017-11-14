@@ -15,7 +15,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (retorno) {
                     if (retorno[0]['status'] == 'error' ) {
-                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_login">' + retorno[0]['message'] + '</div>');
+                        $('.retorno').html('<div class="alert alert-danger col-md-12 col-sm-12 col-lg-12 form-group text-center msgError" role="alert" id="msg_error_login">' + retorno[0]['message'] + '</div>');
                     } else if (retorno[0]['status'] == 'success'){
                         window.setTimeout(document.location.href = retorno[0]['message'], 1);
                     }
@@ -43,7 +43,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (retorno) {
                     if (retorno[0]['status'] == 'error' ) {
-                        $('.retorno').html('<span class="msgError" id="">' + retorno[0]['message'] + '</span>');
+                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_cad_usuario">' + retorno[0]['message'] + '</div>');
                     } else if (retorno[0]['status'] == 'success'){
                         $('.retorno').html('<span class="msgError" id="">' + retorno[0]['message'] + '</span>');
                     }
@@ -557,8 +557,8 @@ $(document).ready(function () {
         if (subtotal > 0) {
             total = (parseFloat(subtotal) + parseFloat(encargos) + parseFloat(iof) + parseFloat(anuidade) + parseFloat(protecao_prem)
                 + parseFloat(juros_fat) + parseFloat(restante));
-            var num = total.toString();   
-            var tot = num.replace('.',',');
+            //var num = total.toString();   
+            //var tot = num.replace('.',',');
         }
         $(".msgError").html("");
         $(".msgError").css("display", "none");
@@ -582,7 +582,7 @@ $(document).ready(function () {
                 alert('ERRO: Falha ao carregar o script.');
             }
         });
-        $('#valor_total').val('R$ ' + tot);
+        $('#valor_total').val(numberToReal(total));
     });
     
     function replace(str) {
@@ -602,6 +602,12 @@ $(document).ready(function () {
 
 function redirectToHome() {
     return document.location.href = "/";
+}
+
+function numberToReal(numero) {
+    var numero = numero.toFixed(2).split('.');
+    numero[0] = "R$ " + numero[0].split(/(?=(?:...)*$)/).join('.');
+    return numero.join(',');
 }
 
 function getSaldo() {
