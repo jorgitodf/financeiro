@@ -22,7 +22,7 @@
                         <div class="row-fluid">
                             <div class="form-group form-group-sm col-sm-6 col-md-6" id="">
                                 <label for="nome_categoria" class="control-label">Categoria:</label>
-                                <select class="form-control input-sm" name="nome_categoria" disabled="disabled" id="nome_categoria" >
+                                <select class="form-control input-sm" name="nome_categoria" id="nome_categoria" disabled="disabled" />
                                     <option></option>
                                     <?php foreach ($categorias as $categoria): ?>
                                         <option value="<?php echo $categoria['id_categoria']; ?>"><?php echo $categoria['nome_categoria']; ?> </option>

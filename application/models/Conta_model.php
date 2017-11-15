@@ -4,6 +4,16 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 class Conta_model extends CI_Model
 {
     protected $table = 'tb_conta';
+    private $id_conta;
+    private $codigo_agencia;
+    private $digito_verificador_agencia;
+    private $numero_conta;
+    private $digito_verificador_conta;
+    private $codigo_operacao;
+    private $data_cadastro;
+    private $fk_id_usuario;
+    private $fk_cod_banco;
+    private $fk_tipo_conta;
 
     public function __construct()
     {
@@ -21,6 +31,15 @@ class Conta_model extends CI_Model
 
     public function getTable() {
         return $this->table;
+    }
+
+    public function getIdConta()
+    {
+        return $this->id_conta;
+    }
+    public function setIdConta($id_conta)
+    {
+        $this->id_conta = $id_conta;
     }
 
     public function getEmail($email)

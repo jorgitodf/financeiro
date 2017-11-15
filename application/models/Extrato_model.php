@@ -1,15 +1,30 @@
 <?php
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+require_once __DIR__ . '/../../system/core/Model.php';
+
 class Extrato_model extends CI_Model
 {
     protected $table = 'tb_extrato';
+    private $id_extrato;
+    private $data_movimentacao;
+    private $mes;
+    private $tipo_operacao;
+    private $movimentacao;
+    private $quantidade;
+    private $valor;
+    private $saldo;
+    private $categoria;
+    private $conta;
+    private $despesa_fixa;
 
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();
         $this->load->model('categoria_model');
+        $this->load->model('conta_model');
+        $this->conta = new Conta_model();
+        $this->categoria = new Categoria_model();
         date_default_timezone_set('America/Sao_Paulo');
     }
 
@@ -17,34 +32,94 @@ class Extrato_model extends CI_Model
         return $this->table;
     }
 
-    public function getExtratoAtual($idConta) {
-        if (!empty($idConta)) {
-            $ano = date("Y");
-            $mes = date("m");
-            $dataMovimentacaoInicial = "{$ano}-{$mes}-01";
-            $dataMovimentacaoFinal = "{$ano}-{$mes}-31";
-
-            $sql = "SELECT ext.data_movimentacao AS data_movimentacao, ext.movimentacao AS mov, cat.nome_categoria AS
-                  cat, ext.tipo_operacao AS op, ext.valor AS val, ext.saldo AS sal, ext.despesa_fixa AS dp FROM
-                  $this->table AS ext LEFT JOIN {$this->categoria_model->getTable()} AS cat ON (ext.fk_id_categoria = cat.id_categoria) WHERE
-                  ext.fk_id_conta = ? AND ext.data_movimentacao BETWEEN ? AND ?";
-            return $this->db->query($sql, [$idConta, $dataMovimentacaoInicial, $dataMovimentacaoFinal])->result_array();
-        }
-    }
-
-    public function createConta(array $dados)
+    public function getIdExtrato()
     {
-        try {
-            $sql = "INSERT INTO $this->table (codigo_agencia, digito_verificador_agencia, numero_conta, digito_verificador_conta,
-              codigo_operacao, data_cadastro, fk_id_usuario, fk_cod_banco, fk_tipo_conta) VALUES (?,?,?,?,?,?,?,?,?)";
-              $this->db->query($sql, [$dados['codigo_agencia'],
-              !empty($dados['digito_verificador_agencia']) ? $dados['digito_verificador_agencia'] : null, $dados['numero_conta'],
-              $dados['digito_verificador_conta'], !empty($dados['codigo_operacao']) ? $dados['codigo_operacao'] : null, $dados['data_cadastro'],
-              $dados['fk_id_usuario'], $dados['fk_cod_banco'], $dados['fk_tipo_conta']]);
-            return array('status'=>'success', 'message' => 'Conta Cadastrada com Sucesso!');
-        } catch (Exception $e) {
-            return array('status'=>'error', 'message' => $e->getMessage());
-        }
+        return $this->id_extrato;
+    }
+    public function setIdExtrato($id_extratoid)
+    {
+        $this->id_extrato = $id_extrato;
     }
 
+    public function getDataMovimentacao()
+    {
+        return $this->data_movimentacao;
+    }
+    public function setDataMovimentacao($data_movimentacao)
+    {
+        $this->data_movimentacao = $data_movimentacao;
+    }
+
+    public function getMes()
+    {
+        return $this->mes;
+    }
+    public function setMes($mes)
+    {
+        $this->mes = $mes;
+    }
+
+    public function getTipoOperacao()
+    {
+        return $this->tipo_operacao;
+    }
+    public function setTipoOperacao($tipo_operacao)
+    {
+        $this->tipo_operacao = $tipo_operacao;
+    }
+
+    public function getMovimentacao()
+    {
+        return $this->movimentacao;
+    }
+    public function setMovimentacao($movimentacao)
+    {
+        $this->movimentacao = $movimentacao;
+    }
+
+    public function getQuantidade()
+    {
+        return $this->quantidade;
+    }
+    public function setQuantidade($quantidade)
+    {
+        $this->quantidade = $quantidade;
+    }
+
+    public function getValor()
+    {
+        return $this->valor;
+    }
+    public function setValor($valor)
+    {
+        $this->valor = $valor;
+    }
+
+    public function getSaldo()
+    {
+        return $this->saldo;
+    }
+    public function setSaldo($saldo)
+    {
+        $this->saldo = $saldo;
+    }
+
+    public function getDespesaFixa()
+    {
+        return $this->despesa_fixa;
+    }
+    public function setDespesaFixa($despesa_fixa)
+    {
+        $this->despesa_fixa = $despesa_fixa;
+    }
+
+    public function getCategoria()
+    {
+        return $this->categoria;
+    }
+
+    public function getConta()
+    {
+        return $this->conta;
+    }
 }

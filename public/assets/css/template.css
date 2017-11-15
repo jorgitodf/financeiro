@@ -725,8 +725,32 @@
     /* PÁGINA CADASTRO USUÁRIO */
     #sec_cadastro_usuario {
         margin-top: 7%;
-        background-color: white;
-        height: 450px;
+        margin-left: 29%;
+    }
+    #div_cad_usuario {
+        border-radius: 20px;
+        -moz-border-radius: 20px;
+        height: 390px;
+    }
+    #msg_error_cad_usuario {
+        padding: 8px !important;
+        font-size: 11px;
+        background-color: #FFFF00;
+    }
+    .box-login{ 
+        position: absolute;
+        box-shadow: 6px 6px 0 black;
+        -webkit-box-shadow: 6px 6px 0 black;
+        -moz-box-shadow: 6px 6px 0 black;
+        background-color: #D3D3D3;
+        padding: 20px;
+    }
+    #header_cad_usuario { 
+        text-indent: 75px;
+        margin-bottom: 25px;
+    }
+    #retorno_cad_usuario {  
+        float: left;
     }
 
 

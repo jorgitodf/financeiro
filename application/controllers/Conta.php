@@ -1,16 +1,24 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once __DIR__ . '/../validacoes/DebitoValidator.php';
+require_once __DIR__ . '/../repositories/ExtratoRepository.php';
+
 class Conta extends CI_Controller
 {
+	private $debitoValidador;
+	private $extrato;
+
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->model('extrato_model');
+		$this->load->model('categoria_model');
 		$this->load->model('banco_model');
+		$this->debitoValidador = new DebitoValidator();
+		$this->extrato = new ExtratoRepository();
 		$this->load->model('tipoconta_model');
 		$this->load->model('conta_model');
-		$this->load->model('categoria_model');
-		$this->load->model('extrato_model');
 		$this->load->model('agendamento_model');
 		$this->load->helper('funcoes');
 		$this->load->helper('construct');
@@ -79,10 +87,10 @@ class Conta extends CI_Controller
 	public function extrato($id)
 	{
 		if (is_numeric($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
-			if ($this->extrato_model->getExtratoAtual($id) == false) {
+			if ($this->extrato->getExtratoAtual($id) == false) {
 				$dados['message'] = "Ainda não existe movimentação neste mês!";
 			} else {
-				$dados['extrato'] = $this->extrato_model->getExtratoAtual($id);
+				$dados['extrato'] = $this->extrato->getExtratoAtual($id);
 				foreach ($dados['extrato'] as $item) {
 					$data_final = $item['data_movimentacao'];
 				}
@@ -112,32 +120,23 @@ class Conta extends CI_Controller
 			$dados["view"] = "conta/v_debito";
 			$this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
-			$idConta = $this->input->post('idConta');
-			$dtDebito = $this->input->post('data_debito');
-			$movimentacao = $this->input->post('movimentacao');
-			$token = $this->input->post('token');
-			$nome_categoria = $this->input->post('nome_categoria');
-			$valor = $this->input->post('valor');
-			$newValor = str_replace('R$ ', '', str_replace(',', '.', str_replace('.', '', $valor)));
-			
-			if ($this->usuario_model->getTokenByUserById($token, $this->session->userdata('id')) == false) {
-				$json = array('status'=>'error', 'message'=>'Essa operação não pode ser realizada!');
-			} elseif (empty($dtDebito)) {
-				$json = array('status'=>'error', 'message'=>'Preencha a Data do Débito!');
-			} elseif (empty($movimentacao)) {
-				$json = array('status'=>'error', 'message'=>'Preencha a Movimentação!');
-			} elseif (empty($nome_categoria)) {
-				$json = array('status'=>'error', 'message'=>'Preencha a Categoria!');
-			} elseif (empty($valor)) {
-				$json = array('status'=>'error', 'message'=>'Preencha o Valor!');
+			$this->extrato_model->setDataMovimentacao($this->input->post('data_debito'));
+			$this->extrato_model->setMes(verificaMes());
+			$this->extrato_model->setTipoOperacao('Débito');
+			$this->extrato_model->setMovimentacao($this->input->post('movimentacao'));
+			$this->extrato_model->setQuantidade(1);
+			$this->extrato_model->setValor($this->input->post('valor'));
+			$this->extrato_model->getConta()->setIdConta($this->input->post('idConta'));
+			$this->extrato_model->getCategoria()->setIdCategoria($this->input->post('nome_categoria'));
+			$resultadoValidacao = $this->debitoValidador->validar($this->extrato_model);
+			if ($resultadoValidacao->getErros() == true) {
+				$json = array('status'=>'error', 'message'=>$resultadoValidacao->getErros());
 			} else {
-				$dados = ['data_movimentacao'=>$dtDebito, 'movimentacao'=>$movimentacao, 'fk_id_categoria'=>$nome_categoria, 'valor'=>$newValor,
-					'idConta'=>$idConta];
-				$return = $this->conta_model->debitarValor($dados);
-				if ($return['status'] == 'success') {
-					$json = array('status'=>'success', 'message'=>$return['message']);
-				}  else {
-					$json = array('status'=>'error', 'message'=>$return['message']);
+				$retorno = $this->extrato->debitar($this->extrato_model);
+				if ($retorno['status'] == 'success') {
+					$json = array('status'=>'success', 'message'=>$retorno['message']);
+				} else {
+					$json = array('status'=>'error', 'message'=>$retorno['message']);
 				}
 			}
 			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));

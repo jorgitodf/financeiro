@@ -19,6 +19,9 @@ no controller
 $dados["view"] = "v_nome_da_view";
 $this->load->view("v_template", $dados);
 
+https://www.devmedia.com.br/codigos/?a=38998
+
+
 na view
 <?php $this->load->view($view); ?>
 
@@ -60,81 +63,29 @@ na view
 
 
 
-    <script>
-    $('#buscar').click(function () {
-        if ($('#texto').val() == '') {
-            return;
-        }
-
-        $.ajax({
-            url: '/clientes/search/' + $('#texto').val(),
-            type: 'GET',
-            success: function (data) {
-                $('#table_ajax').empty();
-                $('#table_ajax').html(data);
-            }
-        });
-    });
-    </script>
-
-
-    //$usuarios = $query->result_array();
-    //$usuarios = $query->result(); $usuarios[0]->nome
-
-    // if (/* inserir o metodo para salvar no banco passando as variáveis */)) {
-    //     $json = array('status'=>'success', 'message'=>'Usuário Cadastrado com Sucesso!');
-    // } else {
-    //     $json = array('status'=>'error', 'message'=>'Falha ao cadastrar o Usuário.', 'error'=>'erroCadModel');
-    // }
+http://www.bsourcecode.com/codeigniter/codeigniter-insert-query/
+https://stackoverflow.com/questions/16647112/codeigniter-insert-query-is-correct-and-executed-but-no-insert-is-performed
+https://www.codeigniter.com/userguide3/database/query_builder.html
+https://stackoverflow.com/questions/15969411/insert-data-into-database-with-codeigniter
 
 
 
+
+
+    public function createConta(array $dados)
+    {
         try {
-            if ($this->usuario_model->getEmail($email) == true) {
-                $json = array('status'=>'error', 'message'=>'Esse E-mail já existe cadastrado!');
-            } else {
-                $sql = 'insert into tb_usuario (nome, email, senha, data_cadastro) values (?,?,?,?)';
-                $this->db->query($sql, [$nome, $email, cryptySenha($password), date('Y-m-d H:m:s')]);
-                $json = array('status'=>'success', 'message' => 'Cadastrado');
-            }
-
-            //$usuarios = $query->result_array();
-            //$usuarios = $query->result(); $usuarios[0]->nome
-
-            // if (/* inserir o metodo para salvar no banco passando as variáveis */)) {
-            //     $json = array('status'=>'success', 'message'=>'Usuário Cadastrado com Sucesso!');
-            // } else {
-            //     $json = array('status'=>'error', 'message'=>'Falha ao cadastrar o Usuário.', 'error'=>'erroCadModel');
-            // }
+            $sql = "INSERT INTO $this->table (codigo_agencia, digito_verificador_agencia, numero_conta, digito_verificador_conta,
+              codigo_operacao, data_cadastro, fk_id_usuario, fk_cod_banco, fk_tipo_conta) VALUES (?,?,?,?,?,?,?,?,?)";
+              $this->db->query($sql, [$dados['codigo_agencia'],
+              !empty($dados['digito_verificador_agencia']) ? $dados['digito_verificador_agencia'] : null, $dados['numero_conta'],
+              $dados['digito_verificador_conta'], !empty($dados['codigo_operacao']) ? $dados['codigo_operacao'] : null, $dados['data_cadastro'],
+              $dados['fk_id_usuario'], $dados['fk_cod_banco'], $dados['fk_tipo_conta']]);
+            return array('status'=>'success', 'message' => 'Conta Cadastrada com Sucesso!');
         } catch (Exception $e) {
-            $json = array('status'=>'error', 'message' => $e->getMessage());
+            return array('status'=>'error', 'message' => $e->getMessage());
         }
+    }
 
 
-			//daqui pra baixo vai tudo par ao model
-			$data = [];		
-			$mes = date("m");
-			if ($parcela == 01) {
-				$data[0]['data_compra'] = $data_compra;
-				$data[0]['valor_parcela'] = number_format(formatarMoeda($valor_compra) / $parcela, 2);
-				$data[0]['parcela'] = "01/".$parcela;
-				$data[0]['data_pagamento'] = date('Y-m-08', strtotime("+1 month"));
-				$data[0]['despesa'] = $despesa;
-				$data[0]['id_cartao'] = $cartao;
-			} else {
-				for($i=1; $i <= $parcela; $i++) {
-					$data[$i]['data_compra'] = $data_compra;
-					$data[$i]['valor_parcela'] = number_format(formatarMoeda($valor_compra) / $parcela, 2);
-					$data[$i]['parcela'] = $i < 10 ? "0".$i."/".$parcela : $i."/".$parcela;
-					$data[$i]['data_pagamento'] = date('Y-m-08', strtotime("+{$i} month"));
-					$data[$i]['despesa'] = $despesa;
-					$data[$i]['id_cartao'] = $cartao;
-				}	
-			}
 
-			foreach ($data as $linha) {
-				echo $linha['data_compra'] ." - ". $linha['valor_parcela'] ." - ". $linha['parcela'] ." - ". $linha['data_pagamento']."<br>";
-			}
-
-
-Array ( [data_compra] => 2017-11-08 [valor_parcela] => R$ 50,00 [parcela] => 01 [despesa] => Roupas [id_cartao] => 2 )

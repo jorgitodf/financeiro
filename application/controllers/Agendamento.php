@@ -93,10 +93,9 @@ class Agendamento extends CI_Controller
             $movPgto = $this->input->post('mov_pgto');
             $categoriaPgto = $this->input->post('categoria_pgto');
             $valorPgto = $this->input->post('valor_pgto');
-			$newValorPgto = str_replace('R$ ', '', str_replace(',', '.', str_replace('.', '', $valorPgto)));
 			
 			$dados = ['idConta'=>$idConta, 'idPgtoAgendado'=>$idPgtoAgendado, 'dt_pgto'=>$dtPgto, 'mov_pgto'=>$movPgto,
-			'categoria_pgto'=>$categoriaPgto, 'valor_pgto'=>$newValorPgto];
+			'categoria_pgto'=>$categoriaPgto, 'valor_pgto'=>$valorPgto];
 
 			$return = $this->agendamento_model->alterarPgtoAgendado($dados);
             if ($return['status'] == 'success') {
