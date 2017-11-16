@@ -605,11 +605,18 @@
 
     /* PÁGINA ERROR 404 */
     #sec_erro_404 {
-        margin-top: 6%;
+        margin-top: 3%;
         background-color: white;
         padding: 5px 20px 15px 30px;
+        margin-left: 16%;
     }
-
+    .img_erro_404 {
+        width: 10%;
+        margin-left: 0;
+        margin-top: 0em;
+        margin-right: 0em;
+        margin-bottom: 0em;
+    }
 }
 
 @media (min-width: 1440px) {
@@ -1233,8 +1240,16 @@
 
     /* PÁGINA ERROR 404 */
     #sec_erro_404 {
-        margin-top: 6%;
+        margin-top: 3%;
         background-color: white;
         padding: 5px 20px 15px 30px;
+        margin-left: 16%;
+    }
+    .img_erro_404 {
+        width: 10%;
+        margin-left: 0;
+        margin-top: 0em;
+        margin-right: 0em;
+        margin-bottom: 0em;
     }
 }    

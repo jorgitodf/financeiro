@@ -1,13 +1,17 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once __DIR__ . '/../validacoes/DebitoValidator.php';
+require_once __DIR__ . '/../validacoes/Validacoes.php';
 require_once __DIR__ . '/../repositories/ExtratoRepository.php';
+require_once __DIR__ . '/../repositories/UsuarioRepository.php';
+require_once __DIR__ . '/../repositories/CategoriaRepository.php';
 
 class Conta extends CI_Controller
 {
-	private $debitoValidador;
+	private $validacoes;
 	private $extrato;
+	private $usuario;
+	private $categoria;
 
 	public function __construct()
 	{
@@ -15,8 +19,10 @@ class Conta extends CI_Controller
 		$this->load->model('extrato_model');
 		$this->load->model('categoria_model');
 		$this->load->model('banco_model');
-		$this->debitoValidador = new DebitoValidator();
+		$this->validacoes = new Validacoes();
 		$this->extrato = new ExtratoRepository();
+		$this->usuario = new UsuarioRepository();
+		$this->categoria = new CategoriaRepository();
 		$this->load->model('tipoconta_model');
 		$this->load->model('conta_model');
 		$this->load->model('agendamento_model');
@@ -114,9 +120,9 @@ class Conta extends CI_Controller
 		if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Débito";
 			$dados["idConta"] = $id;
-			$dados['categorias'] = $this->categoria_model->getCategoriasDespesas();
+			$dados['categorias'] = $this->categoria->getCategoriasDespesas();
 			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $id);
-			$dados["token"] = $this->conta_model->getTokenUsuario($this->session->userdata('id'), $id);
+			$dados["token"] = $this->usuario->getTokenUsuario($this->session->userdata('id'), $id);
 			$dados["view"] = "conta/v_debito";
 			$this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
@@ -128,8 +134,10 @@ class Conta extends CI_Controller
 			$this->extrato_model->setValor($this->input->post('valor'));
 			$this->extrato_model->getConta()->setIdConta($this->input->post('idConta'));
 			$this->extrato_model->getCategoria()->setIdCategoria($this->input->post('nome_categoria'));
-			$resultadoValidacao = $this->debitoValidador->validar($this->extrato_model);
-			if ($resultadoValidacao->getErros() == true) {
+			$resultadoValidacao = $this->validacoes->validarDebito($this->extrato_model);
+			if ($this->usuario->getTokenByUserById($this->input->post('token'), $this->session->userdata('id')) == false) {
+				$json = array('status'=>'error', 'message'=>'Essa operação não pode ser realizada!');
+			} elseif ($resultadoValidacao->getErros() == true) {
 				$json = array('status'=>'error', 'message'=>$resultadoValidacao->getErros());
 			} else {
 				$retorno = $this->extrato->debitar($this->extrato_model);
@@ -151,37 +159,33 @@ class Conta extends CI_Controller
 			$dados["title"] = "Crédito";
 			$dados["idConta"] = $id;
 			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $id);
-			$dados['categorias'] = $this->categoria_model->getCategoriasReceitas();
+			$dados['categorias'] = $this->categoria->getCategoriasReceitas();
+			$dados["token"] = $this->usuario->getTokenUsuario($this->session->userdata('id'), $id);
 			$dados["view"] = "conta/v_credito";
 			$this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
-			$idConta = $this->input->post('idConta');
-			$dtCredito = $this->input->post('data_credito');
-			$movimentacao = $this->input->post('movimentacao');
-			$nome_categoria = $this->input->post('nome_categoria');
-			$valor = $this->input->post('valor');
-			$newValor = str_replace('R$ ', '', str_replace(',', '.', str_replace('.', '', $valor)));
-
-			if (empty($dtCredito)) {
-				$json = array('status'=>'error', 'message'=>'Preencha a Data do Crédito!');
-			} elseif (empty($movimentacao)) {
-				$json = array('status'=>'error', 'message'=>'Preencha a Movimentação!');
-			} elseif (empty($nome_categoria)) {
-				$json = array('status'=>'error', 'message'=>'Preencha a Categoria!');
-			} elseif (empty($valor)) {
-				$json = array('status'=>'error', 'message'=>'Preencha o Valor!');
+			$this->extrato_model->setDataMovimentacao($this->input->post('data_credito'));
+			$this->extrato_model->setMes(verificaMes());
+			$this->extrato_model->setTipoOperacao('Crédito');
+			$this->extrato_model->setMovimentacao($this->input->post('movimentacao'));
+			$this->extrato_model->setQuantidade(1);
+			$this->extrato_model->setValor($this->input->post('valor'));
+			$this->extrato_model->getConta()->setIdConta($this->input->post('idConta'));
+			$this->extrato_model->getCategoria()->setIdCategoria($this->input->post('nome_categoria'));
+			$resultadoValidacaoCredito = $this->validacoes->validarCredito($this->extrato_model);
+			if ($this->usuario->getTokenByUserById($this->input->post('token'), $this->session->userdata('id')) == false) {
+				$json = array('status'=>'error', 'message'=>'Essa operação não pode ser realizada!');
+			} elseif ($resultadoValidacaoCredito->getErros() == true) {
+				$json = array('status'=>'error', 'message'=>$resultadoValidacaoCredito->getErros());
 			} else {
-				$dados = ['data_movimentacao'=>$dtCredito, 'movimentacao'=>$movimentacao, 'fk_id_categoria'=>$nome_categoria, 'valor'=>$newValor,
-					'idConta'=>$idConta];
-				$return = $this->conta_model->creditarValor($dados);
-				if ($return['status'] == 'success') {
-					$json = array('status'=>'success', 'message'=>$return['message']);
-				}  else {
-					$json = array('status'=>'error', 'message'=>$return['message']);
+				$retorno = $this->extrato->creditar($this->extrato_model);
+				if ($retorno['status'] == 'success') {
+					$json = array('status'=>'success', 'message'=>$retorno['message']);
+				} else {
+					$json = array('status'=>'error', 'message'=>$retorno['message']);
 				}
 			}
 			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
-
 		} else {
 			$this->load->view("v_template", pageNotFound());
 		}

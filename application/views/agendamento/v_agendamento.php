@@ -16,6 +16,7 @@
                             <div class="form-group form-group-sm col-sm-7 col-md-7" id="">
                                 <label for="movimentacao" class="control-label">Movimentação:</label>
                                 <input type="text" name="movimentacao" id="movimentacao" disabled="disabled" class="form-control input-sm" />
+                                <input type="hidden" name="token" id="token" class="form-control input-sm" value="<?php echo $token->token; ?>"/>
                             </div>
                         </div>
                         <div class="row-fluid">

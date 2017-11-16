@@ -63,6 +63,45 @@ class ExtratoRepository extends DefaultRepository
         }
     }
 
+    public function creditar(Extrato_model $extrato)
+    {
+        if (!empty($extrato)) {
+            $data_movimentacao = $extrato->getDataMovimentacao();
+            $mes = $extrato->getMes();
+            $tipo_operacao = $extrato->getTipoOperacao();
+            $movimentação  = $extrato->getMovimentacao();
+            $quantidade = $extrato->getQuantidade();
+            $valor = formatarMoeda($extrato->getValor());
+            $id_categoria = $extrato->getCategoria()->getIdCategoria();
+            $id_conta = $extrato->getConta()->getIdConta();
+            $saldo = $this->getSaldoAtual($extrato->getConta()->getIdConta());
+            $valor <= $saldo[0]['saldo'];
+            $novoSaldo = $saldo[0]['saldo'] + $valor;
+            $checkCategoria = $this->categoria->checkCategoria();
+                foreach ($checkCategoria as $linha) {
+                    if (($linha['id_categoria'] == $extrato->getCategoria()->getIdCategoria()) && ($linha['despesa_fixa'] == 'S')) {
+                        $despFixa = 'S';
+                    }  elseif (($linha['id_categoria'] == $extrato->getCategoria()->getIdCategoria()) && ($linha['despesa_fixa'] == 'N')) {
+                        $despFixa = 'N';
+                    }
+                }
+
+            $values = ["data_movimentacao"=>$data_movimentacao, "mes"=>$mes, "tipo_operacao"=>$tipo_operacao, "movimentacao"=>$movimentação, "quantidade"=>$quantidade, "valor"=>$valor, "saldo"=>$novoSaldo, 
+            "fk_id_categoria"=>$id_categoria, "fk_id_conta"=>$id_conta, "despesa_fixa"=>$despFixa];
+
+            $resultado = $this->insert($extrato->getTable(), $values);
+
+            if ($resultado['status'] == 'success') {
+                return array('status' => 'success', 'message' => 'Crédito Realizado com Sucesso!');
+            } else {
+                return array('status' => 'error', 'message' => $resultado['message']);
+            }
+            
+        } else {
+            return array('status'=>'error', 'message' => 'ERRO: Possui dados vazios.');
+        }
+    }
+
     public function getSaldoAtual(int $idConta): array
     {
         if (!empty($idConta)) {

@@ -1,16 +1,32 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once __DIR__ . '/../validacoes/Validacoes.php';
+require_once __DIR__ . '/../repositories/UsuarioRepository.php';
+require_once __DIR__ . '/../repositories/CategoriaRepository.php';
+require_once __DIR__ . '/../repositories/ContaRepository.php';
+require_once __DIR__ . '/../repositories/AgendamentoRepository.php';
+
 class Agendamento extends CI_Controller
 {
+	private $categoria;
+	private $usuario;
+	private $conta;
+	private $agendamento;
+
 	public function __construct()
 	{
 		parent::__construct();
+		$this->categoria = new CategoriaRepository();
+		$this->usuario = new UsuarioRepository();
+		$this->conta = new ContaRepository();
+		$this->agendamento = new AgendamentoRepository();
 		$this->load->model('banco_model');
 		$this->load->model('tipoconta_model');
 		$this->load->model('conta_model');
 		$this->load->model('categoria_model');
 		$this->load->model('agendamento_model');
+		$this->load->helper('url');
 		$this->load->helper('funcoes');
 		date_default_timezone_set('America/Sao_Paulo');
 	}
@@ -31,8 +47,7 @@ class Agendamento extends CI_Controller
 					$data['p'] = 1;
 				} 
 			} else {
-				$this->load->view("v_template", pageNotFound());
-				die();
+				redirect('/agendamento/page-not-found', 'refresh');
 			}
 		}
 		
@@ -48,28 +63,28 @@ class Agendamento extends CI_Controller
 		if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Agendar Pagamento";
 			$dados["idConta"] = $id;
-			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
-			$dados['categorias'] = $this->categoria_model->getCategoriasDespesas();
+			$dados["conta"] = $this->conta->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
+			$dados['categorias'] = $this->categoria->getCategoriasDespesas();
+			$dados["token"] = $this->usuario->getTokenUsuario($this->session->userdata('id'), $id);
 			$dados["view"] = "agendamento/v_agendamento";
             $this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
-			$idConta = $this->input->post('idConta');
-			$data_pgto = $this->input->post('data_pgto');
-			$movimentacao = $this->input->post('movimentacao');
-			$nome_categoria = $this->input->post('nome_categoria');
-			$valor = $this->input->post('valor');
-			$newValor = str_replace('R$ ', '', str_replace(',', '.', str_replace('.', '', $valor)));
-
-            $dados = ['data_pagamento'=>$data_pgto, 'movimentacao'=>$movimentacao, 'valor'=>$valor, 
-                'categoria'=>$nome_categoria, 'idConta'=>$idConta];
-
-            $return = $this->agendamento_model->cadastrarPgtoAgendado($dados);
-            if ($return['status'] == 'success') {
-                $json = array('status'=>'success', 'message'=>$return['message']);
-            }  else {
-                $json = array('status'=>'error', 'message'=>$return['message']);
-            }
-
+			$this->agendamento_model->setDataPagamento($this->input->post('data_pgto'));
+			$this->agendamento_model->setMovimentacao($this->input->post('movimentacao'));
+			$this->agendamento_model->setValor($this->input->post('valor'));
+			$this->agendamento_model->setPago('Não');
+			$this->agendamento_model->getCategoria()->setIdCategoria($this->input->post('nome_categoria'));
+			$this->agendamento_model->getConta()->setIdConta($this->input->post('idConta'));
+			if ($this->usuario->getTokenByUserById($this->input->post('token'), $this->session->userdata('id')) == false) {
+				$json = array('status'=>'error', 'message'=>'Essa operação não pode ser realizada!');
+			} else {
+				$retorno = $this->agendamento->cadastrarPgtoAgendado($this->agendamento_model);
+				if ($retorno['status'] == 'success') {
+					$json = array('status'=>'success', 'message'=>$retorno['message']);
+				} else {
+					$json = array('status'=>'error', 'message'=>$retorno['message']);
+				}
+			}
 			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
 		} else {
 			$this->load->view("v_template", pageNotFound());
@@ -81,7 +96,7 @@ class Agendamento extends CI_Controller
 			$dados["title"] = "Alterar Pagamento Agendado";
 			$dados["idUser"] = $this->session->userdata('id');
 			$dados["idConta"] = $this->session->userdata('idConta');
-			$dados['categorias'] = $this->categoria_model->getCategoriasDespesas();
+			$dados['categorias'] = $this->categoria->getCategoriasDespesas();
 			$dados['pagamento'] = $this->agendamento_model->getPagamentoAgendado($id);
 			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
 			$dados["view"] = "agendamento/v_alterar_pgto_agendado";
@@ -109,4 +124,8 @@ class Agendamento extends CI_Controller
 		}
     }
 
+	public function pageNotFound()
+	{
+		$this->load->view("v_template", pageNotFound());
+	}
 }

@@ -76,29 +76,6 @@ class Usuario_model extends CI_Model
         }
     }
 
-    public function insertTokenUsuario(int $idUsuario)
-    {   
-        $sql = "UPDATE $this->table SET token = ? WHERE id_usuario = ?";
-        $this->db->query($sql, [cryptySenha(randString()), $idUsuario]);
-        if ($this->db->affected_rows() > 0) {
-            $sql = "SELECT token FROM {$this->table} WHERE id_usuario = ?";
-            return $this->db->query($sql, [$idUsuario])->row();
-        } else {
-            return false;
-        }
-    }
-
-    public function getTokenByUserById(string $token, int $idUsuario) 
-    {
-        $sql = "SELECT token FROM {$this->table} WHERE token = ? AND id_usuario = ?";
-        $this->db->query($sql, [$token, $idUsuario])->row();
-        if ($this->db->affected_rows() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public function getAllUsuarios()
     {
         $usuarios = $this->db->get($this->table);
