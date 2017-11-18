@@ -634,5 +634,5 @@ function getSaldo() {
 }   
 
 function redirectPagarFatura(id) {
-    return window.location.replace("http://localhost:8000/cartaocredito/fatura-pagar/"+id);
+    return window.location.replace("http://www.contascontrole.com.br/cartaocredito/fatura-pagar/"+id);
 }
