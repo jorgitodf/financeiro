@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class CartaoCredito extends CI_Controller
+class Cartaocredito extends CI_Controller
 {
 	public function __construct()
 	{
