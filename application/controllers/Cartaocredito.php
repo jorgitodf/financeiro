@@ -127,7 +127,13 @@ class Cartaocredito extends CI_Controller
 			if (empty($id_fatura_cartao)) {
 				$json = array('status' => 'error', 'message' => 'Selecione um Cartão de Crédito!');
 			} else {
-				$json = array('status' => 'success', 'id_fatura_cartao'=> $id_fatura_cartao);
+				$base_url = 'http';
+				if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") $base_url .= "s";
+				$base_url .= "://";
+				if ($_SERVER["SERVER_PORT"] != "80") $base_url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"];
+				else $base_url .= $_SERVER["SERVER_NAME"];
+				$base_url."/";
+				$json = array('status' => 'success', 'id_fatura_cartao'=> $id_fatura_cartao, 'base_url'=>$base_url);
 			}
 			return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
 		} else {

@@ -437,7 +437,7 @@ $(document).ready(function () {
                     if (retorno[0]['status'] == 'error' ) {
                         $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_fechar_fatura_cartao_credito">' + retorno[0]['message'] + '</div>');
 					} else if (retorno[0]['status'] == 'success'){
-                        window.setTimeout(redirectPagarFatura(retorno[0]['id_fatura_cartao']), 1);
+                        window.setTimeout(redirectPagarFatura(retorno[0]['base_url'], retorno[0]['id_fatura_cartao']), 1);
                     }
                     else {
                         alert(retorno);
@@ -633,6 +633,6 @@ function getSaldo() {
     });
 }   
 
-function redirectPagarFatura(id) {
-    return window.location.replace("http://www.contascontrole.com.br/cartaocredito/fatura-pagar/"+id);
+function redirectPagarFatura(base_url, id) {
+    return window.location.replace(base_url+"/cartaocredito/fatura-pagar/"+id);
 }
