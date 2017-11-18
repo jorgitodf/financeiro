@@ -56,4 +56,4 @@ $route['cartaocredito/fechar-fatura/(:num)'] = 'cartaocredito/fecharFatura/$1';
 $route['cartaocredito/pagar-fatura'] = 'cartaocredito/pagarFatura';
 $route['cartaocredito/fatura-pagar/(:any)'] = 'cartaocredito/faturaPagar/$1';
 $route['cartaocredito/fatura-pagar'] = 'cartaocredito/faturaPagar';
-$route['agendamento/page-not-found'] = 'agendamento/pageNotFound';
+$route['cartaocredito/cadastrar/(:any)'] = 'cartaocredito/cadastrar/$1';
