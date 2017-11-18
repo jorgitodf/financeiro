@@ -10,7 +10,7 @@ class Usuario extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('usuario_model');
+        $this->load->model('Usuario_model');
         $this->load->helper("funcoes");
         $this->usuario = new UsuarioRepository();
     }
@@ -21,17 +21,17 @@ class Usuario extends CI_Controller
         $dados["view"] = "usuario/v_usuario_novo";
         $this->load->view("v_template", $dados);
         if ($this->input->post()) {
-            if ($this->usuario_model->setNome($this->input->post('nome'))['status'] == 'error') {
-                $json = array('status'=>'error', 'message'=>$this->usuario_model->setNome($this->input->post('nome'))['message']);
-            } elseif ($this->usuario_model->setEmaiil($this->input->post('email'))['status'] == 'error') {
-                $json = array('status'=>'error', 'message'=>$this->usuario_model->setEmaiil($this->input->post('email'))['message']);
-            } elseif ($this->usuario_model->setSenha($this->input->post('password'))['status'] == 'error') {
-                $json = array('status'=>'error', 'message'=>$this->usuario_model->setSenha($this->input->post('password'))['message']);
-            } elseif ($this->usuario_model->setRepeatSenha($this->input->post('repeat_password'))['status'] == 'error') {
-                $json = array('status'=>'error', 'message'=>$this->usuario_model->setRepeatSenha($this->input->post('repeat_password'))['message']);
+            if ($this->Usuario_model->setNome($this->input->post('nome'))['status'] == 'error') {
+                $json = array('status'=>'error', 'message'=>$this->Usuario_model->setNome($this->input->post('nome'))['message']);
+            } elseif ($this->Usuario_model->setEmaiil($this->input->post('email'))['status'] == 'error') {
+                $json = array('status'=>'error', 'message'=>$this->Usuario_model->setEmaiil($this->input->post('email'))['message']);
+            } elseif ($this->Usuario_model->setSenha($this->input->post('password'))['status'] == 'error') {
+                $json = array('status'=>'error', 'message'=>$this->Usuario_model->setSenha($this->input->post('password'))['message']);
+            } elseif ($this->Usuario_model->setRepeatSenha($this->input->post('repeat_password'))['status'] == 'error') {
+                $json = array('status'=>'error', 'message'=>$this->Usuario_model->setRepeatSenha($this->input->post('repeat_password'))['message']);
             } else {
-                $dados = ['nome'=>$this->usuario_model->getNome(), 'email'=>$this->usuario_model->getEmaiil(),
-                    'senha'=>$this->usuario_model->getSenha()];
+                $dados = ['nome'=>$this->Usuario_model->getNome(), 'email'=>$this->Usuario_model->getEmaiil(),
+                    'senha'=>$this->Usuario_model->getSenha()];
                 $result = $this->usuario->createUsuario($dados);
                 if ($result['status'] == 'success') {
                     $json = array('status'=>'success', 'message'=>$result['message']);

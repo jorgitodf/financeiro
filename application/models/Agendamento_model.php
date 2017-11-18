@@ -18,11 +18,10 @@ class Agendamento_model extends CI_Model
 	{
 		parent::__construct();
 		$this->load->database();
-		$this->load->model('categoria_model');
+		$this->load->model('Categoria_model');
 		$this->conta = new Conta_model();
         $this->categoria = new Categoria_model();
 		$this->load->helper("funcoes");
-		date_default_timezone_set('America/Sao_Paulo');
 	}
 
 	public function getTable() {
@@ -97,7 +96,7 @@ class Agendamento_model extends CI_Model
         $sql = "SELECT pgto.id_pgto_agendado as id, DATE_FORMAT(pgto.data_pagamento,'%d/%m/%Y') as data_pg, 
             lower(movimentacao) as mov, Replace(concat('R$ ', Format(pgto.valor, 2)),'.',',') as valor, 
 			pgto.pago as pg, cat.nome_categoria as categoria FROM $this->table as pgto 
-			JOIN {$this->categoria_model->getTable()} as cat ON (pgto.fk_id_categoria = 
+			JOIN {$this->Categoria_model->getTable()} as cat ON (pgto.fk_id_categoria = 
             cat.id_categoria) ORDER BY pgto.data_pagamento ASC LIMIT $offset, 15";
         return $this->db->query($sql, [$offset])->result_array();
 	}

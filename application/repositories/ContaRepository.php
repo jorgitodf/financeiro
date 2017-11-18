@@ -16,7 +16,6 @@ class ContaRepository extends DefaultRepository
         $this->extrato_model = new Extrato_model();
         $this->banco_model = new Banco_model();
         $this->load->helper("funcoes");
-        date_default_timezone_set('America/Sao_Paulo');
     }
 
     public function getAtualSaldo(int $idUsuario, int $idConta)

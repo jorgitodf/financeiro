@@ -15,7 +15,6 @@ class ExtratoRepository extends DefaultRepository
         $this->categoria = new Categoria_model();
         $this->extrato_model = new Extrato_model();
         $this->load->helper("funcoes");
-        date_default_timezone_set('America/Sao_Paulo');
     }
 
     public function getAllExtrato()

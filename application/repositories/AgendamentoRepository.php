@@ -12,23 +12,22 @@ class AgendamentoRepository extends DefaultRepository
     public function __construct()
     {
         $this->validacoes = new Validacoes();
-        $this->load->model('agendamento_model');
+        $this->load->model('Agendamento_model');
         $this->load->helper("funcoes");
-        date_default_timezone_set('America/Sao_Paulo');
     }
 
-    public function cadastrarPgtoAgendado(Agendamento_model $agendamento_model)
+    public function cadastrarPgtoAgendado(Agendamento_model $Agendamento_model)
 	{
-        $resultValidacao = $this->validacoes->validarAgendamento($agendamento_model);
+        $resultValidacao = $this->validacoes->validarAgendamento($Agendamento_model);
         if ($resultValidacao->getErros() == true) {
             return array('status'=>'error', 'message'=>$resultValidacao->getErros());
         } else {
-            $values = ["data_pagamento"=>$agendamento_model->getDataPagamento(), 
-            "movimentacao"=>$agendamento_model->getMovimentacao(), 
-            "valor"=>formatarMoeda($agendamento_model->getValor()), "pago"=>$agendamento_model->getPago(), 
-            "fk_id_categoria"=>$agendamento_model->getCategoria()->getIdCategoria(),
-            "fk_id_conta"=>$agendamento_model->getConta()->getIdConta()];
-            $resultado = $this->insert($this->agendamento_model->getTable(), $values);
+            $values = ["data_pagamento"=>$Agendamento_model->getDataPagamento(), 
+            "movimentacao"=>$Agendamento_model->getMovimentacao(), 
+            "valor"=>formatarMoeda($Agendamento_model->getValor()), "pago"=>$Agendamento_model->getPago(), 
+            "fk_id_categoria"=>$Agendamento_model->getCategoria()->getIdCategoria(),
+            "fk_id_conta"=>$Agendamento_model->getConta()->getIdConta()];
+            $resultado = $this->insert($this->Agendamento_model->getTable(), $values);
             if ($resultado['status'] == 'success') {
                 return array('status' => 'success', 'message' => 'Agendamento Realizado com Sucesso!');
             } else {

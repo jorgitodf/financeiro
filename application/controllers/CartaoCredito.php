@@ -6,27 +6,26 @@ class CartaoCredito extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('banco_model');
-		$this->load->model('tipoconta_model');
-		$this->load->model('conta_model');
-		$this->load->model('cartaocredito_model');
-		$this->load->model('bandeiracartao_model');
-		$this->load->model('extrato_model');
-		$this->load->model('faturacartao_model');
-		$this->load->model('despesacartao_model');
+		$this->load->model('Banco_model');
+		$this->load->model('TipoConta_model');
+		$this->load->model('Conta_model');
+		$this->load->model('CartaoCredito_model');
+		$this->load->model('BandeiraCartao_model');
+		$this->load->model('Extrato_model');
+		$this->load->model('FaturaCartao_model');
+		$this->load->model('DespesaCartao_model');
 		$this->load->helper('funcoes');
-		date_default_timezone_set('America/Sao_Paulo');
 	}
 
 	public function cadastrar($id = null)
 	{
-		if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+		if (is_numeric($id) && !empty($id) && $id > 0 && $this->Conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Cadastro de Cartão de Crédito";
 			$dados["view"] = "cartao/v_index";
 			$dados["idConta"] = $id;
-			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
-			$dados["bancos"] = $this->banco_model->getBancos();
-			$dados["bandeiras"] = $this->bandeiracartao_model->getBandeirasCartoes();
+			$dados["conta"] = $this->Conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
+			$dados["bancos"] = $this->Banco_model->getBancos();
+			$dados["bandeiras"] = $this->BandeiraCartao_model->getBandeirasCartoes();
 			$this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
 			$idUsuario = $this->input->post('idUsuario');
@@ -38,7 +37,7 @@ class CartaoCredito extends CI_Controller
 			$dados = ['numero_cartao'=>$num_cartao, 'data_validade'=>$data_validade, 'fk_id_bandeira_cartao'=>$bandeira,
 				'fk_id_usuario'=>$idUsuario, 'fk_cod_banco'=>$banco];
 
-			$return = $this->cartaocredito_model->cadastrarCartaoCredito($dados);
+			$return = $this->CartaoCredito_model->cadastrarCartaoCredito($dados);
 			if ($return['status'] == 'success') {
 				$json = array('status'=>'success', 'message'=>$return['message']);
 			}  else {
@@ -52,14 +51,14 @@ class CartaoCredito extends CI_Controller
 
 	public function comprar($id = null)
 	{
-		if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+		if (is_numeric($id) && !empty($id) && $id > 0 && $this->Conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Lançar Compra Cartão de Crédito";
 			$dados["view"] = "cartao/v_lancar_compra";
 			$dados["idConta"] = $id;
-			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
+			$dados["conta"] = $this->Conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
 			$dados["idUser"] = $this->session->userdata('id');
-			$dados["cartoes"] = $this->cartaocredito_model->getCartoesCreditosByUser($this->session->userdata('id'));
-			//$dados["bandeiras"] = $this->bandeiracartao_model->getBandeirasCartoes();
+			$dados["cartoes"] = $this->CartaoCredito_model->getCartoesCreditosByUser($this->session->userdata('id'));
+			//$dados["bandeiras"] = $this->BandeiraCartao_model->getBandeirasCartoes();
 			$this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
 			$idUser = $this->input->post('idUser');
@@ -72,7 +71,7 @@ class CartaoCredito extends CI_Controller
 			$dados = ['data_compra'=>$data_compra, 'valor_parcela'=>$valor_compra, 'parcela'=>$parcela, 
 			'despesa'=>$despesa, 'id_cartao'=>$cartao];  
 
-			$return = $this->despesacartao_model->salvarDespesaCartaoCredito($dados);
+			$return = $this->DespesaCartao_model->salvarDespesaCartaoCredito($dados);
 			if ($return['status'] == 'success') {
 				$json = array('status'=>'success', 'message'=>$return['message']);
 			}  else {
@@ -86,17 +85,17 @@ class CartaoCredito extends CI_Controller
 
 	public function faturar($id = null) 
 	{
-        if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+        if (is_numeric($id) && !empty($id) && $id > 0 && $this->Conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Criar Fatura Cartão de Crédito";
 			$dados["view"] = "cartao/v_criar_fatura";
 			$dados["idConta"] = $id;
-			$dados['cartoes'] = $this->cartaocredito_model->getCartoesCreditosByUser($this->session->userdata('id'));
+			$dados['cartoes'] = $this->CartaoCredito_model->getCartoesCreditosByUser($this->session->userdata('id'));
 			$this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
 			$cartao = $this->input->post('cartao');
 			$data_vencimento = $this->input->post('data_vencimento');
 			$dados = ['data_vencimento'=>$data_vencimento, 'cartao'=>$cartao];  
-			$return = $this->faturacartao_model->cadastrarFaturaCartao($dados);
+			$return = $this->FaturaCartao_model->cadastrarFaturaCartao($dados);
 			if ($return['status'] == 'success') {
 				$json = array('status'=>'success', 'message'=>$return['message']);
 			}  else {
@@ -110,11 +109,11 @@ class CartaoCredito extends CI_Controller
 	
 	function fecharFatura($id = null) 
 	{
-		if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+		if (is_numeric($id) && !empty($id) && $id > 0 && $this->Conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Fechar Fatura Cartão de Crédito";
 			$dados["view"] = "cartao/v_fechar_fatura";
 			$dados["idConta"] = $id;
-			$dados['faturas'] = $this->faturacartao_model->getCartoesFaturaAberta();
+			$dados['faturas'] = $this->FaturaCartao_model->getCartoesFaturaAberta();
 			$this->load->view("v_template", $dados);
 		} else {
 			$this->load->view("v_template", pageNotFound());
@@ -138,9 +137,9 @@ class CartaoCredito extends CI_Controller
 
 	function faturaPagar($id_fatura_cartao = null)
 	{
-		if (is_numeric($id_fatura_cartao) && !empty($id_fatura_cartao) && $id_fatura_cartao > 0 && $this->faturacartao_model->verificaFaturaById($id_fatura_cartao) == true) {
-			$dados['fatura'] = $this->faturacartao_model->getFaturaCartaoAbertaById($id_fatura_cartao, $this->session->userdata('id'));
-			$dados['itensfatura'] = $this->despesacartao_model->getItensDespesaFaturaByIdFaturaCartao($dados['fatura']->idCartao, formataData($dados['fatura']->data));
+		if (is_numeric($id_fatura_cartao) && !empty($id_fatura_cartao) && $id_fatura_cartao > 0 && $this->FaturaCartao_model->verificaFaturaById($id_fatura_cartao) == true) {
+			$dados['fatura'] = $this->FaturaCartao_model->getFaturaCartaoAbertaById($id_fatura_cartao, $this->session->userdata('id'));
+			$dados['itensfatura'] = $this->DespesaCartao_model->getItensDespesaFaturaByIdFaturaCartao($dados['fatura']->idCartao, formataData($dados['fatura']->data));
 			$dados["title"] = "Pagar Fatura Cartão de Crédito";
 			$dados["view"] = "cartao/v_pagar_fatura";
 			$dados["idConta"] = $this->session->userdata('idConta');
@@ -159,7 +158,7 @@ class CartaoCredito extends CI_Controller
 			$dados = ['encargos'=>$encargos,'iof'=>$iof,'anuidade'=>$anuidade,'protecao'=>$protecao_prem,
 			'juros'=>$juros,'restante'=>$restante,'totalgeral'=>$valor_total,'valor_pagar'=>$valor_pago];
 
-			$return = $this->faturacartao_model->pagarFatura($dados, $id_cartao_fat);
+			$return = $this->FaturaCartao_model->pagarFatura($dados, $id_cartao_fat);
 
 			if ($return['status'] == 'success') {
 				$json = array('status'=>'success', 'message'=>$return['message']);
@@ -176,7 +175,7 @@ class CartaoCredito extends CI_Controller
 	public function getRestanteFaturaAnterior() {
 		if ($this->input->post()) {
 			$id_cartao_cre = (int) $this->input->post('id_cartao_cre');
-			$resFatAnt = $this->faturacartao_model->getValorFaturaMesAnterior($id_cartao_cre);
+			$resFatAnt = $this->FaturaCartao_model->getValorFaturaMesAnterior($id_cartao_cre);
 			if (!empty($resFatAnt)) {
 				$valorTotal = (float) $resFatAnt->valtotal;
 				$valorPago = (float) $resFatAnt->valpgo;

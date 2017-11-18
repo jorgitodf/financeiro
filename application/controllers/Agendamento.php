@@ -21,20 +21,19 @@ class Agendamento extends CI_Controller
 		$this->usuario = new UsuarioRepository();
 		$this->conta = new ContaRepository();
 		$this->agendamento = new AgendamentoRepository();
-		$this->load->model('banco_model');
-		$this->load->model('tipoconta_model');
-		$this->load->model('conta_model');
-		$this->load->model('categoria_model');
-		$this->load->model('agendamento_model');
+		$this->load->model('Banco_model');
+		$this->load->model('TipoConta_model');
+		$this->load->model('Conta_model');
+		$this->load->model('Categoria_model');
+		$this->load->model('Agendamento_model');
 		$this->load->helper('url');
 		$this->load->helper('funcoes');
-		date_default_timezone_set('America/Sao_Paulo');
 	}
 
 	public function listar()
 	{
 		$dados["title"] = "Listagem de Pagamentos Agendados";
-		$dados['pgtos_count']  = $this->agendamento_model->getCount();
+		$dados['pgtos_count']  = $this->Agendamento_model->getCount();
 		$dados['p_count'] = ceil($dados['pgtos_count'] / 15);
 		$offset = 0;
 		$data['p'] = 1;
@@ -52,15 +51,15 @@ class Agendamento extends CI_Controller
 		}
 		
 		$offset = (15 * ($data['p'] - 1));
-		$dados['pgto_agendados'] = $this->agendamento_model->getAllPgamentosAgendados($offset);
-		$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
+		$dados['pgto_agendados'] = $this->Agendamento_model->getAllPgamentosAgendados($offset);
+		$dados["conta"] = $this->Conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
 		$dados["view"] = "agendamento/v_listagem_agendamentos";
 		$this->load->view("v_template", $dados);
     }
     
     public function agendar($id = null)
 	{
-		if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+		if (is_numeric($id) && !empty($id) && $id > 0 && $this->Conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Agendar Pagamento";
 			$dados["idConta"] = $id;
 			$dados["conta"] = $this->conta->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
@@ -69,16 +68,16 @@ class Agendamento extends CI_Controller
 			$dados["view"] = "agendamento/v_agendamento";
             $this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
-			$this->agendamento_model->setDataPagamento($this->input->post('data_pgto'));
-			$this->agendamento_model->setMovimentacao($this->input->post('movimentacao'));
-			$this->agendamento_model->setValor($this->input->post('valor'));
-			$this->agendamento_model->setPago('Não');
-			$this->agendamento_model->getCategoria()->setIdCategoria($this->input->post('nome_categoria'));
-			$this->agendamento_model->getConta()->setIdConta($this->input->post('idConta'));
+			$this->Agendamento_model->setDataPagamento($this->input->post('data_pgto'));
+			$this->Agendamento_model->setMovimentacao($this->input->post('movimentacao'));
+			$this->Agendamento_model->setValor($this->input->post('valor'));
+			$this->Agendamento_model->setPago('Não');
+			$this->Agendamento_model->getCategoria()->setIdCategoria($this->input->post('nome_categoria'));
+			$this->Agendamento_model->getConta()->setIdConta($this->input->post('idConta'));
 			if ($this->usuario->getTokenByUserById($this->input->post('token'), $this->session->userdata('id')) == false) {
 				$json = array('status'=>'error', 'message'=>'Essa operação não pode ser realizada!');
 			} else {
-				$retorno = $this->agendamento->cadastrarPgtoAgendado($this->agendamento_model);
+				$retorno = $this->agendamento->cadastrarPgtoAgendado($this->Agendamento_model);
 				if ($retorno['status'] == 'success') {
 					$json = array('status'=>'success', 'message'=>$retorno['message']);
 				} else {
@@ -97,8 +96,8 @@ class Agendamento extends CI_Controller
 			$dados["idUser"] = $this->session->userdata('id');
 			$dados["idConta"] = $this->session->userdata('idConta');
 			$dados['categorias'] = $this->categoria->getCategoriasDespesas();
-			$dados['pagamento'] = $this->agendamento_model->getPagamentoAgendado($id);
-			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
+			$dados['pagamento'] = $this->Agendamento_model->getPagamentoAgendado($id);
+			$dados["conta"] = $this->Conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
 			$dados["view"] = "agendamento/v_alterar_pgto_agendado";
 			$this->load->view("v_template", $dados);
 		} elseif ($this->input->post()) {
@@ -112,7 +111,7 @@ class Agendamento extends CI_Controller
 			$dados = ['idConta'=>$idConta, 'idPgtoAgendado'=>$idPgtoAgendado, 'dt_pgto'=>$dtPgto, 'mov_pgto'=>$movPgto,
 			'categoria_pgto'=>$categoriaPgto, 'valor_pgto'=>$valorPgto];
 
-			$return = $this->agendamento_model->alterarPgtoAgendado($dados);
+			$return = $this->Agendamento_model->alterarPgtoAgendado($dados);
             if ($return['status'] == 'success') {
                 $json = array('status'=>'success', 'message'=>$return['message']);
             }  else {

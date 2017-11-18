@@ -6,7 +6,7 @@ class Auth extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('usuario_model');
+        $this->load->model('Usuario_model');
         $this->load->library('session');
         $this->load->helper('url');
         $this->load->helper("funcoes");
@@ -49,7 +49,7 @@ class Auth extends CI_Controller
             } elseif (empty($password)) {
                 $json = array('status'=>'error', 'message'=>'Preencha a Senha');
             } else {
-                $return = $this->usuario_model->getEmailSenha($email, $password);
+                $return = $this->Usuario_model->getEmailSenha($email, $password);
                 if ($return['status'] == 'error') {
                     $json = array('status'=>'error', 'message'=>$return['message']);
                 } else {

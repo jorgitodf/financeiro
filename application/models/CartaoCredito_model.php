@@ -9,10 +9,9 @@ class CartaoCredito_model extends CI_Model
 	{
 		parent::__construct();
 		$this->load->database();
-		$this->load->model('banco_model');
-		$this->load->model('bandeiracartao_model');
+		$this->load->model('Banco_model');
+		$this->load->model('BandeiraCartao_model');
 		$this->load->helper("funcoes");
-		date_default_timezone_set('America/Sao_Paulo');
 	}
 
 	public function getTable() {
@@ -62,8 +61,8 @@ class CartaoCredito_model extends CI_Model
 	public function getCartoesCreditosByUser(int $idUser): array
 	{
 		$sql = "SELECT cc.id_cartao_credito AS id_cartao, cc.numero_cartao AS numero, bc.bandeira, b.nome_banco 
-			FROM $this->table cc JOIN {$this->bandeiracartao_model->getTable()} bc ON (bc.id_bandeira_cartao = cc.fk_id_bandeira_cartao)
-			JOIN {$this->banco_model->getTable()} b ON (b.cod_banco = cc.fk_cod_banco) WHERE cc.fk_id_usuario = ? AND cc.ativo = 'S' 
+			FROM $this->table cc JOIN {$this->BandeiraCartao_model->getTable()} bc ON (bc.id_bandeira_cartao = cc.fk_id_bandeira_cartao)
+			JOIN {$this->Banco_model->getTable()} b ON (b.cod_banco = cc.fk_cod_banco) WHERE cc.fk_id_usuario = ? AND cc.ativo = 'S' 
 			ORDER BY b.nome_banco ASC";
 
 		if (empty($this->db->query($sql, [$idUser])->result_array())) {

@@ -21,11 +21,10 @@ class Extrato_model extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('categoria_model');
-        $this->load->model('conta_model');
+        $this->load->model('Categoria_model');
+        $this->load->model('Conta_model');
         $this->conta = new Conta_model();
         $this->categoria = new Categoria_model();
-        date_default_timezone_set('America/Sao_Paulo');
     }
 
     public function getTable() {

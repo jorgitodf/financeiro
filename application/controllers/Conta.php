@@ -16,27 +16,26 @@ class Conta extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('extrato_model');
-		$this->load->model('categoria_model');
-		$this->load->model('banco_model');
+		$this->load->model('Extrato_model');
+		$this->load->model('Categoria_model');
+		$this->load->model('Banco_model');
 		$this->validacoes = new Validacoes();
 		$this->extrato = new ExtratoRepository();
 		$this->usuario = new UsuarioRepository();
 		$this->categoria = new CategoriaRepository();
-		$this->load->model('tipoconta_model');
-		$this->load->model('conta_model');
-		$this->load->model('agendamento_model');
+		$this->load->model('TipoConta_model');
+		$this->load->model('Conta_model');
+		$this->load->model('Agendamento_model');
 		$this->load->helper('funcoes');
 		$this->load->helper('construct');
-		date_default_timezone_set('America/Sao_Paulo');
 	}
 
 	public function index()
 	{
 		$dados["title"] = "Cadastro de Conta";
 		$dados["view"] = "conta/v_index";
-		$dados["bancos"] = $this->banco_model->getBancos();
-		$dados["tipoConta"] = $this->tipoconta_model->getTiposContas();
+		$dados["bancos"] = $this->Banco_model->getBancos();
+		$dados["tipoConta"] = $this->TipoConta_model->getTiposContas();
 		$this->load->view("v_template", $dados);
 	}
 
@@ -65,7 +64,7 @@ class Conta extends CI_Controller
 				$dados = ['codigo_agencia'=>$cod_agencia, 'digito_verificador_agencia'=>$dig_agencia, 'numero_conta'=>$num_conta,
 					'digito_verificador_conta'=>$dig_conta, 'codigo_operacao'=>$cod_operacao, 'data_cadastro'=>date('Y-m-d H:m:s'),
 					'fk_id_usuario'=>$this->session->userdata('id'), 'fk_cod_banco'=>$nome_banco, 'fk_tipo_conta'=>$tipo_conta];
-				$return = $this->conta_model->createConta($dados);
+				$return = $this->Conta_model->createConta($dados);
 				if ($return['status'] == 'success') {
 					$json = array('status'=>'success', 'message'=>$return['message']);
 				}  else {
@@ -78,11 +77,11 @@ class Conta extends CI_Controller
 
 	public function acessar($id)
 	{
-		if (is_numeric($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+		if (is_numeric($id) && $id > 0 && $this->Conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Página Principal";
 			$dados["view"] = "conta/v_home_conta";
 			$dados["idConta"] = $id;
-			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $id);
+			$dados["conta"] = $this->Conta_model->getAtualSaldo($this->session->userdata('id'), $id);
 			$this->session->set_userdata(['idConta' => $id]);
 			$this->load->view("v_template", $dados);
 		} else {
@@ -92,7 +91,7 @@ class Conta extends CI_Controller
 
 	public function extrato($id)
 	{
-		if (is_numeric($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+		if (is_numeric($id) && $id > 0 && $this->Conta_model->verificaConta($id) == true) {
 			if ($this->extrato->getExtratoAtual($id) == false) {
 				$dados['message'] = "Ainda não existe movimentação neste mês!";
 			} else {
@@ -107,7 +106,7 @@ class Conta extends CI_Controller
 			}
 			$dados["title"] = "Extrato";
 			$dados["idConta"] = $id;
-			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $id);
+			$dados["conta"] = $this->Conta_model->getAtualSaldo($this->session->userdata('id'), $id);
 			$dados["view"] = "extrato/v_extrato";
 			$this->load->view("v_template", $dados);
 		} else {
@@ -117,30 +116,30 @@ class Conta extends CI_Controller
 
 	public function debitar($id = null)
 	{
-		if (is_numeric($id) && !empty($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+		if (is_numeric($id) && !empty($id) && $id > 0 && $this->Conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Débito";
 			$dados["idConta"] = $id;
 			$dados['categorias'] = $this->categoria->getCategoriasDespesas();
-			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $id);
+			$dados["conta"] = $this->Conta_model->getAtualSaldo($this->session->userdata('id'), $id);
 			$dados["token"] = $this->usuario->getTokenUsuario($this->session->userdata('id'), $id);
 			$dados["view"] = "conta/v_debito";
 			$this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
-			$this->extrato_model->setDataMovimentacao($this->input->post('data_debito'));
-			$this->extrato_model->setMes(verificaMes());
-			$this->extrato_model->setTipoOperacao('Débito');
-			$this->extrato_model->setMovimentacao($this->input->post('movimentacao'));
-			$this->extrato_model->setQuantidade(1);
-			$this->extrato_model->setValor($this->input->post('valor'));
-			$this->extrato_model->getConta()->setIdConta($this->input->post('idConta'));
-			$this->extrato_model->getCategoria()->setIdCategoria($this->input->post('nome_categoria'));
-			$resultadoValidacao = $this->validacoes->validarDebito($this->extrato_model);
+			$this->Extrato_model->setDataMovimentacao($this->input->post('data_debito'));
+			$this->Extrato_model->setMes(verificaMes());
+			$this->Extrato_model->setTipoOperacao('Débito');
+			$this->Extrato_model->setMovimentacao($this->input->post('movimentacao'));
+			$this->Extrato_model->setQuantidade(1);
+			$this->Extrato_model->setValor($this->input->post('valor'));
+			$this->Extrato_model->getConta()->setIdConta($this->input->post('idConta'));
+			$this->Extrato_model->getCategoria()->setIdCategoria($this->input->post('nome_categoria'));
+			$resultadoValidacao = $this->validacoes->validarDebito($this->Extrato_model);
 			if ($this->usuario->getTokenByUserById($this->input->post('token'), $this->session->userdata('id')) == false) {
 				$json = array('status'=>'error', 'message'=>'Essa operação não pode ser realizada!');
 			} elseif ($resultadoValidacao->getErros() == true) {
 				$json = array('status'=>'error', 'message'=>$resultadoValidacao->getErros());
 			} else {
-				$retorno = $this->extrato->debitar($this->extrato_model);
+				$retorno = $this->extrato->debitar($this->Extrato_model);
 				if ($retorno['status'] == 'success') {
 					$json = array('status'=>'success', 'message'=>$retorno['message']);
 				} else {
@@ -155,30 +154,30 @@ class Conta extends CI_Controller
 
 	public function creditar($id = null)
 	{
-		if (is_numeric($id) && $id > 0 && $this->conta_model->verificaConta($id) == true) {
+		if (is_numeric($id) && $id > 0 && $this->Conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Crédito";
 			$dados["idConta"] = $id;
-			$dados["conta"] = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $id);
+			$dados["conta"] = $this->Conta_model->getAtualSaldo($this->session->userdata('id'), $id);
 			$dados['categorias'] = $this->categoria->getCategoriasReceitas();
 			$dados["token"] = $this->usuario->getTokenUsuario($this->session->userdata('id'), $id);
 			$dados["view"] = "conta/v_credito";
 			$this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
-			$this->extrato_model->setDataMovimentacao($this->input->post('data_credito'));
-			$this->extrato_model->setMes(verificaMes());
-			$this->extrato_model->setTipoOperacao('Crédito');
-			$this->extrato_model->setMovimentacao($this->input->post('movimentacao'));
-			$this->extrato_model->setQuantidade(1);
-			$this->extrato_model->setValor($this->input->post('valor'));
-			$this->extrato_model->getConta()->setIdConta($this->input->post('idConta'));
-			$this->extrato_model->getCategoria()->setIdCategoria($this->input->post('nome_categoria'));
-			$resultadoValidacaoCredito = $this->validacoes->validarCredito($this->extrato_model);
+			$this->Extrato_model->setDataMovimentacao($this->input->post('data_credito'));
+			$this->Extrato_model->setMes(verificaMes());
+			$this->Extrato_model->setTipoOperacao('Crédito');
+			$this->Extrato_model->setMovimentacao($this->input->post('movimentacao'));
+			$this->Extrato_model->setQuantidade(1);
+			$this->Extrato_model->setValor($this->input->post('valor'));
+			$this->Extrato_model->getConta()->setIdConta($this->input->post('idConta'));
+			$this->Extrato_model->getCategoria()->setIdCategoria($this->input->post('nome_categoria'));
+			$resultadoValidacaoCredito = $this->validacoes->validarCredito($this->Extrato_model);
 			if ($this->usuario->getTokenByUserById($this->input->post('token'), $this->session->userdata('id')) == false) {
 				$json = array('status'=>'error', 'message'=>'Essa operação não pode ser realizada!');
 			} elseif ($resultadoValidacaoCredito->getErros() == true) {
 				$json = array('status'=>'error', 'message'=>$resultadoValidacaoCredito->getErros());
 			} else {
-				$retorno = $this->extrato->creditar($this->extrato_model);
+				$retorno = $this->extrato->creditar($this->Extrato_model);
 				if ($retorno['status'] == 'success') {
 					$json = array('status'=>'success', 'message'=>$retorno['message']);
 				} else {
@@ -194,7 +193,7 @@ class Conta extends CI_Controller
 	public function getSaldo()
 	{
 		$saldo_post = $this->input->post('saldo_nav');
-		$saldo = $this->conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
+		$saldo = $this->Conta_model->getAtualSaldo($this->session->userdata('id'), $this->session->userdata('idConta'));
 		if (empty($saldo)) {
 			$json = array('status'=>'error', 'message'=>'Ops... Sem Saldo');
 		}  else {
@@ -208,7 +207,7 @@ class Conta extends CI_Controller
 		$idConta = $this->input->post('idConta');
 		$ano = date("Y");
 		$mes = verificaMes();
-		$contas_agendadas = $this->agendamento_model->getContasAgendadas($idConta);
+		$contas_agendadas = $this->Agendamento_model->getContasAgendadas($idConta);
 		$tabela = monta_tabela_pagto_agendado($mes, $ano, $contas_agendadas);
 		$json = array('status'=>'success', 'message'=>'Não há nenhum pagamento agendado pagamento hoje!', 'tabela'=>$tabela);
 		return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));
@@ -220,13 +219,13 @@ class Conta extends CI_Controller
 			$idConta = $this->input->post('idConta');
 			$ano = date("Y");
 			$mes = verificaMes();
-			$return = $this->conta_model->verificaPagamentoAgendado($idConta);
+			$return = $this->Conta_model->verificaPagamentoAgendado($idConta);
 			if ($return['status'] == 'success') {
-				$contas_agendadas = $this->agendamento_model->getContasAgendadas($idConta);
+				$contas_agendadas = $this->Agendamento_model->getContasAgendadas($idConta);
 				$tabela = monta_tabela_pagto_agendado($mes, $ano, $contas_agendadas);
 				$json = array('status'=>'success', 'message'=>$return['message'], 'tabela'=>$tabela);
 			} else {
-				$contas_agendadas = $this->agendamento_model->getContasAgendadas($idConta);
+				$contas_agendadas = $this->Agendamento_model->getContasAgendadas($idConta);
 				$tabela = monta_tabela_pagto_agendado($mes, $ano, $contas_agendadas);
 				$json = array('status'=>'error', 'message'=>$return['message'], 'tabela'=>$tabela);
 			}

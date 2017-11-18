@@ -9,10 +9,9 @@ class DespesaCartao_model extends CI_Model
 	{
 		parent::__construct();
 		$this->load->database();
-		$this->load->model('banco_model');
-		$this->load->model('bandeiracartao_model');
+		$this->load->model('Banco_model');
+		$this->load->model('BandeiraCartao_model');
 		$this->load->helper("funcoes");
-		date_default_timezone_set('America/Sao_Paulo');
 	}
 
 	public function getTable() {

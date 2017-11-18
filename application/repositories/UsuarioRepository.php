@@ -13,7 +13,6 @@ class UsuarioRepository extends CI_Model
         $this->usuario_model = new Usuario_model();
         $this->load->database();
         $this->load->helper("funcoes");
-        date_default_timezone_set('America/Sao_Paulo');
     }
 
     public function getAllUsuarios()

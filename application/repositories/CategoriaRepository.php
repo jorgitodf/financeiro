@@ -11,7 +11,6 @@ class CategoriaRepository extends DefaultRepository
     public function __construct()
     {
         $this->categoria = new Categoria_model();
-        date_default_timezone_set('America/Sao_Paulo');
     }
 
     public function checkCategoria()
