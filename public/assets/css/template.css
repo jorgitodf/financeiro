@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-@media only screen and (max-width: 340px) {
+@media (max-width: 37em) {
     
     html, body {
         margin: 0;
@@ -80,7 +80,7 @@
 
     /* PÁGINA HOME */
     .div_page_principal {
-        margin-top: 17% !important;
+        margin-top: 20% !important;
     }
 
 
@@ -201,23 +201,23 @@
 
     /* PÁGINA CONTA HOME */
     #sec_conta_home {
-        margin-top: 8%;
+        margin-top: 9%;
     }
     #sec_conta_home_tab_pgtos_agendados {
-        margin-top: 8%;
+        margin-top: 9%;
         color: white; 
         font-size: 12px;
     }
     .asd {
-        padding: 5px;
+        padding: 2%;
     }
     .btn_extrato {
-        height: 50px !important;
+        height: 50% !important;
         border-radius: 10px 0 0 10px;
-        width: 90px !important;
+        width: 72% !important;
     }
     .btn_extrato_1 {
-        height: 50px !important;
+        height: 50% !important;
         border-radius: 0 10px 10px 0;
     }
     .href_btn_home {
@@ -225,12 +225,12 @@
         font-size: 11px;
     }
     #btn_agendamento {
-        height: 50px !important;
+        height: 40% !important;
         border-radius: 10px 0 0 10px;
         height: 50px !important;
     }
     #btn_agendamento_1 {
-        height: 50px !important;
+        height: 40% !important;
         border-radius: 0 10px 10px 0;
     }
     .bordasimples {
@@ -292,13 +292,13 @@
         font-size: 9px !important;
     }
     .largura_td {
-        width: 120px !important;
+        width: 50% !important;
     }
     #largura_td_valor {
-        width: 50px !important;
+        width: 20% !important;
     }
     #largura_td_data {
-        width: 70px !important;
+        width: 30% !important;
     }
     #largura_td_pago {
         width: 40px !important;
@@ -650,11 +650,8 @@
     }
 }
 
-@media only screen and (max-width: 600px) {
-
-}
-    
-@media only screen and (max-width: 1366px) {
+   
+@media (min-width: 82em) {
 
     html, body {
         margin: 0;
@@ -1273,7 +1270,7 @@
     }
 }
 
-@media only screen and (min-width: 1440px) {
+@media (max-width: 100em) {
     html, body {
         margin: 0;
         height: 100%;
@@ -1462,10 +1459,10 @@
 
     /* PÁGINA CONTA HOME */
     #sec_conta_home {
-        margin-top: 7%;
+        margin-top: 3%;
     }
     #sec_conta_home_tab_pgtos_agendados {
-        margin-top: 7%;
+        margin-top: 3%;
         color: white; 
         font-size: 12px;
     }
