@@ -1,9 +1,9 @@
 
-<div class="container-fluid col-sm-12 col-md-12 col-lg-12">
+<div class="container-fluid col-xs-12 col-sm-12 col-md-12 col-lg-12 div_page_principal">
     <div class="row-fluid">
-        <section class="col-md-6 col-lg-6 col-sm-6" id="sec_conta_home">
+        <section class="col-xs-12 col-md-6 col-lg-6 col-sm-6" id="sec_conta_home">
             <div class="row-fluid">
-                <div class="btn-group">
+                <div class="btn-group asd">
                     <button type="button" class="btn btn-success btn_extrato" id=""><a class="href_btn_home" href="/conta/acessar/<?php echo !empty($idConta) ? $idConta : "" ?>">Extratos</a></button>
                     <button type="button" class="btn btn-success dropdown-toggle btn_extrato_1" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
@@ -14,7 +14,7 @@
                         <li><a href="/extrato">Extrato Por Período</a></li>
                     </ul>
                 </div>
-                <div class="btn-group">
+                <div class="btn-group asd">
                     <button type="button" class="btn btn-success btn_extrato" id=""><a class="href_btn_home" href="/conta/acessar/<?php echo !empty($idConta) ? $idConta : "" ?>">Transações</a></button>
                     <button type="button" class="btn btn-success dropdown-toggle btn_extrato_1" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
@@ -25,9 +25,9 @@
                         <li><a href="/conta/creditar/<?php echo !empty($idConta) ? $idConta : "" ?>">Creditar</a></li>
                     </ul>
                 </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-success" id="btn_agendamento"><a class="href_btn_home" href="/conta/acessar/<?php echo !empty($idConta) ? $idConta : "" ?>">Cartão Crédito</a></button>
-                    <button type="button" class="btn btn-success dropdown-toggle" id="btn_agendamento_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="btn-group asd">
+                    <button type="button" class="btn btn-success btn_extrato"><a class="href_btn_home" href="/conta/acessar/<?php echo !empty($idConta) ? $idConta : "" ?>">Cartão Crédito</a></button>
+                    <button type="button" class="btn btn-success dropdown-toggle btn_extrato_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
@@ -39,9 +39,9 @@
                         <li><a href="#">Consultar Fatura</a></li>
                     </ul>
                 </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-success" id="btn_agendamento"><a class="href_btn_home" href="/conta/acessar/<?php echo !empty($idConta) ? $idConta : "" ?>">Agendamentos</a></button>
-                    <button type="button" class="btn btn-success dropdown-toggle" id="btn_agendamento_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="btn-group asd">
+                    <button type="button" class="btn btn-success btn_extrato" ><a class="href_btn_home" href="/conta/acessar/<?php echo !empty($idConta) ? $idConta : "" ?>">Agendamentos</a></button>
+                    <button type="button" class="btn btn-success dropdown-toggle btn_extrato_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
@@ -53,18 +53,18 @@
                 <input type="hidden" id="idConta" value="<?php echo !empty($idConta) ? $idConta : ""; ?>">
             </div>
         </section>
-        <section class="col-md-6 col-lg-6 col-sm-6" id="sec_conta_home_tab_pgtos_agendados">
+        <section class="col-xs-12 col-md-6 col-lg-6 col-sm-6" id="sec_conta_home_tab_pgtos_agendados">
             <div class="row-fluid">
-                <div class="table table-responsive" id="tabela_pgto_agendado">
+                <div class="table" id="tabela_pgto_agendado">
                 </div>  
             </div>
         </section>
     </div>
     <div class="row-fluid">
-        <section class="col-md-6 col-lg-6 col-sm-6" id=""></section>
+        <section class="col-xs-12 col-md-6 col-lg-6 col-sm-6" id=""></section>
     </div>
     <div class="row-fluid">
-        <section class="col-md-6 col-lg-6 col-sm-6 retorno" id="">
+        <section class="col-xs-12 col-md-6 col-lg-6 col-sm-6 retorno" id="">
             
         </section>
     </div>
