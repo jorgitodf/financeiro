@@ -42,7 +42,7 @@ class Auth extends CI_Controller
         }
         
         if ($this->input->post()) {
-            $email = $this->input->post('email');
+            $email = stripHTMLtags($this->input->post('email'));
             $password = $this->input->post('password');
             if (empty($email)) {
                 $json = array('status'=>'error', 'message'=>'Preencha o E-mail');
