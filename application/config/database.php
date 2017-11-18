@@ -74,15 +74,15 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> 'mysql:dbname=financeiro;charset=utf8',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => 'root',
-	'database' => 'financeiro',
+	'dsn'	=> 'mysql:dbname=conta092_financeiro;charset=utf8',
+	'hostname' => '50.116.112.125',
+	'username' => 'conta092_master7',
+	'password' => '!Master@1977',
+	'database' => 'conta092_financeiro',
 	'dbdriver' => 'pdo',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
-	'db_debug' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
 	'cachedir' => '',
 	'char_set' => 'utf8',
