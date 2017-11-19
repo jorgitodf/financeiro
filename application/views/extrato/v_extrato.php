@@ -3,7 +3,6 @@
 	<div class="row-fluid">
 		<?php if (!empty($message)):?>
 			<section class="col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 col-sm-6 col-sm-offset-3 jumbotron" id="sec_extrato">
-
 				<div class="alert alert-danger text-center" role="alert" id="div_sem_extrato">
 					<h3><?php echo !empty($message) ? $message : ""; ?></h3>
 				</div>
@@ -20,13 +19,13 @@
 					<div class="panel-body" id="panel_body_extrato">
 						<table class="table table-hover" id="table_extrato_atual">
 							<thead>
-							<tr>
-								<th class="data_mov_cab" width="22%">Data de Movimentação</th>
-								<th width="">Movimentação</th>
-								<th width="">Categoria</th>
-								<th class="valor_mov_cab" width="">Valor</th>
-								<th class="saldo_mov_cab" width="">Saldo</th>
-							</tr>
+								<tr>
+									<th class="data_mov_cab largura_col_data">Data</th>
+									<th class="mov_cab largura_col_mov">Movimentação</th>
+									<th class="cat_cab largura_col_cat">Categoria</th>
+									<th class="valor_mov_cab largura_col_val">Valor</th>
+									<th class="saldo_mov_cab largura_col_sal">Saldo</th>
+								</tr>
 							</thead>
 							<tbody>
 							<?php foreach ($extrato as $linha): ?>
@@ -41,9 +40,9 @@
 										<?php if ($linha['dp'] == 'S'): ?>
 											<td class="td_extrato_deb_fixa"><?php echo mb_convert_case($linha['mov'], MB_CASE_TITLE); ?></td>
 										<?php else: ?>
-											<td><?php echo ucwords($linha['mov']); ?></td>
+											<td class="td_extrato_deb"><?php echo ucwords($linha['mov']); ?></td>
 										<?php endif; ?>
-										<td><?php echo $linha['cat']; ?></td>
+										<td class="td_extrato_deb"><?php echo $linha['cat']; ?></td>
 										<td align="center" class="td_extrato_deb">R$ <?php echo number_format($linha['val'], 2, ',', '.'); ?></td>
 										<td align="center" class="td_extrato_deb_saldo">R$ <?php echo number_format($linha['sal'], 2, ',', '.'); ?></td>
 									<?php endif; ?>

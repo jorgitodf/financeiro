@@ -2,10 +2,10 @@
 
 <div class="container cor_fundo col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="row">
-        <section class="col-xs-12 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4" id="sec_login">
+        <section class="col-xs-12 col-md-4 col-sm-4 col-lg-4" id="sec_login">
             <div class="well box-login" id="div_login">
                 <div>
-                    <h2 class="ls-login-logo">Login Acesso ao Sistema</h2>
+                    <h2 class="ls-login-logo">Login Sistema Financeiro</h2>
                 </div>
                 <form method="POST" action="/auth/login" id="form_login">
                     <fieldset>

@@ -32,7 +32,7 @@
     /* NAVBAR */
     #barra_nav {
         height: 60px;
-        background-color: #337ab7;
+        background-color: #337ab7 !important;
     }
     .navbar .navbar-nav {
         display: inline-block;
@@ -43,7 +43,8 @@
         text-align: center;
     }
     #navbar-nav {
-        margin-left: 20px;
+        margin-left: -20% !important;
+        background-color: #337ab7 !important;
     }
     #navbar-nav > li > a {
         color: white;
@@ -67,15 +68,23 @@
         padding: 15px;
         margin-top: -2px;
     }
+    #navbar_deslogar {
+        background-color: #337ab7 !important;
+        margin-left: -16% !important;
+        margin-top: -0.2% !important;
+    }
     #navbar_saldo {
         color: white; 
-        margin-top: 4px;
-        font-size: 12px;
-        width: 250px;
-        margin-left: 185px;
+        margin-top: 4px !important;
+        font-size: 10px !important;
+        padding: 5% 1% 1% 1% !important;
+        height: 50% !important;
+        margin-left: 23.5% !important;
+        background-color: #337ab7 !important;
     }
     .info_saldo {
         color: yellow;
+        text-align: left !important;
     }
 
     /* PÁGINA HOME */
@@ -86,19 +95,20 @@
 
     /* PÁGINA LOGIN */
     #sec_login {
-        margin-top: 10%;
-        margin-left: -1%;
+        margin-top: 12% !important;
+        margin-left: auto !important;
     }
     #sec_login > div > div > h2 {
-        font-size: 14px;
-        font-weight: bold;
-        text-indent: 40px;
+        font-weight: bold !important;
+        font-size: 17px !important;
+        text-indent: 1% !important;
+        text-align: center !important;
     }
     #div_login {
         border-radius: 20px;
         -moz-border-radius: 20px;
-        height: 300px;
-        width: 295px;
+        width: 90% !important;
+        height: 27.5em !important;
     }
     #msg_error_login {
         padding: 7px !important;
@@ -118,19 +128,26 @@
         margin-bottom: 25px;
     }
     .btn-tam {
-        width: 110px;
+        width: 49%;
     }
 
 
     /* PÁGINA CADASTRO USUÁRIO */
     #sec_cadastro_usuario {
-        margin-top: 7%;
-        margin-left: 29%;
+        margin-top: 8% !important;
+        margin-left: 0 !important;
     }
     #div_cad_usuario {
         border-radius: 20px;
         -moz-border-radius: 20px;
-        height: 390px;
+        width: 100% !important;
+        height: 38em !important;
+    }
+    #div_cad_usuario > div > h2 {
+        font-weight: bold !important;
+        font-size: 17px !important;
+        text-indent: 1% !important;
+        text-align: center !important;
     }
     #msg_error_cad_usuario {
         padding: 8px !important;
@@ -150,7 +167,10 @@
         margin-bottom: 25px;
     }
     #retorno_cad_usuario {  
-        float: left;
+        width: 100%;
+    }
+    #btn_cadastrar, #btn_inicio {
+        width: 49%;
     }
 
 
@@ -305,17 +325,15 @@
     }
 
 
-
-
     /* PÁGINA EXTRATO */
     #sec_extrato {
-        margin-top: 8%;
+        margin-top: 25% !important;
         padding: 19px 15px 0px 15px;
         background-color: white;
     }
     #sec_com_extrato {
-        margin-top: 6%;
-        padding: 19px 15px 0px 15px;
+        margin-top: 25% !important;
+        padding: 10px 10px 1px 10px !important;
         background-color: white;
     }
     #div_sem_extrato {
@@ -326,40 +344,73 @@
         width: 100px;
     }
     #table_extrato_atual > tbody > tr > td {
-        padding: 3px;
+        padding: 1px;
     }
     #panel_body_extrato {
-        padding: 5px 15px 15px 15px;
+        padding: 5px 5px 5px 5px !important;
     }
     .td_extrato_deb_saldo {
         color: #837d7c;
         font-weight: bold;
+        font-size: 7.5px !important; 
     }
     .td_extrato_cre {
         color: #0902fd;
         font-weight: bold;
+        font-size: 7.5px !important; 
     }
     .td_extrato_deb_data {
         color: #837d7c;
         font-weight: bold;
         text-align: center;
+        font-size: 7.5px !important;
     }
     .td_extrato_deb_fixa {
         color: red;
+        font-size: 7.5px !important; 
     }
-    .data_mov_cab, .valor_mov_cab, .saldo_mov_cab {
-        text-align: center;
+    .td_extrato_deb {
+        font-size: 7.5px !important; 
+    }
+    .data_mov_cab, .valor_mov_cab, .saldo_mov_cab, .mov_cab, .cat_cab {
+        text-align: center !important;
+        font-size: 9px !important;
     }
     #btn_sair_extrato {
         float: right;
+        width: 15% !important; 
+        height: 10% !important; 
+    }
+    #table_extrato > div > h3 {
+        font-size: 12px !important;    
+        text-indent: 1% !important;
+        text-align: center !important;
+    }
+    .largura_col_mov {
+        width: 44% !important; 
+    }
+    .largura_col_data {
+        width: 3% !important; 
+    }
+    .largura_col_cat {
+        width: 19% !important; 
+    }
+    .largura_col_val {
+        width: 20% !important; 
+    }
+    .largura_col_sal {
+        width: 20% !important; 
+    }
+    #btn_toggle {
+        background-color:white !important; 
     }
 
 
     /* PÁGINA DEBITAR */
     #sec_debito {
-        margin-top: 7%;
+        margin-top: 22% !important;
         background-color: white;
-        padding: 19px 15px 0 15px;
+        padding: 10px 10px 1px 10px !important;
     }
     #div_panel_form_debitar {
 
@@ -374,6 +425,9 @@
     #retorno_debito {
         padding: 0 !important;
         height: 35px;
+    }
+    .btn_tam_dev {
+        width: 32% !important; 
     }
 
 
@@ -650,7 +704,7 @@
     }
 }
 
-   
+
 @media (min-width: 82em) {
 
     html, body {
@@ -737,7 +791,8 @@
 
     /* PÁGINA LOGIN */
     #sec_login {
-        margin-top: 9%;
+        margin-top: 10% ;
+        margin-left: 33% ;
     }
     #div_login {
         border-radius: 20px;
@@ -1270,6 +1325,7 @@
     }
 }
 
+
 @media (max-width: 100em) {
     html, body {
         margin: 0;
@@ -1355,6 +1411,7 @@
     /* PÁGINA LOGIN */
     #sec_login {
         margin-top: 10%;
+        margin-left: 33%;
     }
     #div_login {
         border-radius: 20px;
