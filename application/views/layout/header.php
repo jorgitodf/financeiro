@@ -12,20 +12,19 @@
     </head>
     <body>
         <header id="cabecalho">
-            <?php if (!empty($this->session->userdata('user'))) { ?>
+          <?php if (!empty($this->session->userdata('user'))) { ?>
             <nav class="navbar navbar-default navbar-fixed-top" id="barra_nav">
                 <div class="container-fluid">
-                    <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" id="" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbarCollapse" aria-expanded="false">
                             <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
                     </div>
-
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div class="collapse navbar-collapse navbarCollapse" id="">
                         <ul class="nav navbar-nav navbar-left" id="navbar-nav">
                             <li class="dropdown">
                                 <a class="color_fonte_white" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Minha Conta<span class="caret"></span></a>
@@ -36,10 +35,12 @@
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-form" id="navbar_saldo">
-                            <?php if (!empty($conta)): ?>
+                            <?php if (!empty($conta) && $this->session->userdata('idConta')): ?>
                             <li>Conta: <span class="info_saldo"><?php echo !empty($conta->numero_conta) ? $conta->numero_conta."-".$conta->digito : ""; ?></span></li><br/>
                             <li>Banco: <span class="info_saldo"><?php echo !empty($conta->nome_banco) ? $conta->nome_banco : ""; ?></span></li><br/>
                             <li>Saldo: <span class="info_saldo" id="saldo_nav"><?php echo !empty($conta->saldo) ? number_format($conta->saldo, 2, ',', '.') : ""; ?></span></li><br/>
+                            <?php else: ?>
+                            
                             <?php endif; ?>
                         </ul>
                         <ul class="nav navbar-nav navbar-right" id="navbar_deslogar">
@@ -47,8 +48,8 @@
                                 <a href="/auth/logout">Deslogar</a>
                             </li>
                         </ul>
-                    </div><!-- /.navbar-collapse -->
-                </div><!-- /.container-fluid -->
+                    </div>
+                </div>
             </nav>
-            <?php } ?>
+          <?php } ?>
         </header>

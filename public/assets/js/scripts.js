@@ -17,7 +17,7 @@ $(document).ready(function () {
                     if (retorno[0]['status'] == 'error' ) {
                         $('.retorno').html('<div class="alert alert-danger col-md-12 col-sm-12 col-lg-12 form-group text-center msgError" role="alert" id="msg_error_login">' + retorno[0]['message'] + '</div>');
                     } else if (retorno[0]['status'] == 'success'){
-                        window.setTimeout(document.location.href = retorno[0]['message'], 1);
+                        redirectPageHome(retorno[0]['base_url'])
                     }
                     else {
                         alert(retorno);
@@ -635,4 +635,8 @@ function getSaldo() {
 
 function redirectPagarFatura(base_url, id) {
     return window.location.replace(base_url+"/cartaocredito/fatura-pagar/"+id);
+}
+
+function redirectPageHome(base_url) {
+    return window.location.replace(base_url+"/");
 }

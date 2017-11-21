@@ -54,7 +54,13 @@ class Auth extends CI_Controller
                     $json = array('status'=>'error', 'message'=>$return['message']);
                 } else {
                     $this->session->set_userdata(['id' => $return['id_usuario'], 'user' => $return['nome_usuario']]);
-                    $json = array('status'=>'success', 'message'=>'/');
+                    $base_url = 'http';
+                    if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") $base_url .= "s";
+                    $base_url .= "://";
+                    if ($_SERVER["SERVER_PORT"] != "80") $base_url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"];
+                    else $base_url .= $_SERVER["SERVER_NAME"];
+                    $base_url."/";
+                    $json = array('status' => 'success', 'base_url'=>$base_url);
                 }
             }
             return $this->output->set_content_type('application/json')->set_output(json_encode(array($json)));    
@@ -63,7 +69,10 @@ class Auth extends CI_Controller
 
     public function logout()
     {
+
         $this->session->unset_userdata('user');
+        $this->session->unset_userdata('id');
+        $this->session->unset_userdata('idConta');
         redirect('auth/login', 'location', 302);
         die();
     }

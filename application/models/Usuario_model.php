@@ -99,7 +99,9 @@ class Usuario_model extends CI_Model
         try {
             $sql = "SELECT id_usuario, nome, email, senha FROM {$this->table} WHERE email = ?";
             $dados = $this->db->query($sql, [$email]);
-            if ($dados->result_array()[0]['email'] && (consultaSenhaCrypty($password, $dados->result_array()[0]['senha']) != true)) {
+			if ($dados->result_array() == null) {
+                return array('status'=>'error', 'message' => 'Usuário Não Cadastrado!');
+            } elseif ($dados->result_array()[0]['email'] && (consultaSenhaCrypty($password, $dados->result_array()[0]['senha']) != true)) {
                 return array('status'=>'error', 'message' => 'A senha digitada não confere com a senha Cadastrada!');
             }
             return array('status'=>'success', 'id_usuario' => $dados->result_array()[0]['id_usuario'], 'nome_usuario' => $dados->result_array()[0]['nome']);

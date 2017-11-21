@@ -75,7 +75,7 @@ class Conta extends CI_Controller
 		}
 	}
 
-	public function acessar($id)
+	public function acessar($id = null)
 	{
 		if (is_numeric($id) && $id > 0 && $this->Conta_model->verificaConta($id) == true) {
 			$dados["title"] = "Página Principal";

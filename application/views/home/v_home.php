@@ -2,7 +2,7 @@
 <div class="container-fluid col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="row-fluid">
         <?php if (!empty($conta)): ?>
-        <section class="jumbotron col-xs-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3" id="sec_sem_conta">
+        <section class="jumbotron col-xs-12 col-md-7 col-sm-7 col-lg-7" id="sec_sem_conta">
             <p><?php echo $conta; ?></p>
             <a class="btn btn-primary" href="/conta" role="button">Cadastrar Conta</a>
         </section>

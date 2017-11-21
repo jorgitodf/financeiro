@@ -157,6 +157,11 @@
         font-size: 11px;
         background-color: #FFFF00;
     }
+    #msg_success_cad_usuario {
+        padding: 8px !important;
+        font-size: 11px;
+        background-color: #FFFF00;
+    }
     .box-login{ 
         position: absolute;
         box-shadow: 6px 6px 0 black;
@@ -202,9 +207,10 @@
 
     /* PÁGINA HOME */
     #sec_sem_conta {
-        margin-top: 20%;
+        margin-top: 30% !important;
         background-color: white;
         padding: 5px 20px 25px 30px;
+        margin-left: 0.5% !important;
     }
     #div_head_com_conta > h3 {
         font-size: 14px;
@@ -867,6 +873,11 @@
         font-size: 11px;
         background-color: #FFFF00;
     }
+    #msg_success_cad_usuario {
+        padding: 8px !important;
+        font-size: 11px;
+        background-color: #FFFF00;
+    }
     .box-login{ 
         position: absolute;
         box-shadow: 6px 6px 0 black;
@@ -909,8 +920,9 @@
 
     /* PÁGINA HOME */
     #sec_sem_conta {
-        margin-top: 6%;
+        margin-top: 9%;
         background-color: white;
+        margin-left: 20%;
     }
     #sec_sem_conta > p {
         font-size: 16px;
@@ -1410,7 +1422,7 @@
         color: red;
     }
     #navbar-nav > li > a {
-        padding: 15px;
+        padding: 10px;
         margin-top: -2px;
     }
     #navbar-nav > li > a, #navbar_deslogar  > li > a {
@@ -1479,6 +1491,11 @@
         font-size: 11px;
         background-color: #FFFF00;
     }
+    #msg_success_cad_usuario {
+        padding: 8px !important;
+        font-size: 11px;
+        background-color: #FFFF00;
+    }
     .box-login{ 
         position: absolute;
         box-shadow: 6px 6px 0 black;
@@ -1521,7 +1538,8 @@
 
     /* PÁGINA HOME */
     #sec_sem_conta {
-        margin-top: 6%;
+        margin-top: 9%;
+        margin-left: 20%;
         background-color: white;
     }
     #sec_sem_conta > p {
