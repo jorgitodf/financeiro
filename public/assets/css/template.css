@@ -757,6 +757,11 @@
         background-color: #000080 !important;
         height: 100%;
     }
+    .imagem_error_404 {
+        background-image: url('/assets/imgs/404-error.jpg');
+        background-repeat: no-repeat;
+        width:100%;
+    }
 
     /* NAVBAR */
     #barra_nav {
@@ -1336,9 +1341,7 @@
     /* PÁGINA ERROR 404 */
     #sec_erro_404 {
         margin-top: 3%;
-        background-color: white;
-        padding: 5px 20px 15px 30px;
-        margin-left: 16%;
+
     }
     .img_erro_404 {
         width: 10%;
@@ -1985,12 +1988,21 @@
         background-color: white;
         padding: 5px 20px 15px 30px;
         margin-left: 16%;
+        height: 200% !important;
     }
-    .img_erro_404 {
-        width: 10%;
-        margin-left: 0;
-        margin-top: 0em;
-        margin-right: 0em;
-        margin-bottom: 0em;
+    .imagem_error_404 {
+        background-image: url('/assets/imgs/404-error.jpg');
+        background-repeat: no-repeat;
+        max-width: 130px !important;
+        max-height: 150px !important;
+        width: 200px !important;
+        height: 160px !important;
+        background-size: cover; 
+        margin-left: 0 !important;
+        border-width: 0 !important;
+        border-style: none !important;
+        margin: 0;
+        padding: 0;
     }
+
 }    
