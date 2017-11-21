@@ -55,6 +55,9 @@
         padding: 15px;
         margin-top: -2px;;
     } 
+    #navbar-nav {
+        margin-left: -50% !important;
+    }
     #dropdown-menu > li > a:hover {
         background-color: #ccc;
         color: red;
@@ -70,8 +73,7 @@
     }
     #navbar_deslogar {
         background-color: #337ab7 !important;
-        margin-left: -16% !important;
-        margin-top: -0.2% !important;
+        margin-left: -1.5% !important;
     }
     #navbar_saldo {
         color: white; 
@@ -81,6 +83,7 @@
         height: 50% !important;
         margin-left: 23.5% !important;
         background-color: #337ab7 !important;
+        display: none;
     }
     .info_saldo {
         color: yellow;
@@ -203,19 +206,40 @@
         background-color: white;
         padding: 5px 20px 25px 30px;
     }
-    #sec_com_conta > h3 {
-        font-size: 16px;
+    #div_head_com_conta > h3 {
+        font-size: 14px;
         font-weight: bold;
     }
     #sec_sem_conta > p {
         font-size: 16px;
     }
+    #sec_com_conta {
+        margin-top: 30% !important;
+        background-color: white;
+        padding: 0 15px 20px 15px;
+    }
    .tipo_conta_home, .ag_conta_home {
         font-weight: bold;
+        font-size: 8px;
     }
     .num_conta_home, .nome_banco_home {
         font-weight: bold;
         color: #0531fe;
+        font-size: 8px;
+    }
+    #div_head_com_conta {
+        padding: 0 10px 5px 0;
+    }
+    #div_body_com_conta {
+        padding: 0 0 0 0;
+    }
+    #div_footer_com_conta {
+        padding: 10px 10px 0 12px;
+    }
+    #btn_acessar_conta {
+        width: 30%;
+        height: 2em;
+        padding: 2px 1px 0 0;
     }
 
 
@@ -1501,9 +1525,9 @@
         font-size: 16px;
     }
     #sec_com_conta {
-        margin-top: 6%;
+        margin-top: 10%;
         background-color: white;
-        padding: 5px 20px 25px 30px;
+        padding: 0 15px 20px 15px;
     }
     .tipo_conta_home, .ag_conta_home {
         font-weight: bold;
@@ -1511,6 +1535,15 @@
     .num_conta_home, .nome_banco_home {
         font-weight: bold;
         color: #0531fe;
+    }
+    #div_head_com_conta {
+        padding: 0 10px 5px 0;
+    }
+    #div_body_com_conta {
+        padding: 0 0 0 0;
+    }
+    #div_footer_com_conta {
+        padding: 10px 10px 0 12px;
     }
 
 
