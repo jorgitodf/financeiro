@@ -33,12 +33,13 @@ class DespesaCartao_model extends CI_Model
 		} else {
 			$data_pgto = date('Y-m-08', strtotime("+1 month"));
 			$data_fechamento_fatura = date("Y-m-d", strtotime("-11 days", strtotime($data_pgto)));
+			
 			if ($dados['data_compra'] <= $data_fechamento_fatura) {
 				$data_pagamento = $data_pgto;
 			} elseif ($dados['data_compra'] > $data_fechamento_fatura) {
 				$data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime($data_pgto)));
 			}
-
+			
 			$data = [];		
 			
 			if ($dados['parcela'] == 01) {
@@ -51,16 +52,16 @@ class DespesaCartao_model extends CI_Model
 			} else {
 				$qtd_parcelas = (int) $dados['parcela'];
 				for($i=1; $i <= $dados['parcela']; $i++) {
+					$m = $i-1;
 					$data[$i]['data_compra'] = $dados['data_compra'];
 					$data[$i]['valor_parcela'] = formatarMoeda($dados['valor_parcela']) / $qtd_parcelas;
 					$data[$i]['parcela'] = $i < 10 ? "0".$i."/".$dados['parcela'] : $i."/".$dados['parcela'];
-					$data[$i]['data_pagamento'] = date('Y-m-d', strtotime("+{$i} month", strtotime($data_pagamento)));
+					$data[$i]['data_pagamento'] = $i == 1 ? $data_pagamento : date('Y-m-d', strtotime("+{$m} month", strtotime($data_pagamento)));
 					$data[$i]['despesa'] = $dados['despesa'];
 					$data[$i]['id_cartao'] = $dados['id_cartao'];
 					
 				}	
 			}
-			
 			$this->db->trans_begin();
 
 			foreach($data as $linha) {
