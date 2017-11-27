@@ -152,6 +152,7 @@ class Cartaocredito extends CI_Controller
 			$this->load->view("v_template", $dados);
 		} else if ($this->input->post()) {
 			$id_cartao_fat = $this->input->post('id_cartao_fat');
+			$itens_desp = $this->input->post('itens_desp');
 			$encargos = $this->input->post('encargos');
 			$protecao_prem = $this->input->post('protecao_prem');
 			$iof = $this->input->post('iof');
@@ -161,7 +162,7 @@ class Cartaocredito extends CI_Controller
 			$valor_total = $this->input->post('valor_total');
 			$valor_pago = $this->input->post('valor_pagar');
 
-			$dados = ['encargos'=>$encargos,'iof'=>$iof,'anuidade'=>$anuidade,'protecao'=>$protecao_prem,
+			$dados = ['itens_desp'=>$itens_desp, 'encargos'=>$encargos,'iof'=>$iof,'anuidade'=>$anuidade,'protecao'=>$protecao_prem,
 			'juros'=>$juros,'restante'=>$restante,'totalgeral'=>$valor_total,'valor_pagar'=>$valor_pago];
 
 			$return = $this->FaturaCartao_model->pagarFatura($dados, $id_cartao_fat);

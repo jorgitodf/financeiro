@@ -472,23 +472,13 @@ $(document).ready(function () {
     });
     $(function () {
         $("#form_pagar_fatura").submit(function (e) {
-            var id_cartao_fat = $('#id_cartao_fat').val();
-            var encargos = $('#encargos').val();
-            var iof = $('#iof').val();
-            var anuidade = $('#anuidade').val();
-            var protecao_prem = $('#protecao_prem').val();
-            var juros_fat = $('#juros_fat').val();
-            var restante = $('#restante').val();
-            var valor_pagar = $('#valor_pagar').val();
-            var valor_total = $('#valor_total').val();
             $(".msgError").html("");
             $(".msgError").css("display", "none");
             e.preventDefault();
             $.ajax({
                 type: "POST",
                 url: $(this).attr("action"),
-                data: {id_cartao_fat: id_cartao_fat, encargos: encargos, iof: iof, anuidade: anuidade, protecao_prem: protecao_prem,
-                        juros_fat: juros_fat, restante: restante, valor_pagar: valor_pagar, valor_total: valor_total},
+                data: $(this).serialize(),
                 dataType: 'json',
                 success: function (retorno) {
                     if (retorno[0]['status'] === 'error' ){

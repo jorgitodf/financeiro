@@ -25,10 +25,10 @@ function monta_tabela_pagto_agendado($mes, $ano, $contas_agendadas = null) {
                     $table .= "<td class='td_color_pgto' id=''>".date("d/m/Y", strtotime($linha['data']))."</td>";
                     $table .= "<td class='td_color_pgto' id=''>".mb_convert_case($linha['pago'], MB_CASE_TITLE)."</td>";
                 } else {
-                    $table .= "<td class='td_color_pgto_sim'>".mb_convert_case($linha['mov'], MB_CASE_TITLE)."</td>";
+                    $table .= "<td class='td_color_pgto_sim'>".$linha['mov']."</td>";
                     $table .= "<td align='left' class='td_color_pgto_sim' id=''>R$ ".number_format($linha['valor'], 2, ',', '.')."</td>";
                     $table .= "<td class='td_color_pgto_sim' id=''>".date("d/m/Y", strtotime($linha['data']))."</td>";
-                    $table .= "<td class='td_color_pgto_sim' id=''>".mb_convert_case($linha['pago'], MB_CASE_TITLE)."</td>";
+                    $table .= "<td class='td_color_pgto_sim' id=''>".$linha['pago']."</td>";
                 }
                 $table .= "</tr>";
                     $total += $linha['valor'];

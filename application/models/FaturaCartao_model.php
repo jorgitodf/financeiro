@@ -12,6 +12,7 @@ class FaturaCartao_model extends CI_Model
         $this->load->model('CartaoCredito_model');
         $this->load->model('Banco_model');
         $this->load->model('BandeiraCartao_model');
+        $this->load->model('ItensFaturaDespesas_model');
 		$this->load->helper("funcoes");
 	}
 
@@ -99,6 +100,7 @@ class FaturaCartao_model extends CI_Model
 		} elseif ($dados['valor_pagar'] > $dados['totalgeral']) {
 			return array('status'=>'error', 'message'=>'Valor do Pagamento superior ao Valor do Pagamento!');
 		} else {
+
             $sql = "UPDATE $this->table SET encargos = ?, protecao_premiada = ?, iof = ?, 
             anuidade = ?, restante_fatura_anterior = ?, pago = ?, juros = ?, valor_total_fatura = ?,
             valor_pago = ? WHERE id_fatura_cartao = ?";
@@ -108,7 +110,14 @@ class FaturaCartao_model extends CI_Model
             'restante_fatura_anterior'=>formatarMoeda($dados['totalgeral'])-formatarMoeda($dados['valor_pagar']),
             'pago'=>'S', 'juros'=>formatarMoeda($dados['juros']), 'valor_total_fatura'=>formatarMoeda($dados['totalgeral']),
             'valor_pago'=>formatarMoeda($dados['valor_pagar']), $id_cartao_fat]);
-            if ($this->db->affected_rows() === 1) {
+
+            foreach($dados['itens_desp'] as $linha) {
+       			$sql = "INSERT INTO {$this->ItensFaturaDespesas_model->getTable()} (fk_id_item_despesa_fatura, fk_id_fatura_cartao) 
+				    VALUES (?, ?)";
+				$this->db->query($sql, [$linha, $id_cartao_fat]);
+			}
+
+            if ($result == true && $this->db->affected_rows() > 0) {
                 return array('status' => 'success', 'message' => 'Pagamento realizado com Sucesso!');
             } else {
                 return array('status' => 'error', 'message' => 'Houve um Erro no Pagamento!');
