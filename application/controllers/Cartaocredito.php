@@ -161,11 +161,12 @@ class Cartaocredito extends CI_Controller
 			$juros = $this->input->post('juros_fat');
 			$valor_total = $this->input->post('valor_total');
 			$valor_pago = $this->input->post('valor_pagar');
+			$idConta = $this->session->userdata('idConta');
 
 			$dados = ['itens_desp'=>$itens_desp, 'encargos'=>$encargos,'iof'=>$iof,'anuidade'=>$anuidade,'protecao'=>$protecao_prem,
 			'juros'=>$juros,'restante'=>$restante,'totalgeral'=>$valor_total,'valor_pagar'=>$valor_pago];
 
-			$return = $this->FaturaCartao_model->pagarFatura($dados, $id_cartao_fat);
+			$return = $this->FaturaCartao_model->pagarFatura($dados, $id_cartao_fat, $idConta);
 
 			if ($return['status'] == 'success') {
 				$json = array('status'=>'success', 'message'=>$return['message']);

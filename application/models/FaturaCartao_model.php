@@ -13,6 +13,7 @@ class FaturaCartao_model extends CI_Model
         $this->load->model('Banco_model');
         $this->load->model('BandeiraCartao_model');
         $this->load->model('ItensFaturaDespesas_model');
+        $this->load->model('Agendamento_model');
 		$this->load->helper("funcoes");
 	}
 
@@ -87,7 +88,7 @@ class FaturaCartao_model extends CI_Model
     }
 
     
-    public function pagarFatura(array $dados, int $id_cartao_fat = null) {
+    public function pagarFatura(array $dados, int $id_cartao_fat = null, int $idConta = null) {
         $data_vencimento_fatura = date('Y-m-08', strtotime("+1 month"));
         $data_fechamento_fatura = date("Y-m-d", strtotime("-11 days", strtotime($data_vencimento_fatura)));
         $data_pagamento_fatura = date("Y-m-d");
@@ -101,28 +102,51 @@ class FaturaCartao_model extends CI_Model
 			return array('status'=>'error', 'message'=>'Valor do Pagamento superior ao Valor do Pagamento!');
 		} else {
 
-            $sql = "UPDATE $this->table SET encargos = ?, protecao_premiada = ?, iof = ?, 
-            anuidade = ?, restante_fatura_anterior = ?, pago = ?, juros = ?, valor_total_fatura = ?,
-            valor_pago = ? WHERE id_fatura_cartao = ?";
-            $result = $this->db->query($sql, ['encargos'=>formatarMoeda($dados['encargos']),
-            'protecao_premiada'=>formatarMoeda($dados['protecao']), 'iof'=>formatarMoeda($dados['iof']),
-            'anuidade'=>formatarMoeda($dados['anuidade']), 
-            'restante_fatura_anterior'=>formatarMoeda($dados['totalgeral'])-formatarMoeda($dados['valor_pagar']),
-            'pago'=>'S', 'juros'=>formatarMoeda($dados['juros']), 'valor_total_fatura'=>formatarMoeda($dados['totalgeral']),
-            'valor_pago'=>formatarMoeda($dados['valor_pagar']), $id_cartao_fat]);
+            $this->db->trans_begin();
 
-            foreach($dados['itens_desp'] as $linha) {
-       			$sql = "INSERT INTO {$this->ItensFaturaDespesas_model->getTable()} (fk_id_item_despesa_fatura, fk_id_fatura_cartao) 
-				    VALUES (?, ?)";
-				$this->db->query($sql, [$linha, $id_cartao_fat]);
-			}
+                $sql = "UPDATE $this->table SET encargos = ?, protecao_premiada = ?, iof = ?, 
+                anuidade = ?, restante_fatura_anterior = ?, pago = ?, juros = ?, valor_total_fatura = ?,
+                valor_pago = ? WHERE id_fatura_cartao = ?";
+                $result = $this->db->query($sql, ['encargos'=>formatarMoeda($dados['encargos']),
+                'protecao_premiada'=>formatarMoeda($dados['protecao']), 'iof'=>formatarMoeda($dados['iof']),
+                'anuidade'=>formatarMoeda($dados['anuidade']), 
+                'restante_fatura_anterior'=>formatarMoeda($dados['totalgeral'])-formatarMoeda($dados['valor_pagar']),
+                'pago'=>'S', 'juros'=>formatarMoeda($dados['juros']), 'valor_total_fatura'=>formatarMoeda($dados['totalgeral']),
+                'valor_pago'=>formatarMoeda($dados['valor_pagar']), $id_cartao_fat]);
 
-            if ($result == true && $this->db->affected_rows() > 0) {
-                return array('status' => 'success', 'message' => 'Pagamento realizado com Sucesso!');
-            } else {
+                foreach($dados['itens_desp'] as $linha) {
+                    $sql = "INSERT INTO {$this->ItensFaturaDespesas_model->getTable()} (fk_id_item_despesa_fatura, fk_id_fatura_cartao) 
+                        VALUES (?, ?)";
+                    $this->db->query($sql, [$linha, $id_cartao_fat]);
+                }
+                
+                $sql = "INSERT INTO {$this->Agendamento_model->getTable()} (data_pagamento, movimentacao, valor, pago, fk_id_categoria, fk_id_conta) ".
+                        "VALUES (?,?,?,?,?,?)";
+                $this->db->query($sql, [$data_vencimento_fatura, $this->getCartaoCreditoByNome($id_cartao_fat), formatarMoeda($dados['valor_pagar']),
+                    'Não', 6, $idConta]); 
+
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
                 return array('status' => 'error', 'message' => 'Houve um Erro no Pagamento!');
-            } 
+            } else {
+                $this->db->trans_commit();
+                return array('status' => 'success', 'message' => 'Pagamento realizado com Sucesso!');
+            }
+
         }
     }
+    
+	public function getCartaoCreditoByNome($id)
+	{
+		$sql = "SELECT 
+				CASE c.id_cartao_credito 
+					WHEN 1 THEN 'CARTÃO VOTORANTIM'
+					WHEN 2 THEN 'CARTÃO CEF'
+				END AS cartao 
+			FROM {$this->getTable()} f
+			JOIN {$this->CartaoCredito_model->getTable()} c ON (c.id_cartao_credito = f.fk_id_cartao_credito)
+			WHERE f.id_fatura_cartao = ?";
+		return $this->db->query($sql, [$id])->result_array()[0]['cartao'];
+	}
 
 }
