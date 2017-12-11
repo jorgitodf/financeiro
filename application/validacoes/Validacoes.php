@@ -57,4 +57,12 @@ class Validacoes
         }
         return $this->resultadoValidacao;
     }
+
+    public function validarRelatorioAnual($ano)
+    {
+        if (empty($ano)) {
+            $this->resultadoValidacao->addErro("Informe o Ano!");
+        }
+        return $this->resultadoValidacao;
+    }
 }

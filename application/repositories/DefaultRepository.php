@@ -30,6 +30,13 @@ class DefaultRepository extends CI_MODEL
         }
     }
 
+    public function selectWhere($sql, $values)
+    {
+        if (!empty($sql) && !empty($values)) {
+            return $this->db->query($sql, $values);
+        }
+    }
+
     public function insert($table, $values) 
     {
         if (!empty($table) && !empty($values)) { 

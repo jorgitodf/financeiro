@@ -128,4 +128,26 @@ class ExtratoRepository extends DefaultRepository
             return $resultado->result_array();
         }
     }
+
+    public function gerarRelatorioAnual($ano)
+    {
+        if (!empty($ano)) {
+            $dataInicial = "{$ano}-01-01";
+            $dataFinal = "{$ano}-12-31";
+            $values = "$dataInicial AND $dataFinal";
+            $resultado = $this->selectWhere("SELECT c.nome_categoria AS categoria, SUM(valor) AS total, mes AS mes " .
+                "FROM {$this->extrato_model->getTable()} e JOIN {$this->categoria->getTable()} c ON (c.id_categoria = e.fk_id_categoria) " .
+                "WHERE c.id_categoria IN (SELECT fk_id_categoria FROM {$this->categoria->getTable()} " .
+                "WHERE data_movimentacao BETWEEN '".$dataInicial."' AND '".$dataFinal."' GROUP BY fk_id_categoria ORDER BY fk_id_categoria ASC) " .
+                "AND data_movimentacao BETWEEN ? AND e.tipo_operacao = 'Débito' GROUP BY e.mes , c.id_categoria " .
+                "ORDER BY c.nome_categoria , e.data_movimentacao ASC", $values);
+            if (!empty($resultado->result_object())) {
+                return array('status'=>'success', 'message' => $resultado->result_object());
+            } else {
+                return false;
+            }
+        } else {
+            return array('status'=>'error', 'message' => 'ERRO: Possui dados vazios.');
+        }
+    }
 }    

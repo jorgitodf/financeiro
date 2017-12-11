@@ -52,6 +52,19 @@
                 </div>
                 <input type="hidden" id="idConta" value="<?php echo !empty($idConta) ? $idConta : ""; ?>">
             </div>
+            <div class="row-fluid" id="second_div_botoes_home">
+                <div class="btn-group asd">
+                    <button type="button" class="btn btn-success btn_extrato" id=""><a class="href_btn_home" href="/conta/acessar/<?php echo !empty($idConta) ? $idConta : "" ?>">Relatórios</a></button>
+                    <button type="button" class="btn btn-success dropdown-toggle btn_extrato_1" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="/relatorio">Geral Por Ano</a></li>
+                        <li><a href=""></a></li>
+                    </ul>
+                </div>
+            </div>
         </section>
         <section class="col-xs-12 col-md-6 col-lg-6 col-sm-6" id="sec_conta_home_tab_pgtos_agendados">
             <div class="row-fluid">
@@ -123,4 +136,4 @@
             });   
         }, 5000); 
     });  
-</script>
+e</script>

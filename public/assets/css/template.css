@@ -353,7 +353,9 @@
     #largura_td_pago {
         width: 40px !important;
     }
-
+    #second_div_botoes_home {
+        margin-top: 2%;
+    }
 
     /* PÁGINA EXTRATO */
     #sec_extrato {
@@ -732,6 +734,12 @@
         margin-right: 0em;
         margin-bottom: 0em;
     }
+
+    /* PÁGINA RELATÓRIOS */
+    #sec_ralatorios_index {
+        margin-top: 8%;
+        background-color: white;
+    }
 }
 
 
@@ -1019,6 +1027,9 @@
     #msg_ret_sem_pgto {
         font-weight: bold;
         background-color: #FFDEAD;
+    }
+    #second_div_botoes_home {
+        margin-top: 2%;
     }
 
 
@@ -1362,6 +1373,12 @@
         margin-right: 0em;
         margin-bottom: 0em;
     }
+
+    /* PÁGINA RELATÓRIOS */
+    #sec_ralatorios_index {
+        margin-top: 8%;
+        background-color: white;
+    }
 }
 
 
@@ -1416,7 +1433,7 @@
         color: red;
         padding: 15px;
         margin-top: -2px;;
-    } 
+    }
     #dropdown-menu > li > a:hover {
         background-color: #ccc;
         color: red;
@@ -1431,7 +1448,7 @@
         margin-top: -2px;
     }
     #navbar_saldo {
-        color: white; 
+        color: white;
         margin-top: 4px;
         font-size: 12px;
         width: 250px;
@@ -1461,7 +1478,7 @@
         padding: 7px !important;
         font-size: 11px;
     }
-    .box-login{ 
+    .box-login{
         position: absolute;
         box-shadow: 6px 6px 0 black;
         -webkit-box-shadow: 6px 6px 0 black;
@@ -1469,7 +1486,7 @@
         background-color: #D3D3D3;
         padding: 20px
     }
-    .ls-login-logo{ 
+    .ls-login-logo{
         text-indent: 35px;
         margin-bottom: 25px
     }
@@ -1496,7 +1513,7 @@
         font-size: 11px;
         background-color: #FFFF00;
     }
-    .box-login{ 
+    .box-login{
         position: absolute;
         box-shadow: 6px 6px 0 black;
         -webkit-box-shadow: 6px 6px 0 black;
@@ -1504,11 +1521,11 @@
         background-color: #D3D3D3;
         padding: 20px;
     }
-    #header_cad_usuario { 
+    #header_cad_usuario {
         text-indent: 75px;
         margin-bottom: 25px;
     }
-    #retorno_cad_usuario {  
+    #retorno_cad_usuario {
         float: left;
     }
 
@@ -1574,7 +1591,7 @@
     }
     #sec_conta_home_tab_pgtos_agendados {
         margin-top: 3%;
-        color: white; 
+        color: white;
         font-size: 12px;
     }
     .btn_extrato {
@@ -1925,7 +1942,7 @@
         margin-left: 2.5%;
     }
 
-    
+
     /* PÁGINA PAGAR FATURA CARTÃO DE CRÉDITO */
     #sec_fechar_fatura_cartao {
         margin-top: 7%;
@@ -1947,7 +1964,7 @@
         margin-left: 2.5%;
     }
 
-    
+
     /* PÁGINA PAGAR FATURA CARTÃO DE CRÉDITO */
     #sec_pagar_fatura_cartao {
         margin-top: 5%;
@@ -2015,12 +2032,44 @@
         max-height: 150px !important;
         width: 200px !important;
         height: 160px !important;
-        background-size: cover; 
+        background-size: cover;
         margin-left: 0 !important;
         border-width: 0 !important;
         border-style: none !important;
         margin: 0;
         padding: 0;
+    }
+
+    /* PÁGINA RELATÓRIOS */
+    #sec_ralatorios_index {
+        margin-top: 8%;
+        margin-left: 19%;
+        background-color: white;
+        padding: 15px 30px 10px 30px;
+    }
+    .scheduler-border {
+        border: 1px groove white !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow:  0px 0px 0px 0px #000;
+        box-shadow:  0px 0px 0px 0px #000;
+    }
+    .legend-scheduler-border {
+        width: auto !important;
+        border: none;
+        font-size: 20px;
+    }
+    #btn_buscar_rel_anual {
+        margin-top: 1%;
+    }
+    #retorno_relatorio_anual {
+        padding-bottom: 0;
+        height: 20px;
+        margin-top: 15%;
+    }
+    #msg_error_relarotio_anual {
+        padding: 7px !important;
+        font-size: 11px;
     }
 
 }    

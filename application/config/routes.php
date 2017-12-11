@@ -57,3 +57,5 @@ $route['cartaocredito/pagar-fatura'] = 'cartaocredito/pagarFatura';
 $route['cartaocredito/fatura-pagar/(:any)'] = 'cartaocredito/faturaPagar/$1';
 $route['cartaocredito/fatura-pagar'] = 'cartaocredito/faturaPagar';
 $route['cartaocredito/cadastrar/(:any)'] = 'cartaocredito/cadastrar/$1';
+$route['relatorio/anual'] = 'relatorio/buscarRelatorioAnual';
+$route['relatorio/listar-anual'] = 'relatorio/listarRelatorioAnual';

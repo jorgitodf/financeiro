@@ -58,9 +58,9 @@ $(document).ready(function () {
         });
     });
 
-    //CADASTRO DE CONTA
+    //RELATÓRIO ANUAL
     $(function () {
-        $("#form_cadastro_conta").submit(function(e) {
+        $("#form_relatorio_anual").submit(function(e) {
             $(".msgError").html("");
             $(".msgError").css("display", "none");
             e.preventDefault();
@@ -71,10 +71,18 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (retorno) {
                     if (retorno[0]['status'] == 'error') {
-                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_cad_conta">' + retorno[0]['message'] + '</div>');
-                    } else if (retorno[0]['status'] == 'success'){
-                        $('.retorno').html('<div class="alert alert-success text-center msgSuccess" role="alert" id="msg_success_cad_conta">' + retorno[0]['message'] + '</div>');
-                        window.setTimeout(redirectToHome, 4000);
+                        $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_relarotio_anual">' + retorno[0]['message'] + '</div>');
+                    } else if (retorno[0]['status'] == 'success') {
+                        $('#sec_ralatorios_index').remove();
+                        var obj = retorno[0]['dados'];
+                        for (var k in obj) {
+                            var item = obj[k];
+                            //console.log(item.categoria);
+                            alert(item.categoria);
+                        }
+
+                        //$('#teste').html(retorno[0]['dados'].categoria);
+                        //window.setTimeout(redirectRelatorioListarAnual(retorno[0]['base_url']), 1);
                     }
                     else {
                         alert(retorno);
@@ -625,6 +633,10 @@ function getSaldo() {
 
 function redirectPagarFatura(base_url, id) {
     return window.location.replace(base_url+"/cartaocredito/fatura-pagar/"+id);
+}
+
+function redirectRelatorioListarAnual(base_url) {
+    return window.location.replace(base_url+"/relatorio/listar-anual");
 }
 
 function redirectPageHome(base_url) {
