@@ -5,6 +5,7 @@ require_once __DIR__ . '/../repositories/ContaRepository.php';
 require_once __DIR__ . '/../repositories/UsuarioRepository.php';
 require_once __DIR__ . '/../validacoes/Validacoes.php';
 require_once __DIR__ . '/../repositories/ExtratoRepository.php';
+require_once __DIR__ . '/../repositories/CategoriaRepository.php';
 
 class Relatorio extends CI_Controller
 {
@@ -13,6 +14,7 @@ class Relatorio extends CI_Controller
     private $validacoes;
     private $extrato;
     private $dados_relatorio;
+    private $categoria;
 
     public function __construct()
     {
@@ -21,6 +23,7 @@ class Relatorio extends CI_Controller
         $this->usuario = new UsuarioRepository();
         $this->validacoes = new Validacoes();
         $this->extrato = new ExtratoRepository();
+        $this->categoria = new CategoriaRepository();
         $this->dados_relatorio = "";
     }
 
@@ -28,8 +31,9 @@ class Relatorio extends CI_Controller
     {
         if (is_numeric($this->session->userdata('idConta')) && $this->conta->verificaConta($this->session->userdata('idConta')) == true) {
             $dados["title"] = "Página Relatório";
-            $dados["view"] = "relatorio/v_relatorio_index";
+            $dados['categorias'] = $this->categoria->getCategoriasDespesas();
             $dados["token"] = $this->usuario->getTokenUsuario($this->session->userdata('id'));
+            $dados["view"] = "relatorio/v_relatorio_index";
             $this->load->view("v_template", $dados);
         } else {
             $this->load->view("v_template", pageNotFound());

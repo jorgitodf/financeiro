@@ -129,23 +129,89 @@ class ExtratoRepository extends DefaultRepository
         }
     }
 
-    public function gerarRelatorioAnual($ano)
+    public function gerarRelatorioAnual(int $ano, int $idCategoria)
     {
         if (!empty($ano)) {
-            $dataInicial = "{$ano}-01-01";
-            $dataFinal = "{$ano}-12-31";
-            $values = "$dataInicial AND $dataFinal";
-            $resultado = $this->selectWhere("SELECT c.nome_categoria AS categoria, SUM(valor) AS total, mes AS mes " .
-                "FROM {$this->extrato_model->getTable()} e JOIN {$this->categoria->getTable()} c ON (c.id_categoria = e.fk_id_categoria) " .
-                "WHERE c.id_categoria IN (SELECT fk_id_categoria FROM {$this->categoria->getTable()} " .
-                "WHERE data_movimentacao BETWEEN '".$dataInicial."' AND '".$dataFinal."' GROUP BY fk_id_categoria ORDER BY fk_id_categoria ASC) " .
-                "AND data_movimentacao BETWEEN ? AND e.tipo_operacao = 'Débito' GROUP BY e.mes , c.id_categoria " .
-                "ORDER BY c.nome_categoria , e.data_movimentacao ASC", $values);
-            if (!empty($resultado->result_object())) {
-                return array('status'=>'success', 'message' => $resultado->result_object());
-            } else {
-                return false;
-            }
+            $sql = "SELECT cat.nome_categoria AS categoria, tb1.total AS 'Janeiro', tb2.total AS 'Fevereiro', 
+            tb3.total AS 'Março', tb4.total AS 'Abril', tb5.total AS 'Maio', tb6.total AS 'Junho', tb7.total AS 'Julho', 
+            tb8.total AS 'Agosto', tb9.total AS 'Setembro', tb10.total AS 'Outubro', tb11.total AS 'Novembro', 
+            tb12.total AS 'Dezembro', fncCalculaValorTotal({$idCategoria}}, {$ano}) AS Total
+            FROM {$this->categoria->getTable()} cat
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-01-01' AND '{$ano}-01-31'
+                AND e.tipo_operacao = 'Débito') AS tb1 ON (tb1.id_categoria = cat.id_categoria)
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-02-01' AND '{$ano}-02-29'
+                AND e.tipo_operacao = 'Débito') AS tb2 ON (tb2.id_categoria = cat.id_categoria)
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-03-01' AND '{$ano}-03-31'
+                AND e.tipo_operacao = 'Débito') AS tb3 ON (tb3.id_categoria = cat.id_categoria)
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-04-01' AND '{$ano}-04-30'
+                AND e.tipo_operacao = 'Débito') AS tb4 ON (tb4.id_categoria = cat.id_categoria)
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-05-01' AND '{$ano}-05-31'
+                AND e.tipo_operacao = 'Débito') AS tb5 ON (tb5.id_categoria = cat.id_categoria)
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-06-01' AND '{$ano}-06-30'
+                AND e.tipo_operacao = 'Débito') AS tb6 ON (tb6.id_categoria = cat.id_categoria)
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-07-01' AND '{$ano}-07-31'
+                AND e.tipo_operacao = 'Débito') AS tb7 ON (tb7.id_categoria = cat.id_categoria)
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-08-01' AND '{$ano}-08-31'
+                AND e.tipo_operacao = 'Débito') AS tb8 ON (tb8.id_categoria = cat.id_categoria)
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-09-01' AND '{$ano}-09-30'
+                AND e.tipo_operacao = 'Débito') AS tb9 ON (tb9.id_categoria = cat.id_categoria)
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-10-01' AND '{$ano}-10-31'
+                AND e.tipo_operacao = 'Débito') AS tb10 ON (tb10.id_categoria = cat.id_categoria)
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-11-01' AND '{$ano}-11-30'
+                AND e.tipo_operacao = 'Débito') AS tb11 ON (tb11.id_categoria = cat.id_categoria)
+            JOIN (
+                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
+                FROM {$this->extrato_model->getTable()} e
+                WHERE e.fk_id_categoria = {$idCategoria}
+                AND data_movimentacao BETWEEN '{$ano}-12-01' AND '{$ano}-12-31'
+                AND e.tipo_operacao = 'Débito') AS tb12 ON (tb12.id_categoria = cat.id_categoria)";
+                return $this->db->query($sql)->result_array();
         } else {
             return array('status'=>'error', 'message' => 'ERRO: Possui dados vazios.');
         }
