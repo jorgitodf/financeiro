@@ -73,14 +73,6 @@ $(document).ready(function () {
                     if (retorno[0]['status'] == 'error') {
                         $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_relarotio_anual">' + retorno[0]['message'] + '</div>');
                     } else if (retorno[0]['status'] == 'success') {
-                        $('#sec_ralatorios_index').remove();
-                        var obj = retorno[0]['dados'];
-                        for (var k in obj) {
-                            var item = obj[k];
-                            //console.log(item.categoria);
-                            alert(item.categoria);
-                        }
-
                         //$('#teste').html(retorno[0]['dados'].categoria);
                         //window.setTimeout(redirectRelatorioListarAnual(retorno[0]['base_url']), 1);
                     }
@@ -641,4 +633,29 @@ function redirectRelatorioListarAnual(base_url) {
 
 function redirectPageHome(base_url) {
     return window.location.replace(base_url+"/");
+}
+
+function createGrafico(value) {
+    var elemento = "";
+        elemento += "<canvas class='col-xs-12 col-sm-12 col-md-12 col-lg-12' id='grafico'></canvas>";
+        elemento += "<script type='text/javascript'>";
+        elemento += "var contexto = document.getElementById('grafico').getContext('2d')";
+        elemento += "var grafico = new Chart(contexto, { ";		
+        elemento += "type:'line', ";	
+        elemento += "data: { ";	
+        elemento += "labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],";
+        elemento += "datasets: [{ ";
+        elemento += "label:'Gasolina', ";
+        elemento += "backgroundColor:'red', ";
+        elemento += "borderColor:'red', ";
+        elemento += "data: [ ";	
+        elemento += "120.00, 300.00, 400.00, 350.00, 550.00, 480.00, 450.00, 800.00, 500.00, 350.00, 650.00, 470.00 ";
+        elemento += "], ";
+        elemento += "fill:false ";
+        elemento += "} ";
+        elemento += "} ";
+        elemento += "}); ";	
+        elemento += "} ";
+        elemento += "</script> ";
+    return elemento;
 }

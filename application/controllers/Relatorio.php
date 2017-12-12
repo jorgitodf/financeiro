@@ -12,7 +12,7 @@ class Relatorio extends CI_Controller
     private $usuario;
     private $validacoes;
     private $extrato;
-    public $dados_relatorio;
+    private $dados_relatorio;
 
     public function __construct()
     {
@@ -21,6 +21,7 @@ class Relatorio extends CI_Controller
         $this->usuario = new UsuarioRepository();
         $this->validacoes = new Validacoes();
         $this->extrato = new ExtratoRepository();
+        $this->dados_relatorio = "";
     }
 
     public function index()
@@ -53,7 +54,8 @@ class Relatorio extends CI_Controller
                     if ($_SERVER["SERVER_PORT"] != "80") $base_url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"];
                     else $base_url .= $_SERVER["SERVER_NAME"];
                         $base_url."/";
-                    $json = array('status' => 'success', 'base_url' => $base_url, 'dados' => $retorno['message']);
+                    $json = array('status' => 'success', 'base_url' => $base_url);
+                    $this->dados_relatorio = $retorno['message'];
                 } else {
                     $json = array('status'=>'error', 'message'=>$retorno['error']);
                 }

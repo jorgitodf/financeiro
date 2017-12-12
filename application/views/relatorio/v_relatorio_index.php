@@ -25,9 +25,41 @@
 			    </fieldset>
 			</form>
 		</section>
-        <div id="teste">
-
-        </div>
 	</div>
 </div>
+<div class="container-fluid col-xs-10 col-sm-10 col-md-10 col-lg-10" id="div_grafico">
+	<canvas class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="grafico"></canvas>
+	<script type="text/javascript">
+	window.onload = function() {
+		var contexto = document.getElementById("grafico").getContext("2d");
+		var grafico = new Chart(contexto, {
+			type:'line',
+			data: {
+				labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+				datasets: [{
+					label:'Gasolina',
+					backgroundColor:'red',
+					borderColor:'red',
+					data: [
+						120.00, 300.00, 400.00, 350.00, 550.00, 480.00, 450.00, 800.00, 500.00, 350.00, 650.00, 470.00
+					],
+					fill:false
+				}, {
+					label:'Bebidas',
+					backgroundColor:'green',
+					borderColor:'green',
+					data: [
+						80.50, 150.00, 350.00, 500.00, 220.00, 700.00, 350.00, 240.00, 80.00, 300.00, 450.00, 350.00
+					],
+					fill:false
+				}],
+			},
+			options: {
+				responsive: true
+			}
+		});
+	}
+</script>
+</div>
+
 

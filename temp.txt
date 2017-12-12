@@ -21,6 +21,24 @@ $this->load->view("v_template", $dados);
 
 https://www.devmedia.com.br/codigos/?a=38998
 
+                        $('#sec_ralatorios_index').remove();
+                        var obj = retorno[0]['dados'];
+                        for (var k in obj) {
+                            var item = obj[k];
+                            //console.log(item.categoria);
+                            alert(item.categoria);
+                        }
+
+    for (var key in value) {
+        row = value[key];
+        div += "<option value='" + row.id_especialidade + "'>" + row.nome + "</option>";
+    }
+
+
+
+
+
+ $("#div_especialidades").append(createDivEspecialidades(retorno.especialidades));
 
 na view
 <?php $this->load->view($view); ?>

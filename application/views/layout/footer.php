@@ -7,6 +7,7 @@
       <script src="<?php echo base_url('assets/js/scripts.js') ?>"></script>
       <script src="<?php echo base_url('assets/js/ajax.js') ?>"></script>
       <script src="<?php echo base_url('assets/js/jquery.maskedinput.js') ?>"></script>
+      
       <script type="text/javascript">
         jQuery(document).ready(function ($) {
             $("#valor").maskMoney({showSymbol: true, symbol: "R$ ", decimal: ",", thousands: "."});

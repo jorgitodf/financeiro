@@ -2071,5 +2071,13 @@
         padding: 7px !important;
         font-size: 11px;
     }
+    #div_grafico {
+        width: 50%;
+        margin-top: 2%;
+        margin-left: 24%;
+    }
+    #grafico {
+        background-color: white;
+    }
 
 }    
