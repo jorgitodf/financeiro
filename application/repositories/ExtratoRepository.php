@@ -129,89 +129,88 @@ class ExtratoRepository extends DefaultRepository
         }
     }
 
-    public function gerarRelatorioAnual(int $ano, int $idCategoria)
+    public function gerarRelatorioAnual($idCategoria, $ano): array
     {
         if (!empty($ano)) {
-            $sql = "SELECT cat.nome_categoria AS categoria, tb1.total AS 'Janeiro', tb2.total AS 'Fevereiro', 
-            tb3.total AS 'Março', tb4.total AS 'Abril', tb5.total AS 'Maio', tb6.total AS 'Junho', tb7.total AS 'Julho', 
-            tb8.total AS 'Agosto', tb9.total AS 'Setembro', tb10.total AS 'Outubro', tb11.total AS 'Novembro', 
-            tb12.total AS 'Dezembro', fncCalculaValorTotal({$idCategoria}}, {$ano}) AS Total
-            FROM {$this->categoria->getTable()} cat
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-01-01' AND '{$ano}-01-31'
-                AND e.tipo_operacao = 'Débito') AS tb1 ON (tb1.id_categoria = cat.id_categoria)
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-02-01' AND '{$ano}-02-29'
-                AND e.tipo_operacao = 'Débito') AS tb2 ON (tb2.id_categoria = cat.id_categoria)
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-03-01' AND '{$ano}-03-31'
-                AND e.tipo_operacao = 'Débito') AS tb3 ON (tb3.id_categoria = cat.id_categoria)
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-04-01' AND '{$ano}-04-30'
-                AND e.tipo_operacao = 'Débito') AS tb4 ON (tb4.id_categoria = cat.id_categoria)
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-05-01' AND '{$ano}-05-31'
-                AND e.tipo_operacao = 'Débito') AS tb5 ON (tb5.id_categoria = cat.id_categoria)
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-06-01' AND '{$ano}-06-30'
-                AND e.tipo_operacao = 'Débito') AS tb6 ON (tb6.id_categoria = cat.id_categoria)
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-07-01' AND '{$ano}-07-31'
-                AND e.tipo_operacao = 'Débito') AS tb7 ON (tb7.id_categoria = cat.id_categoria)
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-08-01' AND '{$ano}-08-31'
-                AND e.tipo_operacao = 'Débito') AS tb8 ON (tb8.id_categoria = cat.id_categoria)
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-09-01' AND '{$ano}-09-30'
-                AND e.tipo_operacao = 'Débito') AS tb9 ON (tb9.id_categoria = cat.id_categoria)
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-10-01' AND '{$ano}-10-31'
-                AND e.tipo_operacao = 'Débito') AS tb10 ON (tb10.id_categoria = cat.id_categoria)
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-11-01' AND '{$ano}-11-30'
-                AND e.tipo_operacao = 'Débito') AS tb11 ON (tb11.id_categoria = cat.id_categoria)
-            JOIN (
-                SELECT IFNULL(SUM(e.valor), 0.00) AS total, IFNULL(e.fk_id_categoria, {$idCategoria}) AS id_categoria
-                FROM {$this->extrato_model->getTable()} e
-                WHERE e.fk_id_categoria = {$idCategoria}
-                AND data_movimentacao BETWEEN '{$ano}-12-01' AND '{$ano}-12-31'
-                AND e.tipo_operacao = 'Débito') AS tb12 ON (tb12.id_categoria = cat.id_categoria)";
-                return $this->db->query($sql)->result_array();
+            $sql = "SELECT LEFT(data_movimentacao, 4) AS ano FROM tb_extrato GROUP BY LEFT(data_movimentacao, 4)";
+            $dados = $this->db->query($sql)->result_array();
+            foreach ($dados as $item) {
+                $sql1[$item['ano']] = "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Janeiro') AS mes, ".
+                "IFNULL(LEFT(e.data_movimentacao, 4), {$item['ano']}) AS ano, IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-01-01' AND '{$item['ano']}-01-31' AND c.id_categoria = $idCategoria ".
+                "UNION ".
+                "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Fevereiro') AS mes, IFNULL(LEFT(e.data_movimentacao, 4), ".
+                "{$item['ano']}) AS ano, IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-02-01' AND '{$item['ano']}-02-28' AND c.id_categoria = $idCategoria ".
+                "UNION ".
+                "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Março') AS mes, IFNULL(LEFT(e.data_movimentacao, 4), ".
+                "{$item['ano']}) AS ano, IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-03-01' AND '{$item['ano']}-03-31' AND c.id_categoria = $idCategoria ".
+                "UNION ".
+                "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Abril') AS mes, IFNULL(LEFT(e.data_movimentacao, 4), {$item['ano']}) AS ano, ".
+                "IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-04-01' AND '{$item['ano']}-04-30' AND c.id_categoria = $idCategoria ".
+                "UNION ".
+                "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Maio') AS mes, IFNULL(LEFT(e.data_movimentacao, 4), {$item['ano']}) AS ano, ".
+                "IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-05-01' AND '{$item['ano']}-05-31' AND c.id_categoria = $idCategoria ".
+                "UNION ".
+                "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Junho') AS mes, IFNULL(LEFT(e.data_movimentacao, 4), {$item['ano']}) AS ano, ".
+                "IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-06-01' AND '{$item['ano']}-06-30' AND c.id_categoria = $idCategoria ".
+                "UNION ".
+                "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Julho') AS mes, IFNULL(LEFT(e.data_movimentacao, 4), {$item['ano']}) AS ano, ".
+                "IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-07-01' AND '{$item['ano']}-07-31' AND c.id_categoria = $idCategoria ".
+                "UNION ".
+                "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Agosto') AS mes, IFNULL(LEFT(e.data_movimentacao, 4), {$item['ano']}) AS ano, ".
+                "IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-08-01' AND '{$item['ano']}-08-31' AND c.id_categoria = $idCategoria ".
+                "UNION ".
+                "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Setembro') AS mes, IFNULL(LEFT(e.data_movimentacao, 4), {$item['ano']}) AS ano, ".
+                "IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-09-01' AND '{$item['ano']}-09-30' AND c.id_categoria = $idCategoria ".
+                "UNION ".
+                "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Outubro') AS mes, IFNULL(LEFT(e.data_movimentacao, 4), {$item['ano']}) AS ano, ".
+                "IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-10-01' AND '{$item['ano']}-10-31' AND c.id_categoria = $idCategoria ".
+                "UNION ".
+                "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Novembro') AS mes, IFNULL(LEFT(e.data_movimentacao, 4), {$item['ano']}) AS ano, ".
+                "IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-11-01' AND '{$item['ano']}-11-30' AND c.id_categoria = $idCategoria ".
+                "UNION ".
+                "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Dezembro') AS mes, IFNULL(LEFT(e.data_movimentacao, 4), {$item['ano']}) AS ano, ".
+                "IFNULL(SUM(valor), 0.00) AS total ".
+                "FROM tb_extrato e ".
+                "JOIN tb_categoria c ON (c.id_categoria = e.fk_id_categoria) ".
+                "WHERE e.data_movimentacao BETWEEN '{$item['ano']}-12-01' AND '{$item['ano']}-12-31' AND c.id_categoria = $idCategoria";
+            }
+            foreach ($sql1 as $key => $value) {
+                $data[$key] = $this->db->query($value)->result_array();
+            }
+            return array('status'=>'success', 'dados' => $data);
         } else {
             return array('status'=>'error', 'message' => 'ERRO: Possui dados vazios.');
         }

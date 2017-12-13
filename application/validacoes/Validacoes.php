@@ -58,9 +58,11 @@ class Validacoes
         return $this->resultadoValidacao;
     }
 
-    public function validarRelatorioAnual($ano)
+    public function validarRelatorioAnual($categoria, $ano)
     {
-        if (empty($ano)) {
+        if (empty($categoria)) {
+            $this->resultadoValidacao->addErro("Informe a Categoria!");
+        } elseif (empty($ano)) {
             $this->resultadoValidacao->addErro("Informe o Ano!");
         }
         return $this->resultadoValidacao;

@@ -44,22 +44,16 @@ class Relatorio extends CI_Controller
     {
         if ($this->input->post()) {
             $ano = $this->input->post('ano');
-            $resultadoValidacao = $this->validacoes->validarRelatorioAnual($ano);
+            $categoria = $this->input->post('categoria');
+            $resultadoValidacao = $this->validacoes->validarRelatorioAnual($categoria, $ano);
             if ($this->usuario->getTokenByUserById($this->input->post('token'), $this->session->userdata('id')) == false) {
                 $json = array('status'=>'error', 'message'=>'Essa operação não pode ser realizada!');
             } elseif ($resultadoValidacao->getErros() == true) {
                 $json = array('status'=>'error', 'message'=>$resultadoValidacao->getErros());
             } else {
-                $retorno = $this->extrato->gerarRelatorioAnual($ano);
+                $retorno = $this->extrato->gerarRelatorioAnual($categoria, $ano);
                 if ($retorno['status'] == 'success') {
-                    $base_url = 'http';
-                    if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") $base_url .= "s";
-                        $base_url .= "://";
-                    if ($_SERVER["SERVER_PORT"] != "80") $base_url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"];
-                    else $base_url .= $_SERVER["SERVER_NAME"];
-                        $base_url."/";
-                    $json = array('status' => 'success', 'base_url' => $base_url);
-                    $this->dados_relatorio = $retorno['message'];
+                    $json = array('status' => 'success', 'dados' => $retorno['dados']);
                 } else {
                     $json = array('status'=>'error', 'message'=>$retorno['error']);
                 }
@@ -69,11 +63,4 @@ class Relatorio extends CI_Controller
         $this->load->view("v_template", pageNotFound());
     }
 
-    public function listarRelatorioAnual()
-    {
-        $dados["title"] = "Página Listar Relatório";
-        print_r($this->dados_relatorio);exit;
-        $dados["view"] = "relatorio/v_relatorio_listar_anual";
-        $this->load->view("v_template", $dados);
-    }
 }

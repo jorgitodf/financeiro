@@ -63,6 +63,7 @@ $(document).ready(function () {
         $("#form_relatorio_anual").submit(function(e) {
             $(".msgError").html("");
             $(".msgError").css("display", "none");
+
             e.preventDefault();
             $.ajax({
                 type: "POST",
@@ -73,8 +74,10 @@ $(document).ready(function () {
                     if (retorno[0]['status'] == 'error') {
                         $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_relarotio_anual">' + retorno[0]['message'] + '</div>');
                     } else if (retorno[0]['status'] == 'success') {
-                        //$('#teste').html(retorno[0]['dados'].categoria);
-                        //window.setTimeout(redirectRelatorioListarAnual(retorno[0]['base_url']), 1);
+                        $("#sec_relatorios_index").css("display", "none");
+                        $("#grafico").css("width", "1050px");
+                        $("#grafico").css("background-color", "white");
+                        $('#grafico').html(loadChart(retorno[0]['dados']));
                     }
                     else {
                         alert(retorno);
@@ -635,27 +638,70 @@ function redirectPageHome(base_url) {
     return window.location.replace(base_url+"/");
 }
 
-function createGrafico(value) {
-    var elemento = "";
-        elemento += "<canvas class='col-xs-12 col-sm-12 col-md-12 col-lg-12' id='grafico'></canvas>";
-        elemento += "<script type='text/javascript'>";
-        elemento += "var contexto = document.getElementById('grafico').getContext('2d')";
-        elemento += "var grafico = new Chart(contexto, { ";		
-        elemento += "type:'line', ";	
-        elemento += "data: { ";	
-        elemento += "labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],";
-        elemento += "datasets: [{ ";
-        elemento += "label:'Gasolina', ";
-        elemento += "backgroundColor:'red', ";
-        elemento += "borderColor:'red', ";
-        elemento += "data: [ ";	
-        elemento += "120.00, 300.00, 400.00, 350.00, 550.00, 480.00, 450.00, 800.00, 500.00, 350.00, 650.00, 470.00 ";
-        elemento += "], ";
-        elemento += "fill:false ";
-        elemento += "} ";
-        elemento += "} ";
-        elemento += "}); ";	
-        elemento += "} ";
-        elemento += "</script> ";
-    return elemento;
+function loadChart(dados) {
+    var canvas = document.getElementById("grafico").getContext("2d");
+    var grafico = new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: [dados['2012'][0].mes, dados['2012'][1].mes, dados['2012'][2].mes, dados['2012'][3].mes, dados['2012'][4].mes,
+            dados['2012'][5].mes, dados['2012'][6].mes, dados['2012'][7].mes, dados['2012'][8].mes, dados['2012'][9].mes,
+            dados['2012'][10].mes, dados['2012'][11].mes],
+            datasets: [
+                {
+                    label: dados['2012'][0].categoria + dados['2012'][0].ano,
+                    backgroundColor: 'red',
+                    borderColor: 'red',
+                    data: [dados['2012'][0].total, dados['2012'][1].total, dados['2012'][2].total, dados['2012'][3].total, dados['2012'][4].total,
+                        dados['2012'][5].total, dados['2012'][6].total, dados['2012'][7].total, dados['2012'][8].total, dados['2012'][9].total,
+                        dados['2012'][10].total, dados['2012'][11].total],
+                    fill: false
+                },
+                {
+                    label: dados['2013'][0].categoria + dados['2013'][0].ano,
+                    backgroundColor: 'green',
+                    borderColor: 'green',
+                    data: [dados['2013'][0].total, dados['2013'][1].total, dados['2013'][2].total, dados['2013'][3].total, dados['2013'][4].total,
+                        dados['2013'][5].total, dados['2013'][6].total, dados['2013'][7].total, dados['2013'][8].total, dados['2013'][9].total,
+                        dados['2013'][10].total, dados['2013'][11].total],
+                    fill: false
+                },
+                {
+                    label: dados['2014'][0].categoria + dados['2014'][0].ano,
+                    backgroundColor: 'blue',
+                    borderColor: 'blue',
+                    data: [dados['2014'][0].total, dados['2014'][1].total, dados['2014'][2].total, dados['2014'][3].total, dados['2014'][4].total,
+                        dados['2014'][5].total, dados['2014'][6].total, dados['2014'][7].total, dados['2014'][8].total, dados['2014'][9].total,
+                        dados['2014'][10].total, dados['2014'][11].total],
+                    fill: false
+                },
+                {
+                    label: dados['2015'][0].categoria + dados['2015'][0].ano,
+                    backgroundColor: 'brown',
+                    borderColor: 'brown',
+                    data: [dados['2015'][0].total, dados['2015'][1].total, dados['2015'][2].total, dados['2015'][3].total, dados['2015'][4].total,
+                        dados['2015'][5].total, dados['2015'][6].total, dados['2015'][7].total, dados['2015'][8].total, dados['2015'][9].total,
+                        dados['2015'][10].total, dados['2015'][11].total],
+                    fill: false
+                },
+                {
+                    label: dados['2016'][0].categoria + dados['2016'][0].ano,
+                    backgroundColor: 'yellow',
+                    borderColor: 'yellow',
+                    data: [dados['2016'][0].total, dados['2016'][1].total, dados['2016'][2].total, dados['2016'][3].total, dados['2016'][4].total,
+                        dados['2016'][5].total, dados['2016'][6].total, dados['2016'][7].total, dados['2016'][8].total, dados['2016'][9].total,
+                        dados['2016'][10].total, dados['2016'][11].total],
+                    fill: false
+                },
+                {
+                    label: dados['2017'][0].categoria + dados['2017'][0].ano,
+                    backgroundColor: 'grey',
+                    borderColor: 'grey',
+                    data: [dados['2017'][0].total, dados['2017'][1].total, dados['2017'][2].total, dados['2017'][3].total, dados['2017'][4].total,
+                        dados['2017'][5].total, dados['2017'][6].total, dados['2017'][7].total, dados['2017'][8].total, dados['2017'][9].total,
+                        dados['2017'][10].total, dados['2017'][11].total],
+                    fill: false
+                }
+            ]
+        },
+    });
 }
