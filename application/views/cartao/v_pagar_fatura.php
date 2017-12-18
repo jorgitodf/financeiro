@@ -44,7 +44,7 @@
                                         <?php $total = 0 ?>
                                         <?php foreach ($itensfatura as $value): ?>
                                         <tr>
-                                            <td class="alinha_td_centro"><input type="hidden" name="itens_desp[]" id="itens_desp" value="<?php echo $value['id_item_desp']; ?>"/> <?php echo $value['data_compra']; ?></td>
+                                            <td class="alinha_td_centro"><input type="hidden" name="itens_desp[]" id="itens_desp" value="<?php echo $value['id_item_desp']; ?>"/> <?php echo date("d/m/Y", strtotime($value['data_compra'])); ?></td>
                                             <td class=""><?php echo $value['despesa']; ?></td>
                                             <td class="alinha_td_centro"><?php echo $value['parcela']; ?></td>
                                             <td class="">R$ <span class="alinha_td_direita"><?php echo number_format($value['valor_compra'], 2, ',', '.'); ?></span></td>

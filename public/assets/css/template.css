@@ -2055,18 +2055,22 @@
         height: 35px !important;
     }
     #msg_error_relarotio_anual {
-
         font-size: 11px;
     }
     #div_grafico {
-        width: 70%;
-        margin-top: 6%;
-
+        width: 60%;
     }
     #grafico {
-        width: 1090px;
-        height: 310px;
-        margin-left: 22%;
+        width: 800px;
+        height: 0;
+        margin-left: 32%;
+    }
+    #botao {
+        margin-left: 32%;
+        padding: 10px;
+    }
+    #btn_sair_grafico {
+        float: right;
     }
 
 }    

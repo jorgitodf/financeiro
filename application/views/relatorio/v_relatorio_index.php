@@ -9,7 +9,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="row-fluid">
-                            <div class="form-group form-group-sm col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group form-group-sm col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label for="categoria">Categoria:</label>
                                 <select class="form-control input-sm" name="categoria" id="categoria">
                                     <option></option>
@@ -18,16 +18,6 @@
                                     <?php endforeach; ?>
                                 </select>
                                 <input type="hidden" name="token" id="token" value="<?php echo !empty($token) ? $token->token : ''; ?>">
-                            </div>
-                            <div class="form-group form-group-sm col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                <label for="ano">Ano:</label>
-                                <select class="form-control input-sm" name="ano" id="ano">
-                                    <option></option>
-                                    <option value="2014">2014</option>
-                                    <option value="2015">2015</option>
-                                    <option value="2016">2016</option>
-                                    <option value="2017">2017</option>
-                                </select>
                             </div>
                         </div>
                         <div class="row-fluid">
@@ -44,6 +34,7 @@
 	</div>
     <div class="container-fluid col-xs-12 col-sm-12 col-md-12 col-lg-12" id="div_grafico">
         <canvas class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="grafico"></canvas>
+        <div id="botao" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>
     </div>
 </div>
 

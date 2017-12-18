@@ -75,9 +75,12 @@ $(document).ready(function () {
                         $('.retorno').html('<div class="alert alert-danger text-center msgError" role="alert" id="msg_error_relarotio_anual">' + retorno[0]['message'] + '</div>');
                     } else if (retorno[0]['status'] == 'success') {
                         $("#sec_relatorios_index").css("display", "none");
-                        $("#grafico").css("width", "1050px");
+                        $("#grafico").css("width", "1090px");
                         $("#grafico").css("background-color", "white");
+                        $("#grafico").css("margin-top", "10%");
                         $('#grafico').html(loadChart(retorno[0]['dados']));
+                        $('#botao').css("background-color", "white");
+                        $('#botao').html("<button type='button' class='btn btn-primary' id='btn_sair_grafico' onclick='fecharGrafico()'>Sair</button>");
                     }
                     else {
                         alert(retorno);
@@ -648,7 +651,7 @@ function loadChart(dados) {
             dados['2012'][10].mes, dados['2012'][11].mes],
             datasets: [
                 {
-                    label: dados['2012'][0].categoria + dados['2012'][0].ano,
+                    label: dados['2012'][0].categoria +" "+ dados['2012'][0].ano,
                     backgroundColor: 'red',
                     borderColor: 'red',
                     data: [dados['2012'][0].total, dados['2012'][1].total, dados['2012'][2].total, dados['2012'][3].total, dados['2012'][4].total,
@@ -657,7 +660,7 @@ function loadChart(dados) {
                     fill: false
                 },
                 {
-                    label: dados['2013'][0].categoria + dados['2013'][0].ano,
+                    label: dados['2013'][0].categoria +" "+ dados['2013'][0].ano,
                     backgroundColor: 'green',
                     borderColor: 'green',
                     data: [dados['2013'][0].total, dados['2013'][1].total, dados['2013'][2].total, dados['2013'][3].total, dados['2013'][4].total,
@@ -666,7 +669,7 @@ function loadChart(dados) {
                     fill: false
                 },
                 {
-                    label: dados['2014'][0].categoria + dados['2014'][0].ano,
+                    label: dados['2014'][0].categoria +" "+ dados['2014'][0].ano,
                     backgroundColor: 'blue',
                     borderColor: 'blue',
                     data: [dados['2014'][0].total, dados['2014'][1].total, dados['2014'][2].total, dados['2014'][3].total, dados['2014'][4].total,
@@ -675,7 +678,7 @@ function loadChart(dados) {
                     fill: false
                 },
                 {
-                    label: dados['2015'][0].categoria + dados['2015'][0].ano,
+                    label: dados['2015'][0].categoria +" "+ dados['2015'][0].ano,
                     backgroundColor: 'brown',
                     borderColor: 'brown',
                     data: [dados['2015'][0].total, dados['2015'][1].total, dados['2015'][2].total, dados['2015'][3].total, dados['2015'][4].total,
@@ -684,7 +687,7 @@ function loadChart(dados) {
                     fill: false
                 },
                 {
-                    label: dados['2016'][0].categoria + dados['2016'][0].ano,
+                    label: dados['2016'][0].categoria +" "+ dados['2016'][0].ano,
                     backgroundColor: 'yellow',
                     borderColor: 'yellow',
                     data: [dados['2016'][0].total, dados['2016'][1].total, dados['2016'][2].total, dados['2016'][3].total, dados['2016'][4].total,
@@ -693,7 +696,7 @@ function loadChart(dados) {
                     fill: false
                 },
                 {
-                    label: dados['2017'][0].categoria + dados['2017'][0].ano,
+                    label: dados['2017'][0].categoria +" "+ dados['2017'][0].ano,
                     backgroundColor: 'grey',
                     borderColor: 'grey',
                     data: [dados['2017'][0].total, dados['2017'][1].total, dados['2017'][2].total, dados['2017'][3].total, dados['2017'][4].total,
@@ -704,4 +707,10 @@ function loadChart(dados) {
             ]
         },
     });
+}
+
+function fecharGrafico() {
+    $("#div_grafico").remove();
+    $("#sec_relatorios_index").css("display", "block");
+    window.location.reload();
 }

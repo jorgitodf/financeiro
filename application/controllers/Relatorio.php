@@ -43,15 +43,14 @@ class Relatorio extends CI_Controller
     public function buscarRelatorioAnual()
     {
         if ($this->input->post()) {
-            $ano = $this->input->post('ano');
             $categoria = $this->input->post('categoria');
-            $resultadoValidacao = $this->validacoes->validarRelatorioAnual($categoria, $ano);
+            $resultadoValidacao = $this->validacoes->validarRelatorioAnual($categoria);
             if ($this->usuario->getTokenByUserById($this->input->post('token'), $this->session->userdata('id')) == false) {
                 $json = array('status'=>'error', 'message'=>'Essa operação não pode ser realizada!');
             } elseif ($resultadoValidacao->getErros() == true) {
                 $json = array('status'=>'error', 'message'=>$resultadoValidacao->getErros());
             } else {
-                $retorno = $this->extrato->gerarRelatorioAnual($categoria, $ano);
+                $retorno = $this->extrato->gerarRelatorioAnual($categoria);
                 if ($retorno['status'] == 'success') {
                     $json = array('status' => 'success', 'dados' => $retorno['dados']);
                 } else {

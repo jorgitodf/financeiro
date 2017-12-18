@@ -85,7 +85,7 @@ class DespesaCartao_model extends CI_Model
 
 	public function getItensDespesaFaturaByIdFaturaCartao(int $idFatura, string $data_pagamento):array
     {
-        $sql = "SELECT id_item_despesa_fatura AS id_item_desp, despesa, DATE_FORMAT(data_compra,'%d/%m/%Y') 
+        $sql = "SELECT id_item_despesa_fatura AS id_item_desp, despesa, data_compra
 		AS data_compra, valor_compra, parcela FROM $this->table 
 		WHERE data_pagamento = ? AND fk_id_cartao_credito = ? ORDER BY data_compra ASC";
 		return $this->db->query($sql, [$data_pagamento, $idFatura])->result_array();

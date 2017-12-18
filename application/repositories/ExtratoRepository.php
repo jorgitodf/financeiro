@@ -129,10 +129,10 @@ class ExtratoRepository extends DefaultRepository
         }
     }
 
-    public function gerarRelatorioAnual($idCategoria, $ano): array
+    public function gerarRelatorioAnual($idCategoria): array
     {
-        if (!empty($ano)) {
-            $sql = "SELECT LEFT(data_movimentacao, 4) AS ano FROM tb_extrato GROUP BY LEFT(data_movimentacao, 4)";
+        if (!empty($idCategoria)) {
+            $sql = "SELECT LEFT(data_movimentacao, 4) AS ano FROM {$this->extrato_model->getTable()} GROUP BY LEFT(data_movimentacao, 4)";
             $dados = $this->db->query($sql)->result_array();
             foreach ($dados as $item) {
                 $sql1[$item['ano']] = "SELECT c.nome_categoria AS categoria, IFNULL(e.mes, 'Janeiro') AS mes, ".
