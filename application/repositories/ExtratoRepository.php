@@ -215,4 +215,55 @@ class ExtratoRepository extends DefaultRepository
             return array('status'=>'error', 'message' => 'ERRO: Possui dados vazios.');
         }
     }
+
+    public function getRelatorioSaldoAnual($idConta): array
+    {
+        if (!empty($idConta)) {
+            $sql = "SELECT LEFT(data_movimentacao, 4) AS ano FROM {$this->extrato_model->getTable()} GROUP BY LEFT(data_movimentacao, 4)";
+            $dados = $this->db->query($sql)->result_array();
+            foreach ($dados as $item) {
+                $sql1[$item['ano']] = "SELECT DATE_FORMAT(a.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-01-01' AND '{$item['ano']}-01-31' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) a " .
+                "UNION SELECT DATE_FORMAT(b.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-02-01' AND '{$item['ano']}-02-29' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) b " .
+                "UNION SELECT DATE_FORMAT(c.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-03-01' AND '{$item['ano']}-03-31' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) c " .
+                "UNION SELECT DATE_FORMAT(d.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-04-01' AND '{$item['ano']}-04-30' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) d " .
+                "UNION SELECT DATE_FORMAT(e.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-05-01' AND '{$item['ano']}-05-31' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) e " .
+                "UNION SELECT DATE_FORMAT(f.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-06-01' AND '{$item['ano']}-06-30' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) f " .
+                "UNION SELECT DATE_FORMAT(g.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-07-01' AND '{$item['ano']}-07-31' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) g " .
+                "UNION SELECT DATE_FORMAT(h.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-08-01' AND '{$item['ano']}-08-31' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) h " .
+                "UNION SELECT DATE_FORMAT(i.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-09-01' AND '{$item['ano']}-09-30' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) i " .
+                "UNION SELECT DATE_FORMAT(j.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-10-01' AND '{$item['ano']}-10-31' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) j " .
+                "UNION SELECT DATE_FORMAT(k.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-11-01' AND '{$item['ano']}-11-30' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) k " .
+                "UNION SELECT DATE_FORMAT(l.data_movimentacao, '%Y') AS ano, saldo FROM " .
+                "(SELECT data_movimentacao, saldo FROM {$this->extrato_model->getTable()} WHERE data_movimentacao " .
+                "BETWEEN '{$item['ano']}-12-01' AND '{$item['ano']}-12-31' AND fk_id_conta = $idConta ORDER BY id_extrato DESC LIMIT 1) l ";
+            }
+            foreach ($sql1 as $key => $value) {
+                $data[$key] = $this->db->query($value)->result_array();
+            }
+        } else {
+            return array('status'=>'error', 'message' => 'ERRO: Possui dados vazios.');
+        }
+    } 
 }    
