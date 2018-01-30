@@ -89,9 +89,11 @@ class FaturaCartao_model extends CI_Model
 
     
     public function pagarFatura(array $dados, int $id_cartao_fat = null, int $idConta = null) {
-        $data_vencimento_fatura = date('Y-m-08', strtotime("+1 month"));
-        $data_fechamento_fatura = date("Y-m-d", strtotime("-11 days", strtotime($data_vencimento_fatura)));
+	    $data = date('Y-m-08');
+        $data_vencimento_fatura = date('Y-m-d', strtotime("+1 month", strtotime($data)));
+        $data_fechamento_fatura = date("Y-m-d", strtotime("-12 days", strtotime($data_vencimento_fatura)));
         $data_pagamento_fatura = date("Y-m-d");
+
         if ($data_pagamento_fatura < $data_fechamento_fatura) {
             return array('status' => 'error', 'message' => 'Nâo é possível realizar o Pagamento da Fatura!');
         } elseif (empty($dados['totalgeral']) || $dados['totalgeral'] == "" || $dados['totalgeral'] == null) {
