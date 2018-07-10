@@ -703,6 +703,15 @@ function loadChart(dados) {
                         dados['2017'][5].total, dados['2017'][6].total, dados['2017'][7].total, dados['2017'][8].total, dados['2017'][9].total,
                         dados['2017'][10].total, dados['2017'][11].total],
                     fill: false
+                },
+                {
+                    label: dados['2018'][0].categoria +" "+ dados['2018'][0].ano,
+                    backgroundColor: 'red',
+                    borderColor: 'red',
+                    data: [dados['2018'][0].total, dados['2018'][1].total, dados['2018'][2].total, dados['2018'][3].total, dados['2018'][4].total,
+                        dados['2018'][5].total, dados['2018'][6].total, dados['2018'][7].total, dados['2018'][8].total, dados['2018'][9].total,
+                        dados['2018'][10].total, dados['2018'][11].total],
+                    fill: false
                 }
             ]
         },
