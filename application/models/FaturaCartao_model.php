@@ -89,15 +89,19 @@ class FaturaCartao_model extends CI_Model
 
     
     public function pagarFatura(array $dados, int $id_cartao_fat = null, int $idConta = null) {
-        $data = date('Y-m-08');
-        $dataAtual = date('Y-m-d');
-        if ($dataAtual > $data) {
-            $data_vencimento_fatura = date('Y-m-d', strtotime("+1 month", strtotime($data)));
+        $ultimo_dia_mes_atual = mktime(23, 59, 59, date('m'), date('t'), date('Y')); //pega o último dia do mês atual.
+        $dia_mes_atual = date('d'); //pega o dia do mês atual
+        $data_fechamento_fatura = date('Y-m-27'); //gera a data de fechamento da fatura mês atual
+        $dia_vencimento_fatura = '08';
+        $data_atual = date('Y-m-d');
+
+        if (($dia_mes_atual <= $ultimo_dia_mes_atual) && ($dia_mes_atual >= 27)) {
+            $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'', strtotime("+1 month", strtotime($data_atual)));
+        } else {
+            $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'');
         }
-        $data_vencimento_fatura = $data;
-        $data_fechamento_fatura = date("Y-m-d", strtotime("-12 days", strtotime($data_vencimento_fatura)));
-        $data_pagamento_fatura = date("Y-m-d");
-        if ($data_pagamento_fatura < $data_fechamento_fatura) {
+
+        if ($data_atual < $data_fechamento_fatura) {
             return array('status' => 'error', 'message' => 'Nâo é possível realizar o Pagamento da Fatura!');
         } elseif (empty($dados['totalgeral']) || $dados['totalgeral'] == "" || $dados['totalgeral'] == null) {
 			return array('status' => 'error', 'message' => 'Informe o Valor do Total da Fatura!');
@@ -127,7 +131,7 @@ class FaturaCartao_model extends CI_Model
                 
                 $sql = "INSERT INTO {$this->Agendamento_model->getTable()} (data_pagamento, movimentacao, valor, pago, fk_id_categoria, fk_id_conta) ".
                         "VALUES (?,?,?,?,?,?)";
-                $this->db->query($sql, [$data_vencimento_fatura, $this->getCartaoCreditoByNome($id_cartao_fat), formatarMoeda($dados['valor_pagar']),
+                $this->db->query($sql, [$data_pagamento_fatura, $this->getCartaoCreditoByNome($id_cartao_fat), formatarMoeda($dados['valor_pagar']),
                     'Não', 6, $idConta]); 
 
             if ($this->db->trans_status() === FALSE) {
