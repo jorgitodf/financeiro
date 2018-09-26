@@ -91,7 +91,7 @@ class FaturaCartao_model extends CI_Model
     public function pagarFatura(array $dados, int $id_cartao_fat = null, int $idConta = null) {
         $ultimo_dia_mes_atual = mktime(23, 59, 59, date('m'), date('t'), date('Y')); //pega o último dia do mês atual.
         $dia_mes_atual = date('d'); //pega o dia do mês atual
-        $data_fechamento_fatura = date('Y-m-27'); //gera a data de fechamento da fatura mês atual
+        $data_fechamento_fatura = date('Y-m-d'); //gera a data de fechamento da fatura mês atual
         $dia_vencimento_fatura = '08';
         $data_atual = date('Y-m-d');
 
@@ -101,9 +101,7 @@ class FaturaCartao_model extends CI_Model
             $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'');
         }
 
-        if ($data_atual < $data_fechamento_fatura) {
-            return array('status' => 'error', 'message' => 'Nâo é possível realizar o Pagamento da Fatura!');
-        } elseif (empty($dados['totalgeral']) || $dados['totalgeral'] == "" || $dados['totalgeral'] == null) {
+        if (empty($dados['totalgeral']) || $dados['totalgeral'] == "" || $dados['totalgeral'] == null) {
 			return array('status' => 'error', 'message' => 'Informe o Valor do Total da Fatura!');
 		} elseif (empty($dados['valor_pagar']) || $dados['valor_pagar'] == "" || $dados['valor_pagar'] == null) {
 			return array('status' => 'error', 'message' => 'Informe o Valor a Pagar!');
@@ -115,13 +113,21 @@ class FaturaCartao_model extends CI_Model
 
                 $sql = "UPDATE $this->table SET encargos = ?, protecao_premiada = ?, iof = ?, 
                 anuidade = ?, restante_fatura_anterior = ?, pago = ?, juros = ?, valor_total_fatura = ?,
-                valor_pago = ? WHERE id_fatura_cartao = ?";
-                $result = $this->db->query($sql, ['encargos'=>formatarMoeda($dados['encargos']),
-                'protecao_premiada'=>formatarMoeda($dados['protecao']), 'iof'=>formatarMoeda($dados['iof']),
-                'anuidade'=>formatarMoeda($dados['anuidade']), 
-                'restante_fatura_anterior'=>formatarMoeda($dados['totalgeral'])-formatarMoeda($dados['valor_pagar']),
-                'pago'=>'S', 'juros'=>formatarMoeda($dados['juros']), 'valor_total_fatura'=>formatarMoeda($dados['totalgeral']),
-                'valor_pago'=>formatarMoeda($dados['valor_pagar']), $id_cartao_fat]);
+                valor_pago = ?, data_fechamento_fatura = ? WHERE id_fatura_cartao = ?";
+
+                $result = $this->db->query($sql, [
+                    'encargos'=>formatarMoeda($dados['encargos']),
+                    'protecao_premiada'=>formatarMoeda($dados['protecao']), 
+                    'iof'=>formatarMoeda($dados['iof']),
+                    'anuidade'=>formatarMoeda($dados['anuidade']), 
+                    'restante_fatura_anterior'=>formatarMoeda($dados['totalgeral'])-formatarMoeda($dados['valor_pagar']),
+                    'pago'=>'S', 
+                    'juros'=>formatarMoeda($dados['juros']), 
+                    'valor_total_fatura'=>formatarMoeda($dados['totalgeral']),
+                    'valor_pago'=>formatarMoeda($dados['valor_pagar']), 
+                    'data_fechamento_fatura'=>$data_fechamento_fatura, 
+                    $id_cartao_fat
+                ]);
 
                 foreach($dados['itens_desp'] as $linha) {
                     $sql = "INSERT INTO {$this->ItensFaturaDespesas_model->getTable()} (fk_id_item_despesa_fatura, fk_id_fatura_cartao) 
