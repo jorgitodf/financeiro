@@ -76,8 +76,8 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> 'mysql:dbname=financeiro;charset=utf8',
 	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => 'root',
+	'username' => 'admin',
+	'password' => '123456',
 	'database' => 'financeiro',
 	'dbdriver' => 'pdo',
 	'dbprefix' => '',

@@ -92,10 +92,12 @@ class FaturaCartao_model extends CI_Model
         $ultimo_dia_mes_atual = mktime(23, 59, 59, date('m'), date('t'), date('Y')); //pega o último dia do mês atual.
         $dia_mes_atual = date('d'); //pega o dia do mês atual
         $data_fechamento_fatura = date('Y-m-d'); //gera a data de fechamento da fatura mês atual
+
         $dia_vencimento_fatura = '08';
+        
         $data_atual = date('Y-m-d');
 
-        if (($dia_mes_atual <= $ultimo_dia_mes_atual) && ($dia_mes_atual >= 27)) {
+        if (($dia_mes_atual <= $ultimo_dia_mes_atual) && ($dia_mes_atual >= $data_fechamento_fatura)) {
             $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'', strtotime("+1 month", strtotime($data_atual)));
         } else {
             $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'');

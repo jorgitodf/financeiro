@@ -1,4 +1,4 @@
-composer
+﻿composer
 composer create-project bcit-ci/codeigniter nome_projeto --prefer-dist
 na pasta config/ config.php linha 139 = FCPATH.'vendor/autoload.php';
 criar pasta public na raiz da pasta do projeto

@@ -37,7 +37,7 @@ class DespesaCartao_model extends CI_Model
 			if ($dados['data_compra'] <= $data_fechamento_fatura) {
 				$data_pagamento = $data_pgto;
 			} elseif ($dados['data_compra'] > $data_fechamento_fatura) {
-				$data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime($data_pgto)));
+				$data_pagamento = date('Y-m-d', strtotime("+2 month", strtotime($data_pgto)));
 			}
 			
 			$data = [];		
