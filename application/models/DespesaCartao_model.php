@@ -31,13 +31,21 @@ class DespesaCartao_model extends CI_Model
 		} elseif (empty($dados['parcela'])) {
 			return array('status'=>'error', 'message'=>'Informe a quantidade de Parcela(s)!');
 		} else {
-			$data_pgto = date('Y-m-08', strtotime("+1 month"));
-			$data_fechamento_fatura = date("Y-m-d", strtotime("-11 days", strtotime($data_pgto)));
-			
-			if ($dados['data_compra'] <= $data_fechamento_fatura) {
-				$data_pagamento = $data_pgto;
-			} elseif ($dados['data_compra'] > $data_fechamento_fatura) {
-				$data_pagamento = date('Y-m-d', strtotime("+2 month", strtotime($data_pgto)));
+
+			$dia_compra = date('d', strtotime($dados['data_compra']));
+
+			if ($dados['id_cartao'] == 1 && $dia_compra <= 26) {
+				$data_pagamento = date('Y-m-08', strtotime("+1 month"));
+			} else if ($dados['id_cartao'] == 1 && $dia_compra > 26) {
+				$data_pagamento = date('Y-m-08', strtotime("+2 month"));
+			} else if ($dados['id_cartao'] == 2 && $dia_compra <= 25) {
+				$data_pagamento = date('Y-m-08', strtotime("+1 month"));
+			} else if ($dados['id_cartao'] == 2 && $dia_compra > 25) {
+				$data_pagamento = date('Y-m-08', strtotime("+2 month"));
+			} else if ($dados['id_cartao'] == 3 && ($dia_compra >= 1 && $dia_compra <= 4)) {
+				$data_pagamento = date('Y-m-08');
+			} else if ($dados['id_cartao'] == 3 && ($dia_compra > 4 && $dia_compra <= 31)) {
+				$data_pagamento = date('Y-m-08', strtotime("+1 month"));
 			}
 			
 			$data = [];		
