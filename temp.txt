@@ -6,6 +6,7 @@ copiar o index.php da raiz para a pasta public
 chdir(dirname(__DIR__));
 php -S localhost:8000 -t public
 
+
 remover o index.php da url - url amigável
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f

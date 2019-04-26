@@ -43,9 +43,9 @@ class DespesaCartao_model extends CI_Model
 			} else if ($dados['id_cartao'] == 2 && $dia_compra > 25) {
 				$data_pagamento = date('Y-m-08', strtotime("+2 month"));
 			} else if ($dados['id_cartao'] == 3 && ($dia_compra >= 1 && $dia_compra <= 4)) {
-				$data_pagamento = date('Y-m-08');
+				$data_pagamento = date('Y-m-09');
 			} else if ($dados['id_cartao'] == 3 && ($dia_compra > 4 && $dia_compra <= 31)) {
-				$data_pagamento = date('Y-m-08', strtotime("+1 month"));
+				$data_pagamento = date('Y-m-09', strtotime("+1 month"));
 			}
 			
 			$data = [];		
@@ -61,10 +61,25 @@ class DespesaCartao_model extends CI_Model
 				$qtd_parcelas = (int) $dados['parcela'];
 				for($i=1; $i <= $dados['parcela']; $i++) {
 					$m = $i-1;
+					$n = $i+1;
 					$data[$i]['data_compra'] = $dados['data_compra'];
 					$data[$i]['valor_parcela'] = formatarMoeda($dados['valor_parcela']) / $qtd_parcelas;
 					$data[$i]['parcela'] = $i < 10 ? "0".$i."/".$dados['parcela'] : $i."/".$dados['parcela'];
-					$data[$i]['data_pagamento'] = $i == 1 ? $data_pagamento : date('Y-m-d', strtotime("+{$m} month", strtotime($data_pagamento)));
+
+					if ($dados['id_cartao'] == 1 && $dia_compra <= 26) {
+						$data[$i]['data_pagamento'] = date('Y-m-08', strtotime("+{$m} month"));
+					} else if ($dados['id_cartao'] == 1 && $dia_compra > 26) {
+						$data[$i]['data_pagamento'] = date('Y-m-08', strtotime("+{$n} month"));
+					} else if ($dados['id_cartao'] == 2 && $dia_compra <= 24) {
+						$data[$i]['data_pagamento'] = date('Y-m-08', strtotime("+{$m} month"));
+					} else if ($dados['id_cartao'] == 2 && $dia_compra > 24) {
+						$data[$i]['data_pagamento'] = date('Y-m-08', strtotime("+{$n} month"));
+					} else if ($dados['id_cartao'] == 3 && ($dia_compra >= 1 && $dia_compra <= 4)) {
+						$data[$i]['data_pagamento'] = date('Y-m-08', strtotime("+{$m} month"));
+					} else if ($dados['id_cartao'] == 3 && ($dia_compra > 4 && $dia_compra <= 31)) {
+						$data[$i]['data_pagamento'] = date('Y-m-08', strtotime("+{$n} month"));
+					}
+					
 					$data[$i]['despesa'] = $dados['despesa'];
 					$data[$i]['id_cartao'] = $dados['id_cartao'];
 					
