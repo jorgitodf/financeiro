@@ -42,9 +42,9 @@ class DespesaCartao_model extends CI_Model
 				$data_pagamento = date('Y-m-08', strtotime("+1 month"));
 			} else if ($dados['id_cartao'] == 2 && $dia_compra > 25) {
 				$data_pagamento = date('Y-m-08', strtotime("+2 month"));
-			} else if ($dados['id_cartao'] == 3 && ($dia_compra >= 1 && $dia_compra <= 4)) {
+			} else if ($dados['id_cartao'] == 3 && ($dia_compra >= 1 && $dia_compra < 4)) {
 				$data_pagamento = date('Y-m-09');
-			} else if ($dados['id_cartao'] == 3 && ($dia_compra > 4 && $dia_compra <= 31)) {
+			} else if ($dados['id_cartao'] == 3 && ($dia_compra >= 4 && $dia_compra <= 31)) {
 				$data_pagamento = date('Y-m-09', strtotime("+1 month"));
 			}
 			
@@ -74,10 +74,10 @@ class DespesaCartao_model extends CI_Model
 						$data[$i]['data_pagamento'] = date('Y-m-08', strtotime("+{$m} month"));
 					} else if ($dados['id_cartao'] == 2 && $dia_compra > 24) {
 						$data[$i]['data_pagamento'] = date('Y-m-08', strtotime("+{$n} month"));
-					} else if ($dados['id_cartao'] == 3 && ($dia_compra >= 1 && $dia_compra <= 4)) {
-						$data[$i]['data_pagamento'] = date('Y-m-08', strtotime("+{$m} month"));
-					} else if ($dados['id_cartao'] == 3 && ($dia_compra > 4 && $dia_compra <= 31)) {
-						$data[$i]['data_pagamento'] = date('Y-m-08', strtotime("+{$n} month"));
+					} else if ($dados['id_cartao'] == 3 && ($dia_compra >= 1 && $dia_compra < 4)) {
+						$data[$i]['data_pagamento'] = date('Y-m-09', strtotime("+{$m} month"));
+					} else if ($dados['id_cartao'] == 3 && ($dia_compra >= 4 && $dia_compra <= 31)) {
+						$data[$i]['data_pagamento'] = date('Y-m-09', strtotime("+{$n} month"));
 					}
 					
 					$data[$i]['despesa'] = $dados['despesa'];

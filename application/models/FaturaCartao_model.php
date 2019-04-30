@@ -88,19 +88,30 @@ class FaturaCartao_model extends CI_Model
     }
 
     
-    public function pagarFatura(array $dados, int $id_cartao_fat = null, int $idConta = null) {
+    public function pagarFatura(array $dados, int $id_cartao_fat = null, int $idConta = null, $id_cartao_cre) {
         $ultimo_dia_mes_atual = mktime(23, 59, 59, date('m'), date('t'), date('Y')); //pega o último dia do mês atual.
         $dia_mes_atual = date('d'); //pega o dia do mês atual
         $data_fechamento_fatura = date('Y-m-d'); //gera a data de fechamento da fatura mês atual
-
-        $dia_vencimento_fatura = '08';
-        
         $data_atual = date('Y-m-d');
 
-        if (($dia_mes_atual <= $ultimo_dia_mes_atual) && ($dia_mes_atual >= $data_fechamento_fatura)) {
-            $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'', strtotime("+1 month", strtotime($data_atual)));
-        } else {
+        if ($id_cartao_cre == 1 || $id_cartao_cre == 2) {
+            $dia_vencimento_fatura = '08';
+        } else if ($id_cartao_cre == 3) {
+            $dia_vencimento_fatura = '09';
+        }
+
+        if ($id_cartao_cre == 1 && ($dia_mes_atual >=25 && $dia_mes_atual <= 31)) {
+            $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'', strtotime("+1 month"));
+        } else if ($id_cartao_cre == 1 && ($dia_mes_atual >=1 && $dia_mes_atual <= 8)) {
             $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'');
+        } else if ($id_cartao_cre == 2 && ($dia_mes_atual >=25 && $dia_mes_atual <= 31)) {
+            $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'', strtotime("+1 month"));
+        } else if ($id_cartao_cre == 2 && ($dia_mes_atual >=1 && $dia_mes_atual <= 8)) {    
+            $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'');    
+        } else if ($id_cartao_cre == 3 && ($dia_mes_atual >= 1 && $dia_mes_atual <= 4)) {
+            $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'');
+        } else if ($id_cartao_cre == 3 && ($dia_mes_atual > 4 && $dia_mes_atual <= 31)) {
+            $data_pagamento_fatura = date('Y-m-'.$dia_vencimento_fatura.'', strtotime("+1 month"));
         }
 
         if (empty($dados['totalgeral']) || $dados['totalgeral'] == "" || $dados['totalgeral'] == null) {
@@ -159,6 +170,7 @@ class FaturaCartao_model extends CI_Model
 				CASE c.id_cartao_credito 
 					WHEN 1 THEN 'CARTÃO VOTORANTIM'
 					WHEN 2 THEN 'CARTÃO CEF'
+                    WHEN 3 THEN 'CARTÃO NUBANK'
 				END AS cartao 
 			FROM {$this->getTable()} f
 			JOIN {$this->CartaoCredito_model->getTable()} c ON (c.id_cartao_credito = f.fk_id_cartao_credito)
