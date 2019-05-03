@@ -36,19 +36,7 @@ class DespesaCartao_model extends CI_Model
 			$mes_compra = date('m', strtotime($dados['data_compra']));
 			$ano_compra = date('Y', strtotime($dados['data_compra']));
 
-			if ($dados['id_cartao'] == 1 && $dia_compra <= 26) {
-				$data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-			} else if ($dados['id_cartao'] == 1 && $dia_compra > 26) {
-				$data_pagamento = date('Y-m-d', strtotime("+2 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-			} else if ($dados['id_cartao'] == 2 && $dia_compra <= 25) {
-				$data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-			} else if ($dados['id_cartao'] == 2 && $dia_compra > 25) {
-				$data_pagamento = date('Y-m-d', strtotime("+2 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-			} else if ($dados['id_cartao'] == 3 && ($dia_compra >= 1 && $dia_compra <= 2)) {
-				$data_pagamento = date('Y-m-09');
-			} else if ($dados['id_cartao'] == 3 && ($dia_compra > 2 && $dia_compra <= 31)) {
-				$data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime("{$ano_compra}-{$mes_compra}-09")));
-			}
+			$data_pagamento = dataPagamento($dia_compra, $mes_compra, $ano_compra, $dados['id_cartao']);
 			
 			$data = [];		
 			
