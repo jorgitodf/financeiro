@@ -1,7 +1,11 @@
 @charset "utf-8";
 
 @media (max-width: 37em) {
-    
+    .centraliza {
+        width: 450px;
+        margin: auto;
+    }
+
     html, body {
         margin: 0;
         height: 100%;
@@ -745,6 +749,11 @@
 
 @media (min-width: 82em) {
 
+    .centraliza {
+        width: 450px;
+        margin: auto;
+    }
+
     html, body {
         margin: 0;
         height: 100%;
@@ -1383,6 +1392,11 @@
 
 
 @media (max-width: 100em) {
+    .centraliza {
+        width: 450px;
+        margin: auto;
+    }
+    
     html, body {
         margin: 0;
         height: 100%;

@@ -54,13 +54,13 @@
             </div>
             <div class="row-fluid" id="second_div_botoes_home">
                 <div class="btn-group asd">
-                    <button type="button" class="btn btn-success btn_extrato" id=""><a class="href_btn_home" href="/conta/acessar/<?php echo !empty($idConta) ? $idConta : "" ?>">Relatórios</a></button>
+                    <button type="button" class="btn btn-success btn_extrato" id=""><a class="href_btn_home" href="/conta/acessar/<?php echo !empty($idConta) ? $idConta : "" ?>">Manutenção</a></button>
                     <button type="button" class="btn btn-success dropdown-toggle btn_extrato_1" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="/relatorio">Geral Por Ano</a></li>
+                        <li><a href="/manutencao/exportar">Expoxtar Bando de Dados</a></li>
                         <li><a href=""></a></li>
                     </ul>
                 </div>
