@@ -32,11 +32,7 @@ class DespesaCartao_model extends CI_Model
 			return array('status'=>'error', 'message'=>'Informe a quantidade de Parcela(s)!');
 		} else {
 
-			$dia_compra = date('d', strtotime($dados['data_compra']));
-			$mes_compra = date('m', strtotime($dados['data_compra']));
-			$ano_compra = date('Y', strtotime($dados['data_compra']));
-
-			$data_pagamento = dataPagamento($dia_compra, $mes_compra, $ano_compra, $dados['id_cartao']);
+			$data_pagamento = dataPagamento($dados['data_compra'], $dados['id_cartao']);
 			
 			$data = [];		
 			

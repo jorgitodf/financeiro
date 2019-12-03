@@ -152,23 +152,57 @@ function transformaAnoMes($data) {
     return $anoMes;
 }
 
-function dataPagamento($dia_compra, $mes_compra, $ano_compra, int $id_cartao) {
+function dataPagamento($dataCompra, int $id_cartao) {
 
     $data_pagamento = "";
+    $diaFF = "";
+    $difMeses = "";
 
-    if ($id_cartao == 1 && $dia_compra <= 26) {
-        $data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-    } else if ($id_cartao == 1 && $dia_compra > 26) {
-        $data_pagamento = date('Y-m-d', strtotime("+2 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-    } else if ($id_cartao == 2 && $dia_compra <= 25) {
-        $data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-    } else if ($id_cartao == 2 && $dia_compra > 25) {
-        $data_pagamento = date('Y-m-d', strtotime("+2 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-    } else if ($id_cartao == 3 && ($dia_compra >= 1 && $dia_compra <= 2)) {
-        $data_pagamento = date('Y-m-09');
-    } else if ($id_cartao == 3 && ($dia_compra > 2 && $dia_compra <= 31)) {
-        $data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime("{$ano_compra}-{$mes_compra}-09")));
+    $data = new DateTime();
+    $anoMesAtual = $data->format('Y-m');
+    $dataAtual = $data->format('Y-m-d');
+
+    if ($id_cartao == 1) {
+        $diaFF = '29';
+    } else if ($id_cartao == 2) {
+        $diaFF = '25';
+    } else {
+        $diaFF = '02';
     }
+
+    $dia_compra = date('d', strtotime($dataCompra));
+    $mes_compra = date('m', strtotime($dataCompra));
+    $ano_compra = date('Y', strtotime($dataCompra));
+
+    $mes_fatura = date('m', strtotime($dataAtual));
+
+    $difMeses = ($mes_fatura - $mes_compra);
+
+    if (($id_cartao == 1) && ($dia_compra < $diaFF) && ($mes_compra < $mes_fatura) && ($difMeses > 1)) {
+        $data_pagamento = date('Y-m-d', strtotime("+{$difMeses} month", strtotime("{$ano_compra}-{$mes_compra}-08")));
+    } else if (($id_cartao == 1) && ($dia_compra >= $diaFF) && ($mes_compra < $mes_fatura) && ($difMeses > 1)) {
+        $data_pagamento = date('Y-m-d', strtotime("+{$difMeses} month", strtotime("{$ano_compra}-{$mes_compra}-08")));
+    } else if (($id_cartao == 1) && ($dia_compra >= $diaFF) && ($mes_compra < $mes_fatura) && ($difMeses == 1)) {
+        $data_pagamento = date('Y-m-d', strtotime("+2 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
+    } else if (($id_cartao == 1) && ($dia_compra < $diaFF) && ($mes_compra < $mes_fatura) && ($difMeses == 1)) {
+        $data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
+    } else if (($id_cartao == 2) && ($dia_compra < $diaFF) && ($mes_compra < $mes_fatura) && ($difMeses > 1)) {
+        $data_pagamento = date('Y-m-d', strtotime("+{$difMeses} month", strtotime("{$ano_compra}-{$mes_compra}-08")));
+    } else if (($id_cartao == 2) && ($dia_compra >= $diaFF) && ($mes_compra < $mes_fatura) && ($difMeses > 1)) {
+        $data_pagamento = date('Y-m-d', strtotime("+{$difMeses} month", strtotime("{$ano_compra}-{$mes_compra}-08")));
+    } else if (($id_cartao == 2) && ($dia_compra >= $diaFF) && ($mes_compra < $mes_fatura) && ($difMeses == 1)) {
+        $data_pagamento = date('Y-m-d', strtotime("+2 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
+    } else if (($id_cartao == 2) && ($dia_compra < $diaFF) && ($mes_compra < $mes_fatura) && ($difMeses == 1)) {
+        $data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime("{$ano_compra}-{$mes_compra}-08")));
+    } else if (($id_cartao == 3) && ($dia_compra <= $diaFF) && ($mes_compra == $mes_fatura)) {
+        $data_pagamento = date('Y-m-09');
+    } else if (($id_cartao == 3) && (($dia_compra <= $diaFF) || ($dia_compra > $diaFF)) && ($mes_compra < $mes_fatura) && ($difMeses == 1)) {
+        $data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime("{$ano_compra}-{$mes_compra}-09")));
+    } else if (($id_cartao == 3) && (($dia_compra <= $diaFF) || ($dia_compra > $diaFF)) && ($mes_compra < $mes_fatura) && ($difMeses > 1)) {
+        $data_pagamento = date('Y-m-d', strtotime("+{$difMeses} month", strtotime("{$ano_compra}-{$mes_compra}-09")));
+    } else if (($id_cartao == 3) && ($dia_compra > $diaFF) && ($mes_compra = $mes_fatura)) {
+        $data_pagamento = date('Y-m-d', strtotime("+1 month", strtotime("{$ano_compra}-{$mes_compra}-09")));
+    } 
 
     return $data_pagamento;
 }
