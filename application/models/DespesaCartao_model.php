@@ -37,35 +37,29 @@ class DespesaCartao_model extends CI_Model
 			$data = [];		
 			
 			if ($dados['parcela'] == 01) {
+
 				$data[0]['data_compra'] = $dados['data_compra'];
 				$data[0]['valor_parcela'] = number_format(formatarMoeda($dados['valor_parcela']) / $dados['parcela'], 2);
 				$data[0]['parcela'] = "01/".$dados['parcela'];
 				$data[0]['data_pagamento'] = $data_pagamento;
 				$data[0]['despesa'] = $dados['despesa'];
 				$data[0]['id_cartao'] = $dados['id_cartao'];
+
 			} else {
+
 				$qtd_parcelas = (int) $dados['parcela'];
+
 				for($i=1; $i <= $dados['parcela']; $i++) {
-					$m = $i-1;
-					$n = $i+1;
+
+					$m = $i - 1;
+					$n = $i + 1;
+
 					$data[$i]['data_compra'] = $dados['data_compra'];
 					$data[$i]['valor_parcela'] = formatarMoeda($dados['valor_parcela']) / $qtd_parcelas;
 					$data[$i]['parcela'] = $i < 10 ? "0".$i."/".$dados['parcela'] : $i."/".$dados['parcela'];
 
-					if ($dados['id_cartao'] == 1 && $dia_compra <= 26) {
-						$data[$i]['data_pagamento'] = date('Y-m-d', strtotime("+{$n} month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-					} else if ($dados['id_cartao'] == 1 && $dia_compra > 26) {
-						$data[$i]['data_pagamento'] = date('Y-m-d', strtotime("+{$n} month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-					} else if ($dados['id_cartao'] == 2 && $dia_compra <= 24) {
-						$data[$i]['data_pagamento'] = date('Y-m-d', strtotime("+{$n} month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-					} else if ($dados['id_cartao'] == 2 && $dia_compra > 24) {
-						$data[$i]['data_pagamento'] = date('Y-m-d', strtotime("+{$n} month", strtotime("{$ano_compra}-{$mes_compra}-08")));
-					} else if ($dados['id_cartao'] == 3 && ($dia_compra >= 1 && $dia_compra <= 2)) {
-						$data[$i]['data_pagamento'] = date('Y-m-d', strtotime("+{$n} month", strtotime("{$ano_compra}-{$mes_compra}-09")));
-					} else if ($dados['id_cartao'] == 3 && ($dia_compra > 2 && $dia_compra <= 31)) {
-						$data[$i]['data_pagamento'] = date('Y-m-d', strtotime("+{$n} month", strtotime("{$ano_compra}-{$mes_compra}-09")));
-					}
-					
+					$data[$i]['data_pagamento'] = dataPagamento($dados['data_compra'], $dados['id_cartao']);
+
 					$data[$i]['despesa'] = $dados['despesa'];
 					$data[$i]['id_cartao'] = $dados['id_cartao'];
 					
